@@ -68,7 +68,7 @@ public class SBListFragment extends ListFragment {
 			CommunicationHelper.getInstance().onChatClickWithUser(userAtthisPosition.getUserFBInfo().getFbid(),userAtthisPosition.getUserFBInfo().getFullName());
 		else
 			ToastTracker.showToast("Unable to chat,user not in current list");
-        ToastTracker.showToast("Chat with user at: " + position);
+        //ToastTracker.showToast("Chat with user at: " + position);
     }
 	
 	@Override

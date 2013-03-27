@@ -93,7 +93,7 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		    		mXMPPConnection.addConnectionListener(mConnectionListener);
 		    	}
 		    	else
-		    		ToastTracker.showToast("not connected to internet");
+		    		ToastTracker.showToast("Not connected to internet");
 		    } catch (XMPPException e) {
 			Log.e(TAG, "Error while connecting", e);
 			mErrorMsg = e.getMessage();
@@ -157,7 +157,7 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 			Log.d(TAG, "login called and is already authenticated");
 			return true;
 		}
-	    	ToastTracker.showToast("tryin login is not authenticated", Toast.LENGTH_SHORT);
+	    	//ToastTracker.showToast("tryin login is not authenticated", Toast.LENGTH_SHORT);
 		if (!mXMPPConnection.isConnected())
 		{			
 			Log.d(TAG, "tryin login but xmpp not connected,ll return false");
@@ -187,12 +187,8 @@ private class SBChatConnectionListener implements ConnectionListener {
 		@Override
 		public void connectionClosed() {
 		    Log.d(TAG, "closing connection,stopping service");
-		    ToastTracker.showToast("xmpp connection closed,should reconnect");		    
-		    //Intent intent = new Intent(BeemBroadcastReceiver.BEEM_CONNECTION_CLOSED);
-		    //intent.putExtra("message", mService.getString(R.string.BeemBroadcastReceiverDisconnect));
-		    //intent.putExtra("normally", true);
-		    //mService.sendBroadcast(intent);
-		    //mService.stopSelf();
+		    //ToastTracker.showToast("xmpp connection closed,should reconnect");	    
+		    
 		}
 
 		/**
@@ -201,7 +197,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 		@Override
 		public void connectionClosedOnError(Exception exception) {
 		    Log.d(TAG, "connectionClosedOnError,should try reconnect");
-		    ToastTracker.showToast("Chat server connection closed on error,should try reconnect");		   
+		    //ToastTracker.showToast("Chat server connection closed on error,should try reconnect");		   
 		    //Intent intent = new Intent(BeemBroadcastReceiver.BEEM_CONNECTION_CLOSED);
 		    //intent.putExtra("message", exception.getMessage());
 		    //mService.sendBroadcast(intent);
@@ -214,7 +210,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 		 */
 		public void connectionFailed(String errorMsg) {
 		    Log.d(TAG, "Connection Failed");
-		    ToastTracker.showToast("xmpp connection failed");		   
+		    //ToastTracker.showToast("xmpp connection failed");		   
 		  /*  final int n = mRemoteConnListeners.beginBroadcast();
 
 		    for (int i = 0; i < n; i++) {
@@ -235,14 +231,14 @@ private class SBChatConnectionListener implements ConnectionListener {
 		    @Override
 			public void reconnectingIn(int paramInt) {
 		    	Log.d(TAG, "reconnectingIn"+paramInt);
-		    	 ToastTracker.showToast("xmpp reconnecing in:"+paramInt);
+		    	 //ToastTracker.showToast("xmpp reconnecing in:"+paramInt);
 				
 			}
 
 			@Override
 			public void reconnectionSuccessful() {
 				Log.d(TAG, "reconnection success");				
-				ToastTracker.showToast("xmpp reconnection successful");
+				//ToastTracker.showToast("xmpp reconnection successful");
 				
 			}
 
@@ -283,13 +279,13 @@ private class ConnectToChatServerTask extends AsyncTask<XMPPConnectionListenersA
 				return;
 			loginToServer = new LoginToChatServerTask();
 			loginToServer.execute(adapter);
-			ToastTracker.showToast("connected to xmpp,logging");
+			//ToastTracker.showToast("connected to xmpp,logging");
 			Log.d(TAG, "connected to xmpp,logging");
 		}
 		else
 		{
 			Log.d(TAG, "connected to xmpp,but not logging");
-			ToastTracker.showToast("connected to xmpp but not logging");
+			//ToastTracker.showToast("connected to xmpp but not logging");
 			tryinLogging.set(false);
 		}
 		
@@ -330,7 +326,7 @@ private class LoginToChatServerTask extends AsyncTask<XMPPConnectionListenersAda
 				return;
 			}
 			Log.d(TAG, "logged in to xmpp");
-			ToastTracker.showToast("logged in  to xmpp", Toast.LENGTH_SHORT);	
+			//ToastTracker.showToast("logged in  to xmpp", Toast.LENGTH_SHORT);	
 			if(mChatManager!=null)				
 				mChatManager.notifyAllPendingQueue();
 		 	Runnable sendPresence = new Runnable() {

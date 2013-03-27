@@ -201,7 +201,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				
 				if(!ThisAppConfig.getInstance().getBool(ThisAppConfig.NEWUSERPOPUP) || BlockedUser.isUserBlocked(msg.getInitiator()))
 				{
-					ToastTracker.showToast("new user broadcast received but its disabled");
+					//ToastTracker.showToast("new user broadcast received but its disabled");
 					return;
 				}			
 				
@@ -210,8 +210,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				int daily_insta_type = (Integer) message
 						.getProperty(Message.DAILYINSTATYPE);
 				
-				ToastTracker.showToast("got broadcast from userid:"
-						+ thisNearbyUserUSERID);
+				//ToastTracker.showToast("got broadcast from userid:"	+ thisNearbyUserUSERID);
 				GetFBInfoForUserIDAndShowPopup req = new GetFBInfoForUserIDAndShowPopup(
 						thisNearbyUserUSERID, daily_insta_type);
 				SBHttpClient.getInstance().executeRequest(req);

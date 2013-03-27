@@ -123,7 +123,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 				if(StringUtils.checkIfRequestExpired(datetime))
 				{
 					ThisUserConfig.getInstance().putString(ThisUserConfig.ACTIVE_REQ_INSTA, "");
-					ToastTracker.showToast("Active insta req expired");
+					//ToastTracker.showToast("Active insta req expired");
 				}
 				else
 				{

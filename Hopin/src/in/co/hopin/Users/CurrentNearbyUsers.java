@@ -37,9 +37,9 @@ public class CurrentNearbyUsers {
 		updatedToCurrent = false;
 		mNewNearbyUserList = JSONHandler.getInstance().GetNearbyUsersInfoFromJSONObject(body);	
 		if(mNewNearbyUserList!=null)
-			ToastTracker.showToast("new users:"+mNewNearbyUserList.size());
+			ToastTracker.showToast(mNewNearbyUserList.size()+" match found");
 		else
-			ToastTracker.showToast("new users 0");
+			ToastTracker.showToast("sorry no match found");
 		
 	}
 
@@ -93,7 +93,7 @@ public class CurrentNearbyUsers {
 		}
 		else if(mNewNearbyUserList == null)
 		{
-			ToastTracker.showToast("users changed to 0");
+			ToastTracker.showToast("sorry no match found");
 			updateCurrentToNew();
 			return true; //new number of users is 0 but currently we showing some who moved out	
 		}
@@ -105,12 +105,12 @@ public class CurrentNearbyUsers {
 				continue;	
 				
 			Log.i(TAG,"user have changed ");
-			ToastTracker.showToast("users changed");
+			//ToastTracker.showToast("users changed");
 			updateCurrentToNew();
 			return true;
 		}		
 		Log.i(TAG,"user did not change ");
-		ToastTracker.showToast("users not changed");
+		//ToastTracker.showToast("users not changed");
 		return false;
 	}
 	

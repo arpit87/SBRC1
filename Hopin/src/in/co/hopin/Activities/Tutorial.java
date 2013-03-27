@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -71,7 +72,7 @@ public class Tutorial extends Activity{
 				
                 String userNameText = userNameView.getText().toString();
                 if (StringUtils.isBlank(userNameText)) {
-                	ToastTracker.showToast("Please enter name");
+                	Toast.makeText(Tutorial.this,"Please enter name",Toast.LENGTH_SHORT);
                     return;
                 }
                 

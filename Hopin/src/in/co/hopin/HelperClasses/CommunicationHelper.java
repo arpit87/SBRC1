@@ -90,7 +90,8 @@ public class CommunicationHelper {
 	
 	public void onSmsClickWithUser(String userID, boolean isPhoneAvailable)
 	{
-		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+		ToastTracker.showToast("Sorry, we are not supporting sms yet, wait for next version ");
+		/*if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
 		{
 			//make popup 
 			MapListActivityHandler.getInstance().fbloginpromptpopup_show(true);
@@ -102,7 +103,7 @@ public class CommunicationHelper {
 			sms_dialog.show(MapListActivityHandler.getInstance().getUnderlyingActivity().getSupportFragmentManager(), "sms_dialog");						
 		}
 		else
-			ToastTracker.showToast("Sorry, user has not provided phone number ");
+			ToastTracker.showToast("Sorry, user has not provided phone number ");*/
 	}
 	
 	public void onFBIconClickWithUser(Activity underLyingActivity, String userFBID, String userFBName)

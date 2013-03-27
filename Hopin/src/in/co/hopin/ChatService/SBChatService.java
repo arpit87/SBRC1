@@ -88,7 +88,7 @@ public class SBChatService extends Service {
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        ToastTracker.showToast("service strted with id:"+startId);
+        //ToastTracker.showToast("service strted with id:"+startId);
         if(mConnectionAdapter == null)
         	mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection,this);
         else
@@ -106,7 +106,7 @@ public class SBChatService extends Service {
 	@Override
     public void onDestroy() {
 	super.onDestroy();
-	ToastTracker.showToast("stopping service and xmpp disconnecting");
+	//ToastTracker.showToast("stopping service and xmpp disconnecting");
 	isRunning = false;
 	mNotificationManager.cancelAll();
 	unregisterReceiver(mReceiver);
@@ -208,7 +208,7 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 	    else
 	    {
 	    	//network came up again
-	    	ToastTracker.showToast("NEtwork up yippe,ll login",  Toast.LENGTH_SHORT);
+	    	//ToastTracker.showToast("NEtwork up yippe,ll login",  Toast.LENGTH_SHORT);
 	    	String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
 	    	String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
 	    	mConnectionAdapter.loginAsync(login, password);
