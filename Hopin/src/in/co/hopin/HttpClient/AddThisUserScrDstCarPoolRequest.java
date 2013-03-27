@@ -21,7 +21,7 @@ import in.co.hopin.Users.UserAttributes;
 import java.io.UnsupportedEncodingException;
 
 public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
-    private final String TAG = "my.b1701.SB.HttpClient.AddThisUserSrcDstCarpoolRequest";
+    private final String TAG = "in.co.hopin.HttpClient.AddThisUserSrcDstCarpoolRequest";
     public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/addCarpoolRequest/";
 
     HttpPost httpQueryAddRequest;

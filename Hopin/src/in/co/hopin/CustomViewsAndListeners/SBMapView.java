@@ -21,7 +21,7 @@ import java.util.List;
 
 public class SBMapView extends MapView implements OnGestureListener {
 
-	private static final String TAG = "my.b1701.SB.CustomViewsAndListeners.SBMapView";
+	private static final String TAG = "in.co.hopin.CustomViewsAndListeners.SBMapView";
     private GestureDetector gd;    
     private OnSingleTapListener singleTapListener;
     private List<View> nearByUserViewList = new ArrayList<View>();

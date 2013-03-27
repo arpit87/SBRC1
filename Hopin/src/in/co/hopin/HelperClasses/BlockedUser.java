@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BlockedUser {
 
-    private static final String TAG = "my.b1701.SB.HelperClasses.BlockedUser";
+    private static final String TAG = "in.co.hopin.HelperClasses.BlockedUser";
     private static Uri mUriFetch = Uri.parse("content://" + BlockedUsersProvider.AUTHORITY + "/db_fetch_only");
     private static Uri mUri = Uri.parse("content://" + BlockedUsersProvider.AUTHORITY + "/blockedUsers");
     private static String[] columns = new String[] {"fbId", "name"};

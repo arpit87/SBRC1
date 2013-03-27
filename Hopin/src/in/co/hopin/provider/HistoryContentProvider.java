@@ -11,9 +11,9 @@ import android.net.Uri;
 import android.util.Log;
 
 public class HistoryContentProvider extends ContentProvider {
-    private static final String TAG = "my.b1701.SB.provider.HistoryContentProvider";
+    private static final String TAG = "in.co.hopin.provider.HistoryContentProvider";
 
-    public final static String AUTHORITY = "my.b1701.SB.provider.HistoryContentProvider";
+    public final static String AUTHORITY = "in.co.hopin.provider.HistoryContentProvider";
 
     private Uri mHistoryUri;
     private UriMatcher mUriMatcher;

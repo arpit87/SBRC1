@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class Store {
 	
-	private static final String TAG = "my.b1701.SB.HelperClasses.Store";
+	private static final String TAG = "in.co.hopin.HelperClasses.Store";
 	private Context context = Platform.getInstance().getContext();
 	private static Store instance = null;
 	

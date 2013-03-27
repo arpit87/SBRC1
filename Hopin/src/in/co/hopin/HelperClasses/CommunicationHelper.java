@@ -28,7 +28,7 @@ import android.util.Log;
  */
 public class CommunicationHelper {
 	
-	private static String TAG = "my.b1701.SB.ActivityHandler.ChatHandler";
+	private static String TAG = "in.co.hopin.ActivityHandler.ChatHandler";
 	static CommunicationHelper instance = new CommunicationHelper();
 	Context context = Platform.getInstance().getContext();
 	

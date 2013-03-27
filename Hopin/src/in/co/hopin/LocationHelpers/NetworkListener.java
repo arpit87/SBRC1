@@ -14,7 +14,7 @@ public class NetworkListener implements LocationListener{
 	
 	long minTime=0L;
 	float minDistnce=0F;	
-	private static final String TAG = "my.b1701.SB.LocationHelpers.NetworkListener";
+	private static final String TAG = "in.co.hopin.LocationHelpers.NetworkListener";
 	
 	private Location thisWindowBestLocation = null;	
 	private Location lastWindowBestLocation = null;

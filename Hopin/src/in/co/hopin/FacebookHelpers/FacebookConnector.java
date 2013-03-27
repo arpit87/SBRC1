@@ -38,7 +38,7 @@ import com.facebook.android.FacebookError;
 
 public class FacebookConnector {
 	
-	private static final String TAG = "my.b1701.SB.FacebookHelpers.FacebookConnector";
+	private static final String TAG = "in.co.hopin.FacebookHelpers.FacebookConnector";
 	
 	public static String [] FB_PERMISSIONS = {"user_about_me","user_education_history","user_hometown","user_work_history","email"};
 	public static String FB_APP_ID = "107927182711315";

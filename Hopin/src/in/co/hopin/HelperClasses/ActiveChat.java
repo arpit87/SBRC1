@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ActiveChat {
 
-    private static final String TAG = "my.b1701.SB.HelperClasses.ActiveChat";
+    private static final String TAG = "in.co.hopin.HelperClasses.ActiveChat";
     private static Uri mUriFetch = Uri.parse("content://" + ActiveChatProvider.AUTHORITY + "/db_fetch_only");
     private static Uri mUri = Uri.parse("content://" + ActiveChatProvider.AUTHORITY + "/activechat");
     private static String[] columns = new String[] {"fbId", "name", "lastMessage"};

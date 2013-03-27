@@ -29,7 +29,7 @@ public class ThisUserNew {
 	private int daily_instant_type = 0;//pool 0.instant 1
 	private int plan_instant_type = 0;//sent by plan tab 0.instant tab 1
 	private int selected_radio_button_id = 0;//used in history to store which radio button was selected
-	private static final String TAG = "my.b1701.SB.Users.ThisUserNew";
+	private static final String TAG = "in.co.hopin.Users.ThisUserNew";
 	private static ThisUserNew instance = null;
 	private LinkedList<HistoryAdapter.HistoryItem> historyItemList = new LinkedList<HistoryAdapter.HistoryItem>();
 	private String userID;

@@ -25,7 +25,7 @@ public class AddUserResponse extends ServerResponseBase{
 	String user_id;	
 	Activity tutorial_activity;//needed to stop activity
 	
-	private static final String TAG = "my.b1701.SB.Server.AddUserResponse";
+	private static final String TAG = "in.co.hopin.Server.AddUserResponse";
 	public AddUserResponse(HttpResponse response,String jobjStr,Activity tutorial_activity) {
 		super(response,jobjStr);
 		this.tutorial_activity = tutorial_activity;

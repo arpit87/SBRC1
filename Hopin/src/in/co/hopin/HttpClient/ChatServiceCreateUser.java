@@ -22,7 +22,7 @@ import java.io.UnsupportedEncodingException;
 
 public class ChatServiceCreateUser extends SBHttpRequest{
 		
-		private final String TAG = "my.b1701.SB.HttpClient.ChatServiceCreateUser";
+		private final String TAG = "in.co.hopin.HttpClient.ChatServiceCreateUser";
         public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.CHATSERVICE + "/createUser/";
 		HttpPost httpQueryAddRequest;	
 		JSONObject jsonobjAddRequest = new JSONObject();

@@ -19,7 +19,7 @@ import android.util.Log;
  */
 public class CurrentNearbyUsers {
 	
-	private static String TAG = "my.b1701.SB.Users.CurrentNearbyUsers" ;
+	private static String TAG = "in.co.hopin.Users.CurrentNearbyUsers" ;
 	private HashMap<String, NearbyUser> FBID_NearbyUserMap = new HashMap<String, NearbyUser>(); //store fbid<-> nearbyuser obj map
 	private List<NearbyUser> mCurrentNearbyUserList = null;
 	private List<NearbyUser> mNewNearbyUserList = null;

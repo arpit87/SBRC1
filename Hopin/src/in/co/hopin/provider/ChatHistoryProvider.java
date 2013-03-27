@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.util.Log;
 
 public class ChatHistoryProvider extends ContentProvider {
-    private static final String TAG = "my.b1701.SB.provider.ChatHistoryProvider";
-    public final static String AUTHORITY = "my.b1701.SB.provider.ChatHistoryProvider";
+    private static final String TAG = "in.co.hopin.provider.ChatHistoryProvider";
+    public final static String AUTHORITY = "in.co.hopin.provider.ChatHistoryProvider";
 
     private Uri mUri;
     private UriMatcher mUriMatcher;

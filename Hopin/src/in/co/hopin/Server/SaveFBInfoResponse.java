@@ -14,7 +14,7 @@ public class SaveFBInfoResponse extends ServerResponseBase{
 
 	String status;
 	
-	private static final String TAG = "my.b1701.SB.Server.SaveFBInfoResponse";
+	private static final String TAG = "in.co.hopin.Server.SaveFBInfoResponse";
 	public SaveFBInfoResponse(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);
 	}

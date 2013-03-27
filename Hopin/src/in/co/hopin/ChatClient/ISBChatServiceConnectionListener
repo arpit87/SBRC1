@@ -1,4 +1,4 @@
-package my.b1701.SB.ChatClient;
+package in.co.hopin.ChatClient;
 
 interface ISBChatServiceConnectionListener {
 

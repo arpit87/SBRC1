@@ -22,7 +22,7 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 	UserFBInfo thisNearbyUserFBInfo;	
 	
 	
-	private static final String TAG = "my.b1701.SB.Server.GetFBInfoResponseAndShowPopup";
+	private static final String TAG = "in.co.hopin.Server.GetFBInfoResponseAndShowPopup";
 	public GetFBInfoResponseAndShowPopup(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);		
 	}

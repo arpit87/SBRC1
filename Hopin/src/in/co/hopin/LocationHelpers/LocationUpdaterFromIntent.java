@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class LocationUpdaterFromIntent extends BroadcastReceiver{
 	
-	private final String TAG = "my.b1701.SB.LocationHelpers.LocationUpdaterFromIntent";  
+	private final String TAG = "in.co.hopin.LocationHelpers.LocationUpdaterFromIntent";  
 		
 	@Override
 	public void onReceive(Context context, Intent intent) {

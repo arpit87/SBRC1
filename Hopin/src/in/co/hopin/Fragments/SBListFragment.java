@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SBListFragment extends ListFragment {
 	
-	private static final String TAG = "my.b1701.SB.Fragments.SBListFragment";
+	private static final String TAG = "in.co.hopin.Fragments.SBListFragment";
 	private ViewGroup mListViewContainer;
 	private List<NearbyUser> nearbyUserlist = null;
 	

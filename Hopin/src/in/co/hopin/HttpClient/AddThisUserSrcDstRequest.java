@@ -21,7 +21,7 @@ import in.co.hopin.Users.UserAttributes;
 import java.io.UnsupportedEncodingException;
 
 public class AddThisUserSrcDstRequest extends SBHttpRequest {
-    private final String TAG = "my.b1701.SB.HttpClient.AddThisUserSrcDstRequest";
+    private final String TAG = "in.co.hopin.HttpClient.AddThisUserSrcDstRequest";
     public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/addRequest/";
     
     HttpPost httpQueryAddRequest;

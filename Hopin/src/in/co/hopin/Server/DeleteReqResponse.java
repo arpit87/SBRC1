@@ -12,7 +12,7 @@ import org.json.JSONException;
 
 public class DeleteReqResponse extends ServerResponseBase{
 	
-	private static final String TAG = "my.b1701.SB.Server.DeleteUserResponse";
+	private static final String TAG = "in.co.hopin.Server.DeleteUserResponse";
 	int daily_insta_type;
 
 	public DeleteReqResponse(HttpResponse response,String jobjStr,int daily_insta_type) {

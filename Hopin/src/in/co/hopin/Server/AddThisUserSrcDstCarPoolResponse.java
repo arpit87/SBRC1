@@ -14,7 +14,7 @@ import org.json.JSONException;
 
 public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
 
-    private static final String TAG = "my.b1701.SB.Server.AddUserResponse";
+    private static final String TAG = "in.co.hopin.Server.AddUserResponse";
     
 
 	String user_id;

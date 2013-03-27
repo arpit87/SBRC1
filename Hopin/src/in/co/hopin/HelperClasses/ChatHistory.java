@@ -14,7 +14,7 @@ import in.co.hopin.provider.ChatHistoryProvider;
 import java.util.*;
 
 public class ChatHistory {
-    private static final String TAG = "my.b1701.SB.HelperClasses.ChatHistory";
+    private static final String TAG = "in.co.hopin.HelperClasses.ChatHistory";
     private static Uri mUriFetch = Uri.parse("content://" + ChatHistoryProvider.AUTHORITY + "/db_fetch_only");
     private static Uri mUri = Uri.parse("content://" + ChatHistoryProvider.AUTHORITY + "/chathistory");
     private static String[] columns = new String[] {"fbIdTo",

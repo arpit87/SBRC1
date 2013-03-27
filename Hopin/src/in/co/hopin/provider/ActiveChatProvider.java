@@ -9,8 +9,8 @@ import android.util.Log;
 
 public class ActiveChatProvider extends ContentProvider{
 
-    private static final String TAG = "my.b1701.SB.provider.ActiveChatProvider";
-    public final static String AUTHORITY = "my.b1701.SB.provider.ActiveChatProvider";
+    private static final String TAG = "in.co.hopin.provider.ActiveChatProvider";
+    public final static String AUTHORITY = "in.co.hopin.provider.ActiveChatProvider";
 
     private Uri mUri;
     private UriMatcher mUriMatcher;

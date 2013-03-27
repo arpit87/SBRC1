@@ -26,7 +26,7 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 	UserFBInfo thisNearbyUserFBInfo;	
 	
 	
-	private static final String TAG = "my.b1701.SB.Server.GetOtherUserProfileResponse";
+	private static final String TAG = "in.co.hopin.Server.GetOtherUserProfileResponse";
 	public GetOtherUserProfileResponse(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);		
 	}

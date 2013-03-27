@@ -14,7 +14,7 @@ import org.json.JSONException;
 
 public class AddThisUserSrcDstResponse extends ServerResponseBase{
 
-    private static final String TAG = "my.b1701.SB.Server.AddUserResponse";
+    private static final String TAG = "in.co.hopin.Server.AddUserResponse";
     private static long TIME_INTERVAL = 1 * 60 * 1000; //1 minute
 
 	String user_id;

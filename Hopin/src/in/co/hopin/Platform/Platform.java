@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class Platform {
 	
-	private final String TAG = "my.b1701.SB.Platform.Platform";
+	private final String TAG = "in.co.hopin.Platform.Platform";
 	private static Platform instance = new Platform();
 	private Context context;	
 	private Handler handler;
@@ -43,7 +43,7 @@ public class Platform {
 	
 	 public void startChatService(){
 	     
-         Intent i = new Intent("my.b1701.SB.ChatService.SBChatService");                  
+         Intent i = new Intent("in.co.hopin.ChatService.SBChatService");                  
          //Log.d( TAG, "Service starting" );
          context.startService(i);
         
@@ -51,7 +51,7 @@ public class Platform {
              
 	
 	 public void stopChatService() {		
-	          Intent i = new Intent("my.b1701.SB.ChatService.SBChatService");
+	          Intent i = new Intent("in.co.hopin.ChatService.SBChatService");
 	          context.stopService(i);         
 	          
 	          //Log.d( TAG, "Service stopped" );	         

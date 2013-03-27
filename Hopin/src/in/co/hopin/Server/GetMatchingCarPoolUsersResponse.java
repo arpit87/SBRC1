@@ -14,7 +14,7 @@ import android.util.Log;
 public class GetMatchingCarPoolUsersResponse extends ServerResponseBase{
 
 
-	private static final String TAG = "my.b1701.SB.Server.GetCarPoolUsersResponse";
+	private static final String TAG = "in.co.hopin.Server.GetCarPoolUsersResponse";
 	
 	
 	public GetMatchingCarPoolUsersResponse(HttpResponse response,String jobjStr) {

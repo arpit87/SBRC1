@@ -15,7 +15,7 @@ import android.util.Log;
 public class GetMatchingNearbyUsersResponse extends ServerResponseBase{
 
 
-	private static final String TAG = "my.b1701.SB.Server.GetUsersResponse";
+	private static final String TAG = "in.co.hopin.Server.GetUsersResponse";
 	
 	
 	public GetMatchingNearbyUsersResponse(HttpResponse response,String jobjStr) {

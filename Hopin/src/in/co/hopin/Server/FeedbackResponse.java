@@ -12,7 +12,7 @@ import org.json.JSONException;
 
 public class FeedbackResponse extends ServerResponseBase{
 	
-	private static final String TAG = "my.b1701.SB.Server.FeedbackResponse";
+	private static final String TAG = "in.co.hopin.Server.FeedbackResponse";
 	
 	public FeedbackResponse(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);

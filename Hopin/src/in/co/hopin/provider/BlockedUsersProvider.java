@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.util.Log;
 
 public class BlockedUsersProvider extends ContentProvider {
-    private static final String TAG = "my.b1701.SB.provider.BlockedUsersProvider";
-    public final static String AUTHORITY = "my.b1701.SB.provider.BlockedUsersProvider";
+    private static final String TAG = "in.co.hopin.provider.BlockedUsersProvider";
+    public final static String AUTHORITY = "in.co.hopin.provider.BlockedUsersProvider";
 
     private Uri mUri;
     private UriMatcher mUriMatcher;
