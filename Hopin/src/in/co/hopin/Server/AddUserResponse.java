@@ -41,7 +41,7 @@ public class AddUserResponse extends ServerResponseBase{
 			user_id = body.getString(UserAttributes.USERID);
 			ThisUserConfig.getInstance().putString(ThisUserConfig.USERID, user_id);
 			ThisUserNew.getInstance().setUserID(user_id);	
-			ToastTracker.showToast("Got user_id:"+user_id);
+			//ToastTracker.showToast("Got user_id:"+user_id);
 			ProgressHandler.dismissDialoge();
 			tutorial_activity.finish();
 			//now we will start map activity

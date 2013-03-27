@@ -257,7 +257,7 @@ private void showPopupMenu(View v)
     			getApplicationContext().unbindService(mChatServiceConnection);    			   			
     			Log.d( TAG, "chat Service released from chatwindow" );
     		} else {
-    			 ToastTracker.showToast("Cannot unbind - service not bound", Toast.LENGTH_SHORT);
+    			//ToastTracker.showToast("Cannot unbind - service not bound", Toast.LENGTH_SHORT);
     		}
 	    }
 	    
@@ -469,7 +469,7 @@ private void showPopupMenu(View v)
 	    	
 	    	@Override
 	    	public void onServiceConnected(ComponentName className, IBinder boundService) {
-	    		ToastTracker.showToast("onServiceConnected called", Toast.LENGTH_SHORT);
+	    		//ToastTracker.showToast("onServiceConnected called", Toast.LENGTH_SHORT);
 	    		Log.d(TAG,"onServiceConnected called");
 	    		xmppApis = IXMPPAPIs.Stub.asInterface((IBinder)boundService);	    		
 	    		try {
@@ -484,7 +484,7 @@ private void showPopupMenu(View v)
 
 	    	@Override
 	    	public void onServiceDisconnected(ComponentName arg0) {
-	    		ToastTracker.showToast("onService disconnected", Toast.LENGTH_SHORT);
+	    		//ToastTracker.showToast("onService disconnected", Toast.LENGTH_SHORT);
 	    		xmppApis = null;   		
 	    	    
 	    		Log.d(TAG,"service disconnected");

@@ -216,9 +216,7 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 	} else if(intentAction.equals(SBLOGIN_TO_CHAT))
 	{
 		String login = intent.getStringExtra("username");
-		String password = intent.getStringExtra("password");
-		Toast.makeText(context, "tryin loggin from intent",
-			    Toast.LENGTH_SHORT).show();
+		String password = intent.getStringExtra("password");			    
 		mConnectionAdapter.loginAsync(login, password);
 	} else if(intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED))
 	{

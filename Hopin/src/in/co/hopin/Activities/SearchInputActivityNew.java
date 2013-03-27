@@ -87,7 +87,7 @@ public class SearchInputActivityNew extends FragmentActivity{
 						showPlanHistoryLayout();
 					else if(BtnInstaSearchView.isSelected())
 						showInstaHistoryLayout();
-					Toast.makeText(SearchInputActivityNew.this, "Tap row to search..", Toast.LENGTH_SHORT).show();
+					Toast.makeText(SearchInputActivityNew.this, "Tap history row to search..", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{

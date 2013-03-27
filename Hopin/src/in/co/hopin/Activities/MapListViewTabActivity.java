@@ -91,7 +91,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         
         ab.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_black));   
         
-        ToastTracker.showToast("Your userid:"+ThisUserNew.getInstance().getUserID());
+        //ToastTracker.showToast("Your userid:"+ThisUserNew.getInstance().getUserID());
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);       
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayShowTitleEnabled(true);

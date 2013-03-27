@@ -34,7 +34,7 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
 		Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");
-			ToastTracker.showToast("added this user src,dst");
+			//ToastTracker.showToast("added this user src,dst");
             body.put(UserAttributes.DAILYINSTATYPE, 1);
             ThisUserConfig.getInstance().putString(ThisUserConfig.ACTIVE_REQ_INSTA, body.toString());
 

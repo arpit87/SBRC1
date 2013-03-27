@@ -507,7 +507,7 @@ public void onReceive(Context context, Intent intent) {
 	String intentAction = intent.getAction();
 	if(intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED))
 	{
-		ToastTracker.showToast("update intent received");
+		//ToastTracker.showToast("update intent received");
 		updateNearbyUsersOnUSersChange();
 	}	
 }
@@ -542,7 +542,7 @@ public void updateUserNameInListView() {
     if (mUserName != null) {
         String userName = ThisUserConfig.getInstance().getString(ThisUserConfig.USERNAME);
         if (userName=="") {
-        	ToastTracker.showToast("haaw..username null!!");
+        	//ToastTracker.showToast("haaw..username null!!");
             return;
         }
         mUserName.setText(userName);
