@@ -60,7 +60,7 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		mChatManager = new SBChatManager(mXMPPConnection, mService);
 		//Log.d(TAG, "xmpp connection listener will connect");
 		loginAsync(mLogin, mPassword);
-		Toast.makeText(mService, "connecting to xmpp", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(mService, "connecting to xmpp", Toast.LENGTH_SHORT).show();
 		//Log.d(TAG, "connecting to xmpp");
 	
 	 }
