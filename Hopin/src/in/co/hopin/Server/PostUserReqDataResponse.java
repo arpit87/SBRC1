@@ -18,7 +18,7 @@ public class PostUserReqDataResponse extends ServerResponseBase {
 
 	@Override
 	public void process() {
-		Log.i(TAG,"processing PostUserReqDataResponse");
+		//Log.i(TAG,"processing PostUserReqDataResponse");
 		//chk wt response coming of post..2xx is success
 		if(this.getStatus() == ResponseStatus.HttpStatus201 || this.getStatus() == ResponseStatus.HttpStatus200)
 		{

@@ -28,10 +28,10 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
 	@Override
 	public void process() {
 		//this process is not called if u make syncd consecutive requests,that time only last process called
-		Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());	
+		//Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());	
 		
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		Log.i(TAG,"got json "+jobj.toString());
+		//Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");
 			//ToastTracker.showToast("added this user src,dst");
@@ -40,7 +40,7 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
 
 			MapListActivityHandler.getInstance().setSourceAndDestination(body);
             //Context context = Platform.getInstance().getContext();
-            Log.i(TAG, "Fetching nearby users..");
+            //Log.i(TAG, "Fetching nearby users..");
             SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
             SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
             //Intent getNearByUsersIntent = new Intent(context, GetNearByUsersService.class);
@@ -51,7 +51,7 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
             //AlarmManager alarmManager = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
             //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, TIME_INTERVAL, TIME_INTERVAL, pendingIntent);
 		} catch (JSONException e) {
-			Log.e(TAG, "Error returned by server on user add scr dst");
+			//Log.e(TAG, "Error returned by server on user add scr dst");
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Network error,try again");
 			e.printStackTrace();

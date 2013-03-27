@@ -34,13 +34,13 @@ public class SBListFragment extends ListFragment {
 	public void onCreate(Bundle savedState) {
         super.onCreate(null);
 		//update listview
-        Log.i(TAG,"on create list view");
+        //Log.i(TAG,"on create list view");
         nearbyUserlist = CurrentNearbyUsers.getInstance().getAllNearbyUsers();
         if(nearbyUserlist!=null)
         {
 			NearbyUsersListViewAdapter adapter = new NearbyUsersListViewAdapter(getActivity(), nearbyUserlist);
 			setListAdapter(adapter);
-			Log.i(TAG,"nearby users:"+nearbyUserlist.toString());
+			//Log.i(TAG,"nearby users:"+nearbyUserlist.toString());
         }
         MapListActivityHandler.getInstance().setListFrag(this);
 	}
@@ -56,7 +56,7 @@ public class SBListFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
-		Log.i(TAG,"oncreateview listview");
+		//Log.i(TAG,"oncreateview listview");
 		mListViewContainer=  MapListActivityHandler.getInstance().getThisListContainerWithListView();
 		return mListViewContainer;
 	}
@@ -74,7 +74,7 @@ public class SBListFragment extends ListFragment {
 	@Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG,"ondestroyview listview");
+        //Log.i(TAG,"ondestroyview listview");
         ViewGroup parentViewGroup = (ViewGroup) mListViewContainer.getParent();
 		if( null != parentViewGroup ) {
 			parentViewGroup.removeView( mListViewContainer );

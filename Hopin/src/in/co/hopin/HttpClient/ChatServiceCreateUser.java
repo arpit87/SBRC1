@@ -56,7 +56,7 @@ public class ChatServiceCreateUser extends SBHttpRequest{
 				e.printStackTrace();
 			}
 			postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-			Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());	
+			//Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());	
 			httpQueryAddRequest.setEntity(postEntityAddRequest);
 			
 					

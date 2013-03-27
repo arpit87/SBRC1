@@ -58,7 +58,7 @@ public class FeedbackRequest extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntityUser.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		Log.d("debug", "calling server:"+jsonobj.toString());	
+		//Log.d("debug", "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntityUser);
         
 	}

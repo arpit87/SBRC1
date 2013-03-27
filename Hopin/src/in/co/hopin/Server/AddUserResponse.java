@@ -33,9 +33,9 @@ public class AddUserResponse extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());
+		//Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());
 		
-		Log.i(TAG,"got json "+jobj.toString());		
+		//Log.i(TAG,"got json "+jobj.toString());		
 		try {
 			body = jobj.getJSONObject("body");
 			user_id = body.getString(UserAttributes.USERID);
@@ -59,7 +59,7 @@ public class AddUserResponse extends ServerResponseBase{
 				 sendAddFBAndChatInfoToServer(fbid);
 			 }
 		} catch (JSONException e) {
-			Log.e(TAG, "Error returned by server on user add");
+			//Log.e(TAG, "Error returned by server on user add");
 			ToastTracker.showToast("Unable to communicate to server,try again later");
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class AddUserResponse extends ServerResponseBase{
 	
 	 private void sendAddFBAndChatInfoToServer(String fbid) {
 	    	//this should only be called from fbpostloginlistener to ensure we have fbid
-	    	Log.i(TAG,"in sendAddFBAndChatInfoToServer");
+	    	//Log.i(TAG,"in sendAddFBAndChatInfoToServer");
 	    	SBHttpRequest chatServiceAddUserRequest = new ChatServiceCreateUser(fbid);
 	     	SBHttpClient.getInstance().executeRequest(chatServiceAddUserRequest);
 			SBHttpRequest sendFBInfoRequest = new SaveFBInfoRequest(ThisUserConfig.getInstance().getString(ThisUserConfig.USERID), fbid, ThisUserConfig.getInstance().getString(ThisUserConfig.FBACCESSTOKEN));

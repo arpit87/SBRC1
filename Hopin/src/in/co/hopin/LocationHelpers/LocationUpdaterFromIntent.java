@@ -14,17 +14,18 @@ public class LocationUpdaterFromIntent extends BroadcastReceiver{
 		
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d(TAG, "location intent received");
+		//Log.d(TAG, "location intent received");
 		String locationKey = LocationManager.KEY_LOCATION_CHANGED;
 		if(intent.hasExtra(locationKey))
 		{
 			context.unregisterReceiver(this);
 			Location location = (Location)intent.getExtras().get(locationKey);
-			Log.d(TAG,"updating loc in intent");
+			//Log.d(TAG,"updating loc in intent");
 			ThisUserNew.getInstance().setCurrentGeoPoint(new SBGeoPoint((int)(location.getLatitude()*1e6),(int)(location.getLongitude()*1e6)));
 		}
-		else
-			Log.d(TAG,"lockey not found in loc intent");
+		else {
+			//Log.d(TAG,"lockey not found in loc intent");
+        }
 	}
 
 	

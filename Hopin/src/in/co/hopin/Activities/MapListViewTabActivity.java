@@ -350,8 +350,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     		mMapView.getOverlays().clear();    		
     		MapListActivityHandler.getInstance().setMapView(mMapView);
             MapListActivityHandler.getInstance().setUnderlyingActivity(this);
-            Log.i(TAG,"initialize handler");
-            Log.i(TAG,"initialize mylocation");
+            //Log.i(TAG,"initialize handler");
+            //Log.i(TAG,"initialize mylocation");
             MapListActivityHandler.getInstance().initMyLocation();
     		//mMapViewContainer.removeView(mMapView);
     	}

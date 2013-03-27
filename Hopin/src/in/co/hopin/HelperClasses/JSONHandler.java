@@ -99,7 +99,7 @@ public class JSONHandler {
 			for(int i=0;i<users.length();i++)
 			{
 				JSONObject thisOtherUser=users.getJSONObject(i);
-				Log.d("json",thisOtherUser.toString());
+				//Log.d("json",thisOtherUser.toString());
 				NearbyUser u = new NearbyUser(thisOtherUser);
 				nearbyUsers.add((u));				
 			}

@@ -63,7 +63,7 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntitygetNearbyUsers.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		Log.d("debug", "calling server:"+jsonobj.toString());	
+		//Log.d("debug", "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntitygetNearbyUsers);
 	
 	}

@@ -49,21 +49,21 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 	
 	public void  updateThisUser()
 	{
-		Log.i(TAG,"updating this user,removing overlay");		
+		//Log.i(TAG,"updating this user,removing overlay");		
 		mMapView.removeSelfView();
 		if(selfOverlayItem!=null)
 		{			
 			userList.remove(selfOverlayItem);			
 		}
 		selfOverlayItem=new ThisUserOverlayItem(ThisUserNew.getInstance().getSourceGeoPoint(), ThisUserNew.getInstance().getUserID(), "",mMapView);
-		Log.i(TAG,"adding new this overlay");
+		//Log.i(TAG,"adding new this overlay");
 		userList.add(selfOverlayItem);
 		populate();
 	}
 	
 	protected boolean onTap(int i)
 	{
-		Log.i(TAG,"toggling this user view");
+		//Log.i(TAG,"toggling this user view");
 		selfOverlayItem.ToggleView();
 		return true;
 		

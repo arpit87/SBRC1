@@ -2,19 +2,16 @@ package in.co.hopin.ChatService;
 
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
-import android.util.Log;
 import in.co.hopin.ChatClient.IMessageListener;
-import in.co.hopin.ChatService.IChatAdapter;
-import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.XMPPException;
-
 import in.co.hopin.ChatClient.SBChatMessage;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.XMPPException;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -72,7 +69,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				ThisUserConfig.ACTIVE_REQ_CARPOOL);		
 		mSenderThread = new SenderThread();
 		mSenderThread.start();
-		Log.i(TAG, "chatadapter created for:" + mParticipant);
+		//Log.i(TAG, "chatadapter created for:" + mParticipant);
 	}
 
 	
@@ -93,11 +90,11 @@ class ChatAdapter extends IChatAdapter.Stub {
 		// here we just put on queue
 		try {
 			mMsgqueue.put(msg);
-			Log.e(TAG, "added msg in queue of:" + mParticipant);
+			//Log.e(TAG, "added msg in queue of:" + mParticipant);
 			if (msg.getType() == Message.MSG_TYPE_CHAT)
 				addMessageToList(msg);
 		} catch (InterruptedException e) {
-			Log.e(TAG, "unable to put msg on queue of:" + mParticipant);
+			//Log.e(TAG, "unable to put msg on queue of:" + mParticipant);
 			e.printStackTrace();
 		}
 
@@ -155,7 +152,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 
 					}
 				} catch (InterruptedException e1) {
-					Log.e(TAG, "not able to take msg from queue");
+					//Log.e(TAG, "not able to take msg from queue");
 					e1.printStackTrace();
 				}
 				if (!msgsent)
@@ -165,8 +162,8 @@ class ChatAdapter extends IChatAdapter.Stub {
 						}
 
 					} catch (InterruptedException e) {
-						Log.e(TAG,
-								"couldnt wait on msg queue after trying to send");
+						//Log.e(TAG,
+						//		"couldnt wait on msg queue after trying to send");
 						e.printStackTrace();
 					}
 				else
@@ -191,8 +188,8 @@ class ChatAdapter extends IChatAdapter.Stub {
 		public void processMessage(Chat chat,
 				org.jivesoftware.smack.packet.Message message) {			
 			Message msg = new Message(message);
-			Log.d(TAG, "new msg of type:"+msg.getType());
-			Log.d(TAG, "chat is open?" + mIsOpen);
+			//Log.d(TAG, "new msg of type:"+msg.getType());
+			//Log.d(TAG, "chat is open?" + mIsOpen);
 			// if broadcast message from new user then do getMatch req
 			if (msg.getType() == Message.MSG_TYPE_NEWUSER_BROADCAST) {
 				// caution..call back listener to chatwindow might not be
@@ -230,7 +227,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 						.getUniqueMsgIdentifier());
 				if (origMsg != null) {
 					origMsg.setTimeStamp((String)message.getProperty(Message.TIME));
-					Log.i(TAG, "got ack for msg: " + origMsg.getBody());
+					//Log.i(TAG, "got ack for msg: " + origMsg.getBody());
 					if(msg.getType() == Message.MSG_TYPE_ACKFOR_BLOCKED)
 						updateMessageStatusInList(origMsg, SBChatMessage.BLOCKED);						
 					else
@@ -238,12 +235,12 @@ class ChatAdapter extends IChatAdapter.Stub {
 					mSentNotDeliveredMsgHashSet.remove(origMsg);
 					setPriorUndeliveredMsgsToFailed(origMsg);
 				} else {
-					Log.d(TAG,
-							"got ack but not msg uniqid: "
-									+ msg.getUniqueMsgIdentifier());
+					//Log.d(TAG,
+					//		"got ack but not msg uniqid: "
+					//				+ msg.getUniqueMsgIdentifier());
 				}
 				if (mIsOpen) {
-					Log.i(TAG, "chat is open,sending ack to window ");
+					//Log.i(TAG, "chat is open,sending ack to window ");
 					callListeners(msg);
 				}
 				return;
@@ -278,10 +275,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 				addMessageToList(msg);
 
 				if (mIsOpen) {
-					Log.i(TAG, "chat is open");
+					//Log.i(TAG, "chat is open");
 					callListeners(msg);
 				} else {
-					Log.i(TAG, "chat not open,Sending notification");
+					//Log.i(TAG, "chat not open,Sending notification");
 					String participant_name = msg.getSubject();
 					if (participant_name == "")
 						participant_name = "Unknown";
@@ -330,10 +327,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 		msgToSend.setProperty(Message.TIME,StringUtils.gettodayDateInFormat("hh:mm"));
 		try {
 			mSmackChat.sendMessage(msgToSend);
-			Log.i(TAG, "ack message sent  ");
+			//Log.i(TAG, "ack message sent  ");
 		} catch (XMPPException e) {
 			// TODO retry sending msg?
-			Log.e(TAG, "couldnt send ack");
+			//Log.e(TAG, "couldnt send ack");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -349,7 +346,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 		// 3) time		
 		org.jivesoftware.smack.packet.Message msgToSend = new org.jivesoftware.smack.packet.Message();
 		String msgBody = msg.getBody();
-		Log.i(TAG, "message sending to " + msg.getTo());
+		//Log.i(TAG, "message sending to " + msg.getTo());
 		msgToSend.setBody(msgBody);
 		msgToSend.setSubject(msg.getSubject());
 		msgToSend.setProperty(Message.UNIQUEID, msg.getUniqueMsgIdentifier());
@@ -358,13 +355,13 @@ class ChatAdapter extends IChatAdapter.Stub {
 	
 		try {			
 			mSmackChat.sendMessage(msgToSend);
-			Log.i(TAG, "chat message sent to " + msg.getTo());
+			//Log.i(TAG, "chat message sent to " + msg.getTo());
 			updateMessageStatusInList(msg, SBChatMessage.SENT);			
 			mSentNotDeliveredMsgHashSet.put(msg.getUniqueMsgIdentifier(), msg);
 			
 		} catch (XMPPException e) {
 			// TODO retry sending msg?
-			Log.i(TAG, "message sending to had xmpp exception" + msg.getTo());
+			//Log.i(TAG, "message sending to had xmpp exception" + msg.getTo());
 			updateMessageStatusInList(msg, SBChatMessage.SENDING_FAILED);			
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
@@ -400,10 +397,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 		msgToSend.setProperty(Message.UNIQUEID, System.currentTimeMillis());
 		try {
 			mSmackChat.sendMessage(msgToSend);
-			Log.i(TAG, "broadcast message sent to " + msgToSend.getTo());
+			//Log.i(TAG, "broadcast message sent to " + msgToSend.getTo());
 		} catch (XMPPException e) {
 			// TODO retry sending msg?
-			Log.e(TAG, "couldnt send broadcast");
+			//Log.e(TAG, "couldnt send broadcast");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
@@ -420,7 +417,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				if (listener != null)
 					listener.processMessage(ChatAdapter.this, msg);
 			} catch (RemoteException e) {
-				Log.w(TAG, "Error while diffusing message to listener", e);
+				//Log.w(TAG, "Error while diffusing message to listener", e);
 			}
 		}
 		mRemoteListeners.finishBroadcast();

@@ -227,7 +227,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 		MapListActivityHandler.getInstance().updateSrcDstTimeInListView();
 		
 		getActivity().finish();
-		Log.i(TAG, "user destination set... querying server");
+		//Log.i(TAG, "user destination set... querying server");
 		ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching users", "Please wait..");
 		SBHttpRequest addThisUserSrcDstRequest;
 		if(getDailyInstaType() == 0)        		
@@ -300,9 +300,9 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             values.put(columns[8], thisUser.getSelected_radio_button_id());
             values.put(columns[9], System.currentTimeMillis());
             cr.insert(mHistoryUri, values);
-            Log.d(TAG, "saveHistoryQuery:" +  values.toString());
+            //Log.d(TAG, "saveHistoryQuery:" +  values.toString());
         } catch (RuntimeException e) {
-            Log.e(TAG, "saveHistoryQueryerror", e);
+            //Log.e(TAG, "saveHistoryQueryerror", e);
         }
 
         // Shorten the list (if it has become too long)
@@ -353,7 +353,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             }
             cr.delete(mHistoryUri, selection, null);
         } catch (RuntimeException e) {
-            Log.e(TAG, "truncateHistory", e);
+            //Log.e(TAG, "truncateHistory", e);
         }
     }
     
@@ -385,10 +385,10 @@ public abstract class AbstractSearchInputFrag extends Fragment{
                 jsonResults.append(buff, 0, read);
             }
         } catch (MalformedURLException e) {
-            Log.e(TAG, "Error processing Places API URL", e);
+            //Log.e(TAG, "Error processing Places API URL", e);
             return resultList;
         } catch (IOException e) {
-            Log.e(TAG, "Error connecting to Places API", e);
+            //Log.e(TAG, "Error connecting to Places API", e);
             return resultList;
         } finally {
             if (conn != null) {
@@ -407,7 +407,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
-            Log.e(TAG, "Cannot process JSON results", e);
+            //Log.e(TAG, "Cannot process JSON results", e);
         }
 
         return resultList;

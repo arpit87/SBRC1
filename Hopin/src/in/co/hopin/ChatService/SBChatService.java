@@ -56,10 +56,10 @@ public class SBChatService extends Service {
 		if(isRunning)
 		{
 			Toast.makeText(this, "Already running ChatService", Toast.LENGTH_SHORT);
-			Log.d(TAG, "Already running ChatService");
+			//Log.d(TAG, "Already running ChatService");
 			return;
 		}
-		Log.d(TAG, "Started ChatService");
+		//Log.d(TAG, "Started ChatService");
 		Toast.makeText(this, "started service", Toast.LENGTH_SHORT).show();		
 		registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		registerReceiver(mReceiver, new IntentFilter(SBLOGIN_TO_CHAT));
@@ -73,21 +73,21 @@ public class SBChatService extends Service {
 		SASLAuthentication.supportSASLMechanism("PLAIN");
 		mXMPPConnection = new XMPPConnection(mConnectionConfiguration);	
 		
-		Log.d(TAG, "made xmpp connection");
+		//Log.d(TAG, "made xmpp connection");
 		//service has connection adapter which has all listeners 
 		mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection,this);
 		mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);		
 		Roster.setDefaultSubscriptionMode(SubscriptionMode.accept_all);	
 		
 		mXMPPAPIs = new XMPPAPIs(mConnectionAdapter);
-		Log.d(TAG, "Created ChatService");
+		//Log.d(TAG, "Created ChatService");
 		isRunning = true;
 	}
 	
 		
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        //Log.i("LocalService", "Received start id " + startId + ": " + intent);
         //ToastTracker.showToast("service strted with id:"+startId);
         if(mConnectionAdapter == null)
         	mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection,this);
@@ -112,7 +112,7 @@ public class SBChatService extends Service {
 	unregisterReceiver(mReceiver);
 	if (mConnectionAdapter.isAuthenticated() && SBConnectivity.isConnected())
 		mConnectionAdapter.disconnect();
-	Log.i(TAG, "Stopping the service");	
+	//Log.i(TAG, "Stopping the service");	
     }
 	
 	private void initializeConfigration()
@@ -140,7 +140,7 @@ public class SBChatService extends Service {
 	
 	@Override
     public IBinder onBind(Intent intent) {
-	Log.d(TAG, "ONBIND()");
+	//Log.d(TAG, "ONBIND()");
 	return mXMPPAPIs;
     }
 	
@@ -151,7 +151,7 @@ public class SBChatService extends Service {
 		 	chatIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT, participant);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		   
-		   Log.i(TAG, "Sending notification") ;	    
+		   //Log.i(TAG, "Sending notification") ;	    
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
@@ -172,7 +172,7 @@ public class SBChatService extends Service {
 			notif.sound = sound_uri;
         
 			mNotificationManager.notify(id, notif);
-			Log.i(TAG, "notification sent") ;
+			//Log.i(TAG, "notification sent") ;
 		    }
 	 
 	 public void deleteNotification(int id) {
@@ -195,13 +195,13 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 		// The service will be unbinded in the destroy of the activity.
 	    }
 	} else if (intentAction.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-		Log.d(TAG,"connectivity changed");
+		//Log.d(TAG,"connectivity changed");
 	    if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {		
 		//network may be temporarily lost..check if android trying to connect to other network like wifi/gprs switch(failover)
 		 String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);		 
          boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
          //Toast.makeText(context, "network lost:( "+reason+",failover:"+isFailover,  Toast.LENGTH_SHORT).show();
-         Log.d(TAG,"connectivity changed ,network lost:( "+reason+",failover:"+isFailover);
+         //Log.d(TAG,"connectivity changed ,network lost:( "+reason+",failover:"+isFailover);
         //need a reconnection mechanism        	 
 		//context.stopService(new Intent(context, SBChatService.class));
 	    }
@@ -220,14 +220,14 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 		mConnectionAdapter.loginAsync(login, password);
 	} else if(intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED))
 	{
-		Log.i(TAG,"update intent in chat rece ,might broadcast");
+		//Log.i(TAG,"update intent in chat rece ,might broadcast");
 		//send broad chat msg to all fb loggeged in nearby users
 		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
 			return;
 		
 		SBChatManager chatManager = mConnectionAdapter.getChatManager();		
 		
-		Log.i(TAG,"Starting broadcast");
+		//Log.i(TAG,"Starting broadcast");
 		List <NearbyUser>nearbyUserList = CurrentNearbyUsers.getInstance().getAllNearbyUsers();
 		if(nearbyUserList!=null)
 		for (NearbyUser n:nearbyUserList)
@@ -238,11 +238,11 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 					Message msg = new Message(fbid,Message.MSG_TYPE_NEWUSER_BROADCAST);					
 					if(chatManager != null)					
 					{
-						Log.i(TAG,"broadcasting to fbid:"+fbid);
+						//Log.i(TAG,"broadcasting to fbid:"+fbid);
 						chatManager.getChat(fbid).sendMessage(msg);
 					}
 				} catch (RemoteException e) {
-					Log.i(TAG,"Unable to send broadcast msg");
+					//Log.i(TAG,"Unable to send broadcast msg");
 					e.printStackTrace();
 				}
 		}

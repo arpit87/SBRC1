@@ -24,14 +24,14 @@ public class GetMatchingCarPoolUsersResponse extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		Log.i(TAG,"processing GetMatchingCarPoolUsersResponse response..geting json");
+		//Log.i(TAG,"processing GetMatchingCarPoolUsersResponse response..geting json");
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		Log.i(TAG,"got json "+jobj.toString());
+		//Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");
 			
 		} catch (JSONException e) {
-			Log.e(TAG, "Error returned by server in fetching nearby carpool user.JSON:"+jobj.toString());
+			//Log.e(TAG, "Error returned by server in fetching nearby carpool user.JSON:"+jobj.toString());
 			e.printStackTrace();
 			return;
 		}		
@@ -40,7 +40,7 @@ public class GetMatchingCarPoolUsersResponse extends ServerResponseBase{
 		//MapListActivityHandler.getInstance().updateNearbyUsers();	
 		if(CurrentNearbyUsers.getInstance().usersHaveChanged())
 		{
-			Log.i(TAG,"updating changed nearby carpool users");
+			//Log.i(TAG,"updating changed nearby carpool users");
 			Intent notifyUpdateintent = new Intent();
 			notifyUpdateintent.setAction(BroadCastConstants.NEARBY_USER_UPDATED);		
 			

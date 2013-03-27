@@ -21,9 +21,9 @@ public class SaveFBInfoResponse extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		Log.i(TAG,"processing SaveFBInfoResponse response.status:"+this.getStatus());		
+		//Log.i(TAG,"processing SaveFBInfoResponse response.status:"+this.getStatus());		
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		Log.i(TAG,"got json "+jobj.toString());
+		//Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");			
 			//status = body.getString("Status");			
@@ -31,7 +31,7 @@ public class SaveFBInfoResponse extends ServerResponseBase{
 			ProgressHandler.dismissDialoge();
 			//ToastTracker.showToast("fb save:"+status);
 		} catch (JSONException e) {			
-			Log.e(TAG, "Error returned by server on user add");
+			//Log.e(TAG, "Error returned by server on user add");
 			e.printStackTrace();
 		}
 		

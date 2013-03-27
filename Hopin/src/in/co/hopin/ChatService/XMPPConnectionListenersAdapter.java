@@ -1,27 +1,21 @@
 package in.co.hopin.ChatService;
 
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
+import android.widget.Toast;
+import in.co.hopin.ChatClient.ISBChatConnAndMiscListener;
 import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
-
-import java.net.ConnectException;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import in.co.hopin.ChatClient.ISBChatConnAndMiscListener;
-
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.RemoteCallbackList;
-import android.os.RemoteException;
-import android.util.Log;
-import android.widget.Toast;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class XMPPConnectionListenersAdapter {
 	
@@ -64,10 +58,10 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		mPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);		
 		mService = service;	
 		mChatManager = new SBChatManager(mXMPPConnection, mService);
-		Log.d(TAG, "xmpp connection listener will connect");
+		//Log.d(TAG, "xmpp connection listener will connect");
 		loginAsync(mLogin, mPassword);
 		Toast.makeText(mService, "connecting to xmpp", Toast.LENGTH_SHORT).show();
-		Log.d(TAG, "connecting to xmpp");
+		//Log.d(TAG, "connecting to xmpp");
 	
 	 }
 	 
@@ -95,7 +89,7 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		    	else
 		    		ToastTracker.showToast("Not connected to internet");
 		    } catch (XMPPException e) {
-			Log.e(TAG, "Error while connecting", e);
+			//Log.e(TAG, "Error while connecting", e);
 			mErrorMsg = e.getMessage();
 			return false;
 		    }  
@@ -124,12 +118,12 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		
 		mLogin = login;
 		mPassword = password;
-		Log.d(TAG, "login async called");
+		//Log.d(TAG, "login async called");
 		if(!mXMPPConnection.isConnected())
 		{
 			if(tryinConnecting.getAndSet(true))
 				return;
-			Log.d(TAG, "xmpp isconnected is false and none tryin to connect so i will");
+			//Log.d(TAG, "xmpp isconnected is false and none tryin to connect so i will");
 			connectToServer = new ConnectToChatServerTask();
 			connectToServer.execute(this);
 			
@@ -138,7 +132,7 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		{	
 			if(tryinLogging.getAndSet(true))
 				return;
-			Log.d(TAG, "xmpp isAuthenticated is false and none tryin to login so i will");
+			//Log.d(TAG, "xmpp isAuthenticated is false and none tryin to login so i will");
 			loginToServer = new LoginToChatServerTask();
 			loginToServer.execute(this);
 		}
@@ -149,29 +143,29 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 	
 	//this should be called in separate thread
 	    private boolean login() throws RemoteException {
-	    	Log.d(TAG, "login called ");
+	    	//Log.d(TAG, "login called ");
 	    if(mLogin == "" || mPassword == "")
 	    		return false;	    
 		if (mXMPPConnection.isAuthenticated())
 		{
-			Log.d(TAG, "login called and is already authenticated");
+			//Log.d(TAG, "login called and is already authenticated");
 			return true;
 		}
 	    	//ToastTracker.showToast("tryin login is not authenticated", Toast.LENGTH_SHORT);
 		if (!mXMPPConnection.isConnected())
 		{			
-			Log.d(TAG, "tryin login but xmpp not connected,ll return false");
+			//Log.d(TAG, "tryin login but xmpp not connected,ll return false");
 			return false; //blocking
 		}		
 		try {
-			Log.d(TAG, "login called and willl login");
+			//Log.d(TAG, "login called and willl login");
 			mXMPPConnection.login(mLogin, mPassword);		    
 		} catch (XMPPException e) {
-		    Log.e(TAG, "Error while log in", e);
+		    //Log.e(TAG, "Error while log in", e);
 		    mErrorMsg = "Error while log in";
 		    return false;
 		}catch (IllegalStateException e) {
-		    Log.i(TAG, "Already logged in", e);		    
+		    //Log.i(TAG, "Already logged in", e);		    
 		    return true;
 		}
 		return true;
@@ -186,7 +180,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 		
 		@Override
 		public void connectionClosed() {
-		    Log.d(TAG, "closing connection,stopping service");
+		    //Log.d(TAG, "closing connection,stopping service");
 		    //ToastTracker.showToast("xmpp connection closed,should reconnect");	    
 		    
 		}
@@ -196,7 +190,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 		 */
 		@Override
 		public void connectionClosedOnError(Exception exception) {
-		    Log.d(TAG, "connectionClosedOnError,should try reconnect");
+		    //Log.d(TAG, "connectionClosedOnError,should try reconnect");
 		    //ToastTracker.showToast("Chat server connection closed on error,should try reconnect");		   
 		    //Intent intent = new Intent(BeemBroadcastReceiver.BEEM_CONNECTION_CLOSED);
 		    //intent.putExtra("message", exception.getMessage());
@@ -209,7 +203,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 		 * @param errorMsg smack failure message
 		 */
 		public void connectionFailed(String errorMsg) {
-		    Log.d(TAG, "Connection Failed");
+		    //Log.d(TAG, "Connection Failed");
 		    //ToastTracker.showToast("xmpp connection failed");		   
 		  /*  final int n = mRemoteConnListeners.beginBroadcast();
 
@@ -221,7 +215,7 @@ private class SBChatConnectionListener implements ConnectionListener {
 			} catch (RemoteException e) {
 			    // The RemoteCallbackList will take care of removing the
 			    // dead listeners.
-			    Log.w(TAG, "Error while triggering remote connection listeners", e);
+			    //Log.w(TAG, "Error while triggering remote connection listeners", e);
 			}
 		    }
 		    mRemoteConnListeners.finishBroadcast();*/
@@ -230,21 +224,21 @@ private class SBChatConnectionListener implements ConnectionListener {
 		}
 		    @Override
 			public void reconnectingIn(int paramInt) {
-		    	Log.d(TAG, "reconnectingIn"+paramInt);
+		    	//Log.d(TAG, "reconnectingIn"+paramInt);
 		    	 //ToastTracker.showToast("xmpp reconnecing in:"+paramInt);
 				
 			}
 
 			@Override
 			public void reconnectionSuccessful() {
-				Log.d(TAG, "reconnection success");				
+				//Log.d(TAG, "reconnection success");				
 				//ToastTracker.showToast("xmpp reconnection successful");
 				
 			}
 
 			@Override
 			public void reconnectionFailed(Exception paramException) {
-				Log.d(TAG, "reconnectionFailed Failed");
+				//Log.d(TAG, "reconnectionFailed Failed");
 				
 			}
 		}
@@ -256,7 +250,7 @@ private class ConnectToChatServerTask extends AsyncTask<XMPPConnectionListenersA
 	protected Boolean doInBackground(XMPPConnectionListenersAdapter... connection) {
 		boolean result = true;	
 		adapter = connection[0];
-		Log.d(TAG, "connecting on separate thread");
+		//Log.d(TAG, "connecting on separate thread");
 		try {
 		    publishProgress(25);			    
 		    if (!adapter.connect()) {				
@@ -280,11 +274,11 @@ private class ConnectToChatServerTask extends AsyncTask<XMPPConnectionListenersA
 			loginToServer = new LoginToChatServerTask();
 			loginToServer.execute(adapter);
 			//ToastTracker.showToast("connected to xmpp,logging");
-			Log.d(TAG, "connected to xmpp,logging");
+			//Log.d(TAG, "connected to xmpp,logging");
 		}
 		else
 		{
-			Log.d(TAG, "connected to xmpp,but not logging");
+			//Log.d(TAG, "connected to xmpp,but not logging");
 			//ToastTracker.showToast("connected to xmpp but not logging");
 			tryinLogging.set(false);
 		}
@@ -302,7 +296,7 @@ private class LoginToChatServerTask extends AsyncTask<XMPPConnectionListenersAda
 	protected Boolean doInBackground(XMPPConnectionListenersAdapter... connection) {
 		boolean result = true;	
 		XMPPConnectionListenersAdapter adapter = connection[0];	
-		Log.d(TAG, "logging on separate thread");
+		//Log.d(TAG, "logging on separate thread");
 		   try{ 
 		    if (!adapter.login()) {				
 			publishProgress(25);
@@ -320,12 +314,12 @@ private class LoginToChatServerTask extends AsyncTask<XMPPConnectionListenersAda
 			tryinLogging.set(false);
 			if(!connected)
 			{
-				Log.d(TAG, "in login post exe but is not connected");
+				//Log.d(TAG, "in login post exe but is not connected");
 				//TODO try relogin here for 2,3 times
 				//Toast.makeText(mService, "logged failed in postexecute,may be user not yet fb logged in,its ok", Toast.LENGTH_SHORT).show();
 				return;
 			}
-			Log.d(TAG, "logged in to xmpp");
+			//Log.d(TAG, "logged in to xmpp");
 			//ToastTracker.showToast("logged in  to xmpp", Toast.LENGTH_SHORT);	
 			if(mChatManager!=null)				
 				mChatManager.notifyAllPendingQueue();
@@ -334,11 +328,11 @@ private class LoginToChatServerTask extends AsyncTask<XMPPConnectionListenersAda
 				@Override
 				public void run() {
 					try{
-						Log.d(TAG, "sending presence packet");
+						//Log.d(TAG, "sending presence packet");
 						Presence presence = new Presence(Presence.Type.available);
 					 	mXMPPConnection.sendPacket(presence);			
 					}catch (IllegalStateException e) {
-					    Log.e(TAG, "Problem sending presence packet", e);
+					    //Log.e(TAG, "Problem sending presence packet", e);
 					}
 				}
 			};

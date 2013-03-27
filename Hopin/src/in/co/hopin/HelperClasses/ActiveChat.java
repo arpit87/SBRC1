@@ -43,14 +43,14 @@ public class ActiveChat {
     }
 
     public static List<ActiveChat> getActiveChats(){
-        Log.i(TAG, "Fetching active chats");
+        //Log.i(TAG, "Fetching active chats");
         List<ActiveChat> activeChats;
 
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, null, null, null);
 
         if (cursor == null || cursor.getCount() == 0) {
-            Log.i(TAG, "Empty result");
+            //Log.i(TAG, "Empty result");
             activeChats = Collections.emptyList();
         } else {
             activeChats = new ArrayList<ActiveChat>();
@@ -70,7 +70,7 @@ public class ActiveChat {
     }
 
     public static void addChat(final String fbId, final String name, final String lastMessage){
-        Log.i(TAG, "Saving chat for fbId : " + fbId );
+        //Log.i(TAG, "Saving chat for fbId : " + fbId );
         new Thread("addlastchat") {
             @Override
             public void run() {
@@ -86,7 +86,7 @@ public class ActiveChat {
 
         boolean isPresent = false;
         if (!(cursor == null || cursor.getCount() == 0)){
-            Log.i(TAG, "History Exists");
+            //Log.i(TAG, "History Exists");
             isPresent = true;
         }
 

@@ -31,13 +31,13 @@ public class SBChatListFragment extends ListFragment {
 	public void onCreate(Bundle savedState) {
         super.onCreate(null);
 		//update listview
-        Log.i(TAG,"on create list view");
+        //Log.i(TAG,"on create list view");
         chatUserlist = ActiveChat.getActiveChats();  
         if(!chatUserlist.isEmpty())
         {
 			ChatListAdapter adapter = new ChatListAdapter(getActivity(), chatUserlist);
 			setListAdapter(adapter);
-			Log.i(TAG,"chatlist users:"+chatUserlist.toString());
+			//Log.i(TAG,"chatlist users:"+chatUserlist.toString());
         }
 	}
 
@@ -45,7 +45,7 @@ public class SBChatListFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
-		Log.i(TAG,"oncreateview chatlistview");
+		//Log.i(TAG,"oncreateview chatlistview");
 		mListViewContainer = (ViewGroup) inflater.inflate(R.layout.chatfragment_listview, null);
 		TextView mEmptyListTextView = (TextView)mListViewContainer.findViewById(R.id.chatlist_fragment_emptyList);
 		if(chatUserlist.isEmpty())

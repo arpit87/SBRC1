@@ -27,7 +27,7 @@ public class Store {
 	
 	public void saveBitmapToFile(Bitmap bm,String filename)
 	{
-		Log.i(TAG,"saving bitmap to file");
+		//Log.i(TAG,"saving bitmap to file");
 	try
 	{
 		if(bm!=null && filename!=null)
@@ -38,19 +38,20 @@ public class Store {
 				bos.flush();
 				bos.close();			
 			}
-		else
-			Log.i(TAG,"Bitmap,filename is null!!");
+		else {
+			//Log.i(TAG,"Bitmap,filename is null!!");
+        }
 	}
 	catch(Exception e)
 	{
-		Log.e(TAG,"Error saving bitmap"+e);
+		//Log.e(TAG,"Error saving bitmap"+e);
 		e.printStackTrace();
 	}
 	}
 	
 	public Bitmap getBitmapFromFile(String filename)
 	{
-		Log.i(TAG,"getting bitmap from file");
+		//Log.i(TAG,"getting bitmap from file");
 		Bitmap bitmap = null;
 		try
 		{
@@ -60,12 +61,13 @@ public class Store {
 				{					
 					bitmap = BitmapFactory.decodeFile(filePath);				
 				}
-			else
-				Log.i(TAG,"file doesnt exist!!");
+			else {
+				//Log.i(TAG,"file doesnt exist!!");
+            }
 		}
 		catch(Exception e)
 		{
-			Log.e(TAG,"Error fetching bitmap"+e);
+			//Log.e(TAG,"Error fetching bitmap"+e);
 			e.printStackTrace();
 		}
 		
@@ -82,12 +84,13 @@ public class Store {
 				{					
 					f.delete();				
 				}
-			else
-				Log.i(TAG,"file doesnt exist!!");
+			else {
+				//Log.i(TAG,"file doesnt exist!!");
+            }
 		}
 		catch(Exception e)
 		{
-			Log.e(TAG,"Error fetching bitmap"+e);
+			//Log.e(TAG,"Error fetching bitmap"+e);
 			e.printStackTrace();
 		}
 	}

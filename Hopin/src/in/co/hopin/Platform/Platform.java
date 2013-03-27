@@ -44,7 +44,7 @@ public class Platform {
 	 public void startChatService(){
 	     
          Intent i = new Intent("my.b1701.SB.ChatService.SBChatService");                  
-         Log.d( TAG, "Service starting" );
+         //Log.d( TAG, "Service starting" );
          context.startService(i);
         
         }
@@ -54,7 +54,7 @@ public class Platform {
 	          Intent i = new Intent("my.b1701.SB.ChatService.SBChatService");
 	          context.stopService(i);         
 	          
-	          Log.d( TAG, "Service stopped" );	         
+	          //Log.d( TAG, "Service stopped" );	         
 	             
      }
 

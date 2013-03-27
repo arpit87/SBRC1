@@ -29,14 +29,14 @@ public class ChatHistory {
 
     public static List<Message> getChatHistory(String userId){
         String fbid = getFBId(userId);
-        Log.i(TAG, "Fetching chat history for " + fbid);
+        //Log.i(TAG, "Fetching chat history for " + fbid);
         List<Message> messages;
 
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, "fbIdTo = ? or fbIdFrom = ?", new String[]{fbid, fbid}, columns[7]);
 
         if (cursor == null || cursor.getCount() == 0) {
-            Log.i(TAG, "Empty result");
+            //Log.i(TAG, "Empty result");
             messages = Collections.emptyList();
         } else {
             messages = new LinkedList<Message>();
@@ -55,7 +55,7 @@ public class ChatHistory {
     }
 
     public static Map<String, List<Message>> getCompleteChatHistory(String thisUserFbId){
-        Log.i(TAG, "Fetching complete chat history");
+        //Log.i(TAG, "Fetching complete chat history");
         Map<String, List<Message>> chatHistory = new HashMap<String, List<Message>>();
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, null, null, columns[5]);
@@ -82,7 +82,7 @@ public class ChatHistory {
     }
 
     public static void addtoChatHistory(final Message message){
-        Log.i(TAG, "Saving chathistory for user " + message.getFrom());
+        //Log.i(TAG, "Saving chathistory for user " + message.getFrom());
         final long time = System.currentTimeMillis();
         new Thread("addchathistory") {
             @Override
@@ -108,7 +108,7 @@ public class ChatHistory {
             values.put(columns[7], time);
             cr.insert(mUri, values);
         } catch (RuntimeException e) {
-            Log.e(TAG, "BlockUserQueryError", e);
+            //Log.e(TAG, "BlockUserQueryError", e);
         }
     }
 
@@ -117,7 +117,7 @@ public class ChatHistory {
             ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
             cr.delete(mUri, null, null);
         } catch (RuntimeException e) {
-            Log.e(TAG, "ClearAllQueryError", e);
+            //Log.e(TAG, "ClearAllQueryError", e);
         }
     }
 

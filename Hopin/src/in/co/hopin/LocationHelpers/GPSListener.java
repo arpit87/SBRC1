@@ -29,7 +29,7 @@ public class GPSListener implements LocationListener{
 	{
 		this.minTime=minTime;
 		this.minDistance=minDistance;
-		Log.i(TAG,"starting gps");
+		//Log.i(TAG,"starting gps");
 		SBLocationManager.getInstance().locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, this);
 	}
 	
@@ -41,8 +41,8 @@ public class GPSListener implements LocationListener{
 	public void onLocationChanged(Location location) {
 		//we see that location bursts come in windows n then idle for given time
 		//so we find most accurate location of a window and set it to thisWindowBest
-		Log.i(TAG,"gps location changed");
-		Log.i(TAG,"newlocation :"+ location.toString());
+		//Log.i(TAG,"gps location changed");
+		//Log.i(TAG,"newlocation :"+ location.toString());
 		if(thisWindowBestLocation == null)
 		{		
 			//window starting
@@ -52,7 +52,7 @@ public class GPSListener implements LocationListener{
 		else if(location.getAccuracy() < thisWindowBestLocation.getAccuracy() )
 		{
 			//window continuing
-			Log.i(TAG,"thiswindowbest location:"+thisWindowBestLocation.toString());
+			//Log.i(TAG,"thiswindowbest location:"+thisWindowBestLocation.toString());
 			thisWindowBestLocation = location;			
 		}				
 		

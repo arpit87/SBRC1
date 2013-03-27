@@ -107,8 +107,9 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 			viewOnMarker.setVisibility(View.GONE);
 			isVisible = false;
 		}
-		else
-			Log.i(TAG,"trying to remove null thisUserMapView");
+		else {
+			//Log.i(TAG,"trying to remove null thisUserMapView");
+        }
 	}	
 	
 	public void ToggleView()
@@ -129,7 +130,7 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 		else
 		{
 			createAndDisplayView();
-			Log.i(TAG,"trying to show null thisUserMapView");
+			//Log.i(TAG,"trying to show null thisUserMapView");
 		}
 	}
 	

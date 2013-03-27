@@ -126,8 +126,8 @@ public class MyRequestsActivity extends Activity {
     	super.onResume();
         String instaReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_INSTA);
         String carpoolReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_CARPOOL);   
-        Log.i(TAG,"carpooljson:"+carpoolReqJson);
-        Log.i(TAG,"instajson:"+instaReqJson);
+        //Log.i(TAG,"carpooljson:"+carpoolReqJson);
+        //Log.i(TAG,"instajson:"+instaReqJson);
         if(!StringUtils.isBlank(carpoolReqJson))
         {
         	carPoolActiveLayout.setVisibility(View.VISIBLE);

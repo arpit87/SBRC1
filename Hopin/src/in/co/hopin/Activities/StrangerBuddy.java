@@ -34,14 +34,14 @@ public class StrangerBuddy extends Application{
 	{		
 		super.onCreate();
 		ACRA.init(this);
-		Log.i(TAG,"App start");
+		//Log.i(TAG,"App start");
 		context = getApplicationContext();
 		platform=Platform.getInstance();
 		platform.initialize(this);
 		
 		//we check on userid which we wipe out on fb logout. User may login as another user
 		//for which we will provide different userid		
-		Log.i(TAG,"Platform initialized");
+		//Log.i(TAG,"Platform initialized");
 		
 	}
 

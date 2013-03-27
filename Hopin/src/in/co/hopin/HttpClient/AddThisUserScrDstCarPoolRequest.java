@@ -41,17 +41,17 @@ public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
         try {
             populateEntityObject();
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
         }
 
         StringEntity postEntityAddRequest = null;
         try {
             postEntityAddRequest = new StringEntity(jsonobjAddRequest.toString());
         } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
         }
         postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
+        //Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
         httpQueryAddRequest.setEntity(postEntityAddRequest);
     }
 
@@ -80,7 +80,7 @@ public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
         try {
             response = httpclient.execute(httpQueryAddRequest);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
         }
 
         try {
@@ -88,7 +88,7 @@ public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
 				return null;
             jsonStr = responseHandler.handleResponse(response);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
         }
 
         addThisUserResponse = new AddThisUserSrcDstCarPoolResponse(response, jsonStr);

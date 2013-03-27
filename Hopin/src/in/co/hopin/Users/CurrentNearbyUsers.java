@@ -33,7 +33,7 @@ public class CurrentNearbyUsers {
 	{		
 		//we temporarily put new users in new list and MapHandler has to check if changed and callupdate then we change current to new
 		//we return null for 0 users so check for null always while getting nearby users
-		Log.i(TAG,"updating nearby users");
+		//Log.i(TAG,"updating nearby users");
 		updatedToCurrent = false;
 		mNewNearbyUserList = JSONHandler.getInstance().GetNearbyUsersInfoFromJSONObject(body);	
 		if(mNewNearbyUserList!=null)
@@ -78,7 +78,7 @@ public class CurrentNearbyUsers {
 	
 	public boolean usersHaveChanged()
 	{
-		Log.i(TAG,"chking if usr changed ");
+		//Log.i(TAG,"chking if usr changed ");
 		if(updatedToCurrent)
 			return false;
 		if(mCurrentNearbyUserList == null)
@@ -104,12 +104,12 @@ public class CurrentNearbyUsers {
 			if(mCurrentNearbyUserList.contains(n))
 				continue;	
 				
-			Log.i(TAG,"user have changed ");
+			//Log.i(TAG,"user have changed ");
 			//ToastTracker.showToast("users changed");
 			updateCurrentToNew();
 			return true;
 		}		
-		Log.i(TAG,"user did not change ");
+		//Log.i(TAG,"user did not change ");
 		//ToastTracker.showToast("users not changed");
 		return false;
 	}

@@ -129,7 +129,7 @@ public abstract class AbstractHistoryFragment extends ListFragment {
                 }
             });
 
-            Log.i(TAG, "Executing query");
+            //Log.i(TAG, "Executing query");
             if(daily_inta_type == 1) //1 = insta
             {
             	SBHttpRequest addThisUserSrcDstRequest= new AddThisUserSrcDstRequest();

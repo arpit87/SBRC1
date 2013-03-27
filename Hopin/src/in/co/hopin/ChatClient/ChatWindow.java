@@ -237,7 +237,7 @@ private void showPopupMenu(View v)
     }
     
     private void bindToService() {
-            Log.d( TAG, "binding chat to service" );        
+            //Log.d( TAG, "binding chat to service" );        
         	
            Intent i = new Intent(getApplicationContext(),SBChatService.class);
           
@@ -255,7 +255,7 @@ private void showPopupMenu(View v)
 	    private void releaseService() {
     		if(mChatServiceConnection != null) {
     			getApplicationContext().unbindService(mChatServiceConnection);    			   			
-    			Log.d( TAG, "chat Service released from chatwindow" );
+    			//Log.d( TAG, "chat Service released from chatwindow" );
     		} else {
     			//ToastTracker.showToast("Cannot unbind - service not bound", Toast.LENGTH_SHORT);
     		}
@@ -326,7 +326,7 @@ private void showPopupMenu(View v)
 				
 			    } catch (RemoteException e) {
 			    	sendingFailed(lastMessage);
-				Log.e(TAG, e.getMessage());
+				//Log.e(TAG, e.getMessage());
 			    }
 		   
 		}			   
@@ -346,7 +346,7 @@ private void showPopupMenu(View v)
 				if(mThiUserChatUserName != "" && mThisUserChatPassword != "")
 				{
 					//progressDialog = ProgressDialog.show(ChatWindow.this, "Logging in", "Please wait..", true);
-			    	Log.d(TAG,"logging in chat window  with username,pass:" + mThiUserChatUserName + ","+mThisUserChatPassword);
+			    	//Log.d(TAG,"logging in chat window  with username,pass:" + mThiUserChatUserName + ","+mThisUserChatPassword);
 					xmppApis.loginAsync(mThiUserChatUserName, mThisUserChatPassword);
 				}
 				else
@@ -441,7 +441,7 @@ private void showPopupMenu(View v)
 				try {
 					mChatManager = xmppApis.getChatManager();
     			if (mChatManager != null) {
-    				Log.d(TAG, "Chat manager got");
+    				//Log.d(TAG, "Chat manager got");
     				chatAdapter = mChatManager.createChat(mParticipantFBID, mMessageListener);
     				if(chatAdapter!=null)
     				{
@@ -452,11 +452,11 @@ private void showPopupMenu(View v)
     			    //changeCurrentChat(thisUserID);
     			}
     			else
-    			{	Log.d(TAG, "Chat manager not got,will try login");
+    			{	//Log.d(TAG, "Chat manager not got,will try login");
     				loginWithProgress();
     			}
     		    } catch (RemoteException e) {
-    			Log.e(TAG, e.getMessage());
+    			//Log.e(TAG, e.getMessage());
     		    }   
 			}		
 	    	
@@ -470,7 +470,7 @@ private void showPopupMenu(View v)
 	    	@Override
 	    	public void onServiceConnected(ComponentName className, IBinder boundService) {
 	    		//ToastTracker.showToast("onServiceConnected called", Toast.LENGTH_SHORT);
-	    		Log.d(TAG,"onServiceConnected called");
+	    		//Log.d(TAG,"onServiceConnected called");
 	    		xmppApis = IXMPPAPIs.Stub.asInterface((IBinder)boundService);	    		
 	    		try {
 					xmppApis.loginAsync(mThiUserChatUserName, mThisUserChatPassword);
@@ -479,7 +479,7 @@ private void showPopupMenu(View v)
 					e.printStackTrace();
 				}
 	    		initializeChatWindow();    	
-	    		Log.d(TAG,"service connected");
+	    		//Log.d(TAG,"service connected");
 	    	}
 
 	    	@Override
@@ -487,7 +487,7 @@ private void showPopupMenu(View v)
 	    		//ToastTracker.showToast("onService disconnected", Toast.LENGTH_SHORT);
 	    		xmppApis = null;   		
 	    	    
-	    		Log.d(TAG,"service disconnected");
+	    		//Log.d(TAG,"service disconnected");
 	    	}
 
 	    } 
@@ -602,7 +602,7 @@ private class ChatManagerListener extends IChatManagerListener.Stub {
 		    chatAdapter.addMessageListener(mMessageListener);		   
 		
 	    } catch (RemoteException ex) {
-		Log.e(TAG, "A remote exception occurs during the creation of a chat", ex);
+		//Log.e(TAG, "A remote exception occurs during the creation of a chat", ex);
 	    }
 	}
     }
@@ -611,16 +611,17 @@ private class SBChatServiceConnAndMiscListener extends ISBChatConnAndMiscListene
 
 	@Override
 	public void loggedIn() throws RemoteException {
-		Log.d(TAG, "Chat window login call back");		
+		//Log.d(TAG, "Chat window login call back");		
 		if(mChatManager == null)
 			mChatManager = xmppApis.getChatManager();
 		
 		if(mChatManager == null)
 		{			
-			Log.d(TAG, "Chat window login call back,logged in but still didnt find chat manager");
+			//Log.d(TAG, "Chat window login call back,logged in but still didnt find chat manager");
 		}
-		else
-			Log.d(TAG, "Chat window login call back,logged in and found chat manager");
+		else {
+			//Log.d(TAG, "Chat window login call back,logged in and found chat manager");
+        }
 	}
 
 	@Override

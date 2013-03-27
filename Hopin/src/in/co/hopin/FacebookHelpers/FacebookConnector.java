@@ -130,7 +130,7 @@ public class FacebookConnector {
 
     private void sendAddFBAndChatInfoToServer(String fbid) {
     	//this should only be called from fbpostloginlistener to ensure we have fbid
-    	Log.i(TAG,"in sendAddFBAndChatInfoToServer");
+    	//Log.i(TAG,"in sendAddFBAndChatInfoToServer");
     	SBHttpRequest chatServiceAddUserRequest = new ChatServiceCreateUser(fbid);
      	SBHttpClient.getInstance().executeRequest(chatServiceAddUserRequest);
 		SBHttpRequest sendFBInfoRequest = new SaveFBInfoRequest(ThisUserConfig.getInstance().getString(ThisUserConfig.USERID), fbid, ThisUserConfig.getInstance().getString(ThisUserConfig.FBACCESSTOKEN));
@@ -153,7 +153,7 @@ public class FacebookConnector {
 	        JSONObject jsonObject;
 	        try {
 	            jsonObject = new JSONObject(response);	  
-	            Log.i(TAG,"got my fbinfo:"+jsonObject.toString());
+	            //Log.i(TAG,"got my fbinfo:"+jsonObject.toString());
 	            String picurl,username,first_name,last_name,id,gender,email;
 	            id = jsonObject.getString("id");
 	            username = jsonObject.getString("username");

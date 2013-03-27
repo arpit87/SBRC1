@@ -125,8 +125,9 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			viewOnMarkerSmall.setVisibility(View.GONE);
 			isVisibleSmall = false;
 		}
-		else
-			Log.i(TAG,"trying to remove null View");
+		else {
+			//Log.i(TAG,"trying to remove null View");
+        }
 	}	
 	
 	public void removeExpandedView()
@@ -136,8 +137,9 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			viewOnMarkerExpanded.setVisibility(View.GONE);
 			isVisibleExpanded = false;
 		}
-		else
-			Log.i(TAG,"trying to remove expanded null View");
+		else {
+			//Log.i(TAG,"trying to remove expanded null View");
+        }
 	}	
 	
 	public void removeIndividualUserExpandedView()
@@ -146,8 +148,9 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		{
 			viewOnMarkerIndividualExpanded.setVisibility(View.GONE);			
 		}
-		else
-			Log.i(TAG,"trying to remove expanded null View");
+		else {
+			//Log.i(TAG,"trying to remove expanded null View");
+        }
 	}
 	
 	

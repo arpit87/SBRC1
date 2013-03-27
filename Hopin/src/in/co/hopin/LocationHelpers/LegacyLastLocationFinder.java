@@ -120,7 +120,7 @@ public class LegacyLastLocationFinder implements ILastLocationFinder {
    */
   protected LocationListener singeUpdateListener = new LocationListener() {
     public void onLocationChanged(Location location) {
-      Log.d(TAG, "Single Location Update Received: " + location.getLatitude() + "," + location.getLongitude());
+      //Log.d(TAG, "Single Location Update Received: " + location.getLatitude() + "," + location.getLongitude());
       if (locationListener != null && location != null)
         locationListener.onLocationChanged(location);
       locationManager.removeUpdates(singeUpdateListener);

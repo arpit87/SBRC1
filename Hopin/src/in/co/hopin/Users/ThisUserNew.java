@@ -53,12 +53,12 @@ public class ThisUserNew {
     }
 
 	public void setUserID(String userID) {
-		Log.i(TAG,"set user id");
+		//Log.i(TAG,"set user id");
 		this.userID = userID;
 	}
 	
 	public String getUserID() {
-		Log.i(TAG,"get user id"+this.userID);
+		//Log.i(TAG,"get user id"+this.userID);
 		return this.userID;
 	}
 	public static ThisUserNew getInstance() {

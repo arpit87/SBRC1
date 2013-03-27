@@ -276,8 +276,9 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			viewOnMarkerExpanded.setVisibility(View.GONE);
 			isVisibleExpanded = false;
 		}
-		else
-			Log.i(TAG,"trying to remove expanded null View");
+		else {
+			//Log.i(TAG,"trying to remove expanded null View");
+        }
 	}	
 	
 	public void removeSmallView()
@@ -287,8 +288,9 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			viewOnMarkerSmall.setVisibility(View.GONE);
 			isVisibleSmall = false;
 		}
-		else
-			Log.i(TAG,"trying to remove null View");
+		else {
+			//Log.i(TAG,"trying to remove null View");
+        }
 	}	
 	
 	public void toggleSmallView()

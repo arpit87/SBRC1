@@ -22,8 +22,8 @@ public class FeedbackResponse extends ServerResponseBase{
 	@Override
 	public void process() {
 		ProgressHandler.dismissDialoge();
-		Log.i(TAG,"processing FeedbackResponse");
-		Log.i(TAG,"server response:"+jobj.toString());
+		//Log.i(TAG,"processing FeedbackResponse");
+		//Log.i(TAG,"server response:"+jobj.toString());
 		try {			
 			String body = jobj.getString("body");
 			ToastTracker.showToast("Feedback saved successfully");			

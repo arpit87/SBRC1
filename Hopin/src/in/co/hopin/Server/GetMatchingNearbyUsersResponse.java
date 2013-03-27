@@ -25,13 +25,13 @@ public class GetMatchingNearbyUsersResponse extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		Log.i(TAG,"processing GetUsersResponse response..geting json");
+		//Log.i(TAG,"processing GetUsersResponse response..geting json");
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		Log.i(TAG,"got json "+jobj.toString());
+		//Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");			
 		} catch (JSONException e) {
-			Log.e(TAG, "Error returned by server in fetching nearby user.JSON:"+jobj.toString());
+			//Log.e(TAG, "Error returned by server in fetching nearby user.JSON:"+jobj.toString());
 			e.printStackTrace();
 			return;
 		}
@@ -40,7 +40,7 @@ public class GetMatchingNearbyUsersResponse extends ServerResponseBase{
 		//List<NearbyUser> nearbyUsers = JSONHandler.getInstance().GetNearbyUsersInfoFromJSONObject(body);	
 		if(CurrentNearbyUsers.getInstance().usersHaveChanged())
 		{
-			Log.i(TAG,"updating changed nearby users");		
+			//Log.i(TAG,"updating changed nearby users");		
 			Intent notifyUpdateintent = new Intent();
 			notifyUpdateintent.setAction(BroadCastConstants.NEARBY_USER_UPDATED);		
 			

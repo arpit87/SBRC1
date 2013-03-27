@@ -232,9 +232,9 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 	
 	private void putInitialOverlay()
 	{
-		Log.i(TAG,"initializing this user location");
+		//Log.i(TAG,"initializing this user location");
 	    mapcontroller.setZoom(14);
-	    Log.i(TAG,"setting myoverlay");        
+	    //Log.i(TAG,"setting myoverlay");        
 	    thisUserOverlay = new ThisUserItemizedOverlay(mapView); 
 	    //SBGeoPoint currGeo = ThisUser.getInstance().getCurrentGeoPoint();
 	    //Log.i(TAG,"location is:"+currGeo.getLatitudeE6()+","+currGeo.getLongitudeE6());		
@@ -257,10 +257,10 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		List<NearbyUser> nearbyUsers = CurrentNearbyUsers.getInstance().getAllNearbyUsers();
 		
 		//update map view
-		Log.i(TAG,"updating earby user");
+		//Log.i(TAG,"updating earby user");
 		if(nearbyUserItemizedOverlay!=null || nearbyUserGroupItemizedOverlay != null)
 		{
-			Log.i(TAG,"removing prev nearby users overlay");			
+			//Log.i(TAG,"removing prev nearby users overlay");			
 			if (nearbyUserItemizedOverlay != null) {
                 mapView.getOverlays().remove(nearbyUserItemizedOverlay);
             }
@@ -310,7 +310,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		
         if(!individualUsers.isEmpty())
         {
-	        Log.i(TAG,"adding individualUsers useroverlay,no indi:"+individualUsers.size());	
+	        //Log.i(TAG,"adding individualUsers useroverlay,no indi:"+individualUsers.size());	
 	        nearbyUserItemizedOverlay = new NearbyUsersItemizedOverlay(mapView);
 	        nearbyUserItemizedOverlay.addList(individualUsers);
 	        mapView.getOverlays().add(nearbyUserItemizedOverlay);
@@ -318,7 +318,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
         
         if(!groups.isEmpty())
         {
-        	Log.i(TAG,"adding groups useroverlay,no.groups:"+groups.size());
+        	//Log.i(TAG,"adding groups useroverlay,no.groups:"+groups.size());
 			nearbyUserGroupItemizedOverlay = new GourpedNearbyUsersIteamizedOverlay(mapView);
 			nearbyUserGroupItemizedOverlay.addList(groups);
 			 mapView.getOverlays().add(nearbyUserGroupItemizedOverlay);
@@ -338,14 +338,14 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 	
 	public void updateOverlayOnZoomChange()
 	{
-		Log.i(TAG,"updating nearby users on zoom change");
+		//Log.i(TAG,"updating nearby users on zoom change");
 		updateNearbyUsersonMap();		
 		mapView.postInvalidate();
 	}
 	
 	public void updateNearbyUsersOnUSersChange()
 	{
-		Log.i(TAG,"updating nearby users on user change");
+		//Log.i(TAG,"updating nearby users on user change");
 		updateNearbyUsersonMap();
 		updateNearbyUserOnList();
 		centerMap();
@@ -374,7 +374,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		{
 			if(!fbloginPromptIsShowing)
 			{
-				Log.i(TAG,"showing fblogin prompt");	
+				//Log.i(TAG,"showing fblogin prompt");	
 				popUpView = (ViewGroup) underlyingActivity.getLayoutInflater().inflate(R.layout.fbloginpromptpopup, null); 
 				fbPopupWindow = new PopupWindow(popUpView,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,false); //Creation of popup
 				fbPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);   
@@ -393,7 +393,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 						fblogin_dialog.show(underlyingActivity.getSupportFragmentManager(), "fblogin_dialog");
 						fbPopupWindow.dismiss();
 						fbloginPromptIsShowing = false;
-						Log.i(TAG,"fblogin prompt clicked");
+						//Log.i(TAG,"fblogin prompt clicked");
 					}
 				});
 		        ImageView buttonClosefbprompt = (ImageView) popUpView.findViewById(R.id.fbloginpromptclose);		        
@@ -430,7 +430,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 	public void updateThisUserMapOverlay()
 	{		
 		//be careful here..do we have location yet?
-		Log.i(TAG,"update this user called");	
+		//Log.i(TAG,"update this user called");	
 		if(thisUserOverlay == null)	
 		{			
 			thisUserOverlay = new ThisUserItemizedOverlay(mapView);
@@ -440,7 +440,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		else
 		{
 		    thisUserOverlay.updateThisUser();
-		    Log.i(TAG,"this user map overlay updated");
+		    //Log.i(TAG,"this user map overlay updated");
 		}
 	    mapView.postInvalidate();	    
 	    //dont centre here else on every automatic update it centres
@@ -476,7 +476,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 	
 public void clearAllData()
 {
-    Log.d(TAG, "clearing all data");
+    //Log.d(TAG, "clearing all data");
     thisUserOverlay = null;
     nearbyUserItemizedOverlay = null;
     nearbyUserGroupItemizedOverlay = null;

@@ -29,8 +29,9 @@ public class SBHttpClient {
 		int count = request.length;
 		if (count<=3)
 			new NewAsyncTask().execute(request);
-		else
-			Log.e(TAG, "Max 3 http request per thread allowed");
+		else {
+			//Log.e(TAG, "Max 3 http request per thread allowed");
+        }
 	}	
 	
 	private class NewAsyncTask extends AsyncTask <SBHttpRequest, Void, ServerResponseBase>

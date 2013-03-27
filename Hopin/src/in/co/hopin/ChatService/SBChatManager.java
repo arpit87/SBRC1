@@ -98,13 +98,13 @@ public class SBChatManager extends IChatManager.Stub {
     public ChatAdapter getChat(String participant) {	
 		String key = participant;
 		if (mAllChats.containsKey(key)) {
-			Log.i(TAG,"Chat returned for:"+key);
+			//Log.i(TAG,"Chat returned for:"+key);
 		    return mAllChats.get(key);
 		}
 		else
 		{
 			Chat c = mChatManager.createChat(key, null);
-			Log.i(TAG,"Chat created for:"+key);
+			//Log.i(TAG,"Chat created for:"+key);
 			// maybe a little probleme of thread synchronization
 			// if so use an HashTable instead of a HashMap for mChats
 			return getChatAdapter(c);
@@ -115,14 +115,14 @@ public class SBChatManager extends IChatManager.Stub {
 	
 	public void notifyAllPendingQueue()
 	{
-		Log.i(TAG,"notifying all pending queue");
+		//Log.i(TAG,"notifying all pending queue");
 		Collection<ChatAdapter> c = mAllChats.values();		
 		Iterator it = c.iterator();
 		while(it.hasNext())
 		{			
 			ChatAdapter ca = (ChatAdapter) it.next();
 			ca.notifyMsgQueue();
-			Log.i(TAG,"notified a queue");
+			//Log.i(TAG,"notified a queue");
 		}
 			
 		
@@ -134,7 +134,7 @@ public class SBChatManager extends IChatManager.Stub {
 	}
 	
 	public void notifyChat(int id,String participant_fbid,String participant_name,String chat_message) { 	   			
-			Log.i(TAG, "Sending notification") ;
+			//Log.i(TAG, "Sending notification") ;
 	    	mService.sendNotification(id,participant_fbid,participant_name,chat_message);
 	   
 	}
@@ -161,7 +161,7 @@ public class SBChatManager extends IChatManager.Stub {
 				    notifyChat(chat, body);
 				}
 			    } catch (RemoteException e) {
-				Log.e(TAG, e.getMessage());
+				//Log.e(TAG, e.getMessage());
 			    }
 			
 		}*/
@@ -177,16 +177,16 @@ public class SBChatManager extends IChatManager.Stub {
 			 if(!in.co.hopin.Util.StringUtils.isBlank(key))
 				if (mAllChats.containsKey(key)) {
 					newchatAdapter= mAllChats.get(key);
-					Log.i(TAG,"returning old adapter for:"+key);
+					//Log.i(TAG,"returning old adapter for:"+key);
 				}
 				else
 				{
-					Log.i(TAG,"chat adapter not fond so creating new for:"+key);
+					//Log.i(TAG,"chat adapter not fond so creating new for:"+key);
 					newchatAdapter = new ChatAdapter(chat,SBChatManager.this);	
 					mAllChats.put(key,newchatAdapter);
 				}
 				//newchatAdapter.addMessageListener(mChatAndInitialMsgListener);
-			    Log.d(TAG, "Insane smack " + chat.toString() + " created locally " + locally + " with blank key?: " + key);			   
+			    //Log.d(TAG, "Insane smack " + chat.toString() + " created locally " + locally + " with blank key?: " + key);			   
 		
 		}	
 		}

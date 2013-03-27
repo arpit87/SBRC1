@@ -93,7 +93,7 @@ public class StartStrangerBuddyActivity extends Activity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        Log.e(TAG, "clicked yes..");
+                        //Log.e(TAG, "clicked yes..");
                         startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),0);
                     }
                 })
@@ -124,7 +124,7 @@ public class StartStrangerBuddyActivity extends Activity {
     public void onResume()
     {   	
     	super.onResume();
-        Log.e(TAG, "onresume");
+        //Log.e(TAG, "onresume");
         if (!isLocationProviderEnabled()){
             buildAlertMessageForLocationProvider();           
         }
@@ -135,7 +135,7 @@ public class StartStrangerBuddyActivity extends Activity {
         else        	
         {
 	
-	        Log.i(TAG,"started network listening ");
+	        //Log.i(TAG,"started network listening ");
 	        SBLocationManager.getInstance().StartListeningtoNetwork();
             loadHistoryFromDB();
 	        platformContext = Platform.getInstance().getContext();
@@ -189,7 +189,7 @@ public class StartStrangerBuddyActivity extends Activity {
          public void run() 
          {
         	 counter++;
-        	 Log.i(TAG, "timer task counter:"+counter);
+        	 //Log.i(TAG, "timer task counter:"+counter);
         	 SBGeoPoint currGeo;
         	 
         	 //check if it got location by singleUpdateintent which works for froyo+
@@ -219,12 +219,12 @@ public class StartStrangerBuddyActivity extends Activity {
 
     private void loadHistoryFromDB() {
         LinkedList<HistoryAdapter.HistoryItem> historyItemList = null;
-        Log.e(TAG, "Fetching searches");
+        //Log.e(TAG, "Fetching searches");
         ContentResolver cr = getContentResolver();
         Cursor cursor = cr.query(mHistoryUri, columns, null, null, null);
 
         if (cursor == null || cursor.getCount() == 0) {
-            Log.e(TAG, "Empty result");
+            //Log.e(TAG, "Empty result");
         } else {
             LinkedList<HistoryAdapter.HistoryItem> historyItems = new LinkedList<HistoryAdapter.HistoryItem>();
             if (cursor.moveToFirst()) {
