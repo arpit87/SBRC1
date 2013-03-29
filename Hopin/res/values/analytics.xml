@@ -12,9 +12,9 @@
 
     <integer name="ga_dispatchPeriod">60</integer>
 
-    <string name="my.b1701.SB.Activities.HistoryActivity">History</string>
-    <string name="my.b1701.SB.Activities.MapListViewTabActivity">MapListView</string>
-    <string name="my.b1701.SB.Activities.SearchInputActivity">FindUsers</string>
-    <string name="my.b1701.SB.Activities.StartStrangerBuddyActivity">Home</string>
-    <string name="my.b1701.SB.Activities.Tutorial">Tutorial</string>
+    <string name="in.co.hopin.Activities.HistoryActivity">History</string>
+    <string name="in.co.hopin.Activities.MapListViewTabActivity">MapListView</string>
+    <string name="in.co.hopin.Activities.SearchInputActivity">FindUsers</string>
+    <string name="in.co.hopin.Activities.StartStrangerBuddyActivity">Home</string>
+    <string name="in.co.hopin.Activities.Tutorial">Tutorial</string>
 </resources>
