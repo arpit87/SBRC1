@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.R;
 
 import in.co.hopin.Adapter.BlockedUsersAdapter;
@@ -65,5 +66,17 @@ public class BlockedUsersActivity extends ListActivity{
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
     }
 }

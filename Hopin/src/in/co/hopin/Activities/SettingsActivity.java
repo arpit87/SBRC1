@@ -1,5 +1,6 @@
 package in.co.hopin.Activities;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.HelperClasses.ThisAppConfig;
@@ -142,6 +143,17 @@ public class SettingsActivity extends FragmentActivity{
 	        super.onActivityResult(requestCode, resultCode, data);
 	        fbconnect.authorizeCallback(requestCode, resultCode, data);
 	    }
-	 
-	
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
+    }
 }

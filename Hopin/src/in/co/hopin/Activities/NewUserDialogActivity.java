@@ -1,5 +1,6 @@
 package in.co.hopin.Activities;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.Users.NearbyUser;
@@ -135,6 +136,17 @@ public class NewUserDialogActivity extends Activity{
 			setFBInfoOnExpandedPopup();
 		
 	}
-	
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
+    }
 	
 }

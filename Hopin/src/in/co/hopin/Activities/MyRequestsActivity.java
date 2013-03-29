@@ -1,5 +1,6 @@
 package in.co.hopin.Activities;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.ActivityHandlers.MyRequestActivityHandler;
 import in.co.hopin.HelperClasses.BroadCastConstants;
@@ -179,5 +180,17 @@ public class MyRequestsActivity extends Activity {
     	instaActiveLayout.setVisibility(View.GONE);
     	instaNoActiveReq.setVisibility(View.VISIBLE);
     	unregisterReceiver(reqHandler);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
     }
 }

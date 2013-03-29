@@ -1,5 +1,6 @@
 package in.co.hopin.Activities;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.HttpClient.FeedbackRequest;
@@ -83,4 +84,15 @@ public class FeedbackActivity extends Activity{
         alert.show();
     }
 
+   @Override
+   public void onStart(){
+       super.onStart();
+       EasyTracker.getInstance().activityStart(this);
+   }
+
+   @Override
+   public void onStop(){
+       super.onStop();
+       EasyTracker.getInstance().activityStop(this);
+   }
 }
