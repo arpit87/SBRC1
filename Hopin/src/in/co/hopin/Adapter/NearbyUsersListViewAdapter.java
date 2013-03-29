@@ -100,7 +100,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         userProfileView.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View chatIconView) {
-				Intent i = new Intent(Platform.getInstance().getContext(),OtherUserProfileActivity.class);				
+				Intent i = new Intent(underLyingActivity,OtherUserProfileActivity.class);				
 				i.putExtra("fb_info", thisUserFBInfo.toString());
 				Platform.getInstance().getContext().startActivity(i);						
 			}
