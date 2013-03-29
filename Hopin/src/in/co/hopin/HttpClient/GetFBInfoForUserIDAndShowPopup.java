@@ -36,12 +36,13 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 	String destination = "";
     String timeOfTravel = "";
     String userid = "";
+    int daily_insta_type;
 	
 	public GetFBInfoForUserIDAndShowPopup(String userid,int daily_insta_type)
 	{		
 		super();
 		queryMethod = QueryMethod.Post;
-				
+		this.daily_insta_type = daily_insta_type;		
 		//prepare getnearby request		
 		httpQuery = new HttpPost(URL);
 		jsonobj = GetServerAuthenticatedJSON();		
@@ -92,7 +93,7 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 				e.printStackTrace();
 			} 	
 			
-		getFBInfoResponseAndShowPopup = new GetFBInfoResponseAndShowPopup(response,jsonStr);
+		getFBInfoResponseAndShowPopup = new GetFBInfoResponseAndShowPopup(response,jsonStr,daily_insta_type);
 		return getFBInfoResponseAndShowPopup;
 		
 	}

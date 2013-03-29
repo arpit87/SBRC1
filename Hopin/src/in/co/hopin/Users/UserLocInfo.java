@@ -156,7 +156,7 @@ public class UserLocInfo {
 		String travelInfo = getUserSrcLocality() + " to " + getUserDstLocality();
 		String travelTimeInfo = getTimeOfTravel();			
 		if(daily_insta_type == 0)
-			formattedTraveDetails = travelInfo + " Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", travelTimeInfo);
+			formattedTraveDetails = travelInfo + "Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", travelTimeInfo);
 		
 		else
 			formattedTraveDetails = travelInfo +","+ StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "d MMM hh:mm a", travelTimeInfo);
@@ -167,7 +167,7 @@ public class UserLocInfo {
 	public String getFormattedTimeDetails(int daily_insta_type)
 	{			
 		if(daily_insta_type == 0)
-			formattedTimeDetails =  " Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", getTimeOfTravel());
+			formattedTimeDetails =  "Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", getTimeOfTravel());
 		
 		else
 			formattedTimeDetails = StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "d MMM hh:mm a", getTimeOfTravel());

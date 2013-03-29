@@ -20,11 +20,13 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 	
 	NearbyUser thisNearbyUser ;
 	UserFBInfo thisNearbyUserFBInfo;	
+	int daily_insta_type;
 	
 	
 	private static final String TAG = "in.co.hopin.Server.GetFBInfoResponseAndShowPopup";
-	public GetFBInfoResponseAndShowPopup(HttpResponse response,String jobjStr) {
+	public GetFBInfoResponseAndShowPopup(HttpResponse response,String jobjStr,int daily_insta_type) {
 		super(response,jobjStr);		
+		this.daily_insta_type = daily_insta_type;
 	}
 	
 	@Override
@@ -40,6 +42,7 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 			Intent i = new Intent(Platform.getInstance().getContext(),NewUserDialogActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("nearbyuserjsonstr", thisNEarbyUSerjobj.toString());
+			i.putExtra("daily_insta_type", daily_insta_type);
 			Platform.getInstance().getContext().startActivity(i);
 			//status = body.getString("Status");			
 			//ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
