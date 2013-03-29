@@ -28,6 +28,7 @@ public class UserLocInfo {
 	private String dstlocality = "";
 	private String time = "";
 	private String formattedTraveDetails = "";
+	private String formattedTimeDetails = "";
 	
 	
 	
@@ -86,8 +87,7 @@ public class UserLocInfo {
 			
 		
 		calcUserGeopoint();
-		calcFormattedTravelDetails();
-		
+			
 	}
 
 
@@ -144,12 +144,6 @@ public class UserLocInfo {
 		return time;
 	}
 	
-	public String getFormattedTravelDetails()
-	{		 
-			return formattedTraveDetails;
-	}
-
-
 
 	private void calcUserGeopoint()
 	{
@@ -157,15 +151,28 @@ public class UserLocInfo {
 			geoPoint =  new SBGeoPoint((int)(Double.parseDouble(srclatitude)*1E6),(int)(Double.parseDouble(srclongitude)*1E6));
 	}
 	
-	private void calcFormattedTravelDetails()
+	public String getFormattedTravelDetails(int daily_insta_type)
 	{
 		String travelInfo = getUserSrcLocality() + " to " + getUserDstLocality();
 		String travelTimeInfo = getTimeOfTravel();			
-		if(ThisUserNew.getInstance().get_Daily_Instant_Type() == 0)
+		if(daily_insta_type == 0)
 			formattedTraveDetails = travelInfo + " Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", travelTimeInfo);
 		
 		else
 			formattedTraveDetails = travelInfo +","+ StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "d MMM hh:mm a", travelTimeInfo);
+		
+		return formattedTraveDetails;
+	}
+	
+	public String getFormattedTimeDetails(int daily_insta_type)
+	{			
+		if(daily_insta_type == 0)
+			formattedTimeDetails =  " Daily@"+StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", getTimeOfTravel());
+		
+		else
+			formattedTimeDetails = StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "d MMM hh:mm a", getTimeOfTravel());
+		
+		return formattedTimeDetails;
 	}
 
 

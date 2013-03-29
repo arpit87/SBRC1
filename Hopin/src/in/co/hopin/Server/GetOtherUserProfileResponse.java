@@ -41,7 +41,8 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 			ProgressHandler.dismissDialoge();
 			body = jobj.getJSONObject("body");
 			JSONObject nearbyUsersFbInfo =  body.getJSONObject(UserAttributes.FBINFO);			
-			Intent i = new Intent(Platform.getInstance().getContext(),OtherUserProfileActivity.class);			
+			Intent i = new Intent(Platform.getInstance().getContext(),OtherUserProfileActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra("fb_info", nearbyUsersFbInfo.toString());
 			Platform.getInstance().getContext().startActivity(i);
 			//status = body.getString("Status");			

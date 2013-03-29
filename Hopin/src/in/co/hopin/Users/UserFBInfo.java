@@ -24,7 +24,11 @@ public class UserFBInfo {
         // TODO Auto-generated constructor stub
     }
 
-   
+    public JSONObject getJsonObj()
+    {
+    	return allInfo;
+    }
+    
 	public UserFBInfo(JSONObject jsonObject) {
         allInfo = jsonObject;
         try {

@@ -458,15 +458,17 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
         int maxLon = mylon;
         
         List<NearbyUser> nearbyUsers = CurrentNearbyUsers.getInstance().getAllNearbyUsers();
-        for (NearbyUser n : nearbyUsers) {
-        		SBGeoPoint geoPoint = n.getUserLocInfo().getGeoPoint();
-                int lat = (int) (geoPoint.getLatitudeE6());
-                int lon = (int) (geoPoint.getLongitudeE6());
+        if (nearbyUsers != null) {
+            for (NearbyUser n : nearbyUsers) {
+                    SBGeoPoint geoPoint = n.getUserLocInfo().getGeoPoint();
+                    int lat = (int) (geoPoint.getLatitudeE6());
+                    int lon = (int) (geoPoint.getLongitudeE6());
 
-                maxLat = Math.max(lat, maxLat);
-                minLat = Math.min(lat, minLat);
-                maxLon = Math.max(lon, maxLon);
-                minLon = Math.min(lon, minLon);
+                    maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lon, maxLon);
+                    minLon = Math.min(lon, minLon);
+            }
         }
 
         mapcontroller.zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));        

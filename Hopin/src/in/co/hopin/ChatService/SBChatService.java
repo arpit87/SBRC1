@@ -69,7 +69,7 @@ public class SBChatService extends Service {
 		initializeConfigration();
 		//configure(ProviderManager.getInstance());
 		System.setProperty("smack.debugEnabled", "true");
-		XMPPConnection.DEBUG_ENABLED = true;
+		XMPPConnection.DEBUG_ENABLED = false;
 		SASLAuthentication.supportSASLMechanism("PLAIN");
 		mXMPPConnection = new XMPPConnection(mConnectionConfiguration);	
 		
@@ -119,7 +119,7 @@ public class SBChatService extends Service {
 	{
 		mConnectionConfiguration = new ConnectionConfiguration(mHost, mPort);		
 		mConnectionConfiguration.setReconnectionAllowed(true);
-		mConnectionConfiguration.setDebuggerEnabled(true);
+		mConnectionConfiguration.setDebuggerEnabled(false);
 		mConnectionConfiguration.setSendPresence(true);
 		SmackConfiguration.setPacketReplyTimeout(10000);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {

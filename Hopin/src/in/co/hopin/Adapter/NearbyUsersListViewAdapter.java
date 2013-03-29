@@ -3,6 +3,7 @@ package in.co.hopin.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         	name = thisUserOtherInfo.getUserName();
         String source = thisUserLocInfo.getUserSrcAddress();
         String destination = thisUserLocInfo.getUserDstAddress();
-        String formattedTravelInfo = thisUserLocInfo.getFormattedTravelDetails();
+        String formattedTravelInfo = thisUserLocInfo.getFormattedTimeDetails(ThisUserNew.getInstance().get_Daily_Instant_Type());
         userName.setText(name);
         userSource.setText(source);
         userDestination.setText(destination);
@@ -101,8 +102,8 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
 			@Override
 			public void onClick(View chatIconView) {
 				Intent i = new Intent(underLyingActivity,OtherUserProfileActivity.class);				
-				i.putExtra("fb_info", thisUserFBInfo.toString());
-				Platform.getInstance().getContext().startActivity(i);						
+				i.putExtra("fb_info", thisUserFBInfo.getJsonObj().toString());
+				underLyingActivity.startActivity(i);						
 			}
 		});
         

@@ -1,23 +1,21 @@
 package in.co.hopin.Activities;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.R;
 import in.co.hopin.HelperClasses.SBImageLoader;
-import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Users.UserFBInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import in.co.hopin.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class OtherUserProfileActivity extends Activity{
 	
@@ -37,7 +35,8 @@ public class OtherUserProfileActivity extends Activity{
 	public void onResume()
 	{
 		super.onResume();
-		fbinfoJsonStr = getIntent().getStringExtra(UserAttributes.FBINFO);
+		fbinfoJsonStr = getIntent().getStringExtra("fb_info");
+		//Log.d("debug","got json str:"+fbinfoJsonStr);
 		try {
 			fbInfoJSON = new JSONObject(fbinfoJsonStr);
 			userFBInfo = new UserFBInfo(fbInfoJSON);

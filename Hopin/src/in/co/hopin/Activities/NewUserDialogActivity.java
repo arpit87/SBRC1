@@ -21,8 +21,7 @@ import android.widget.TextView;
 public class NewUserDialogActivity extends Activity{
 	
 	String source = "";
-	String destination = "";
-	String daily_insta_type = "";	
+	String destination = "";		
 	String userid = "";
 	
 	private TextView dialogHeaderName = null;
@@ -34,6 +33,7 @@ public class NewUserDialogActivity extends Activity{
 	private ImageView buttonClose = null;
 	NearbyUser thisNearbyUser ;
 	UserFBInfo thisNearbyUserFBInfo;
+	int daily_insta_type;
 		
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class NewUserDialogActivity extends Activity{
     	super.onResume();
 
     	String jsonstr = getIntent().getStringExtra("nearbyuserjsonstr");
+    	daily_insta_type = getIntent().getIntExtra("daily_insta_type", 1);
     	try {
     		thisNearbyUser = new NearbyUser(new JSONObject(jsonstr));
     		thisNearbyUserFBInfo = thisNearbyUser.getUserFBInfo();
@@ -69,7 +70,7 @@ public class NewUserDialogActivity extends Activity{
 			
 				
 		dialogHeaderName.setText(thisNearbyUserFBInfo.getFullName());
-		dialogHeaderTravelInfo.setText(thisNearbyUser.getUserLocInfo().getFormattedTravelDetails());
+		dialogHeaderTravelInfo.setText(thisNearbyUser.getUserLocInfo().getFormattedTravelDetails(daily_insta_type));
 				
 		works_at = (TextView)findViewById(R.id.newuserarrive_popup_expanded_work);
 		studied_at = (TextView)findViewById(R.id.newuserarrive_popup_expanded_education);
