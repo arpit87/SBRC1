@@ -1,18 +1,6 @@
 package in.co.hopin.ChatClient;
 
-import in.co.hopin.HelperClasses.SBImageLoader;
-import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.CurrentNearbyUsers;
-import in.co.hopin.Users.NearbyUser;
-import in.co.hopin.Util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import in.co.hopin.R;
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import in.co.hopin.HelperClasses.SBImageLoader;
+import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 
@@ -31,7 +26,12 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	String selfFBId = ThisUserConfig.getInstance().getString(ThisUserConfig.FBUID);
 	String selfFirstName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FIRSTNAME);
 	String selfImageURL = ThisUserConfig.getInstance().getString(ThisUserConfig.FBPICURL);
-	int chatMsgStatus = SBChatMessage.UNKNOWN ; 
+	int chatMsgStatus = SBChatMessage.UNKNOWN ;
+    private Activity activity;
+
+    public SBChatListViewAdapter(Activity activity) {
+        this.activity = activity;
+    }
 	/**
 	 * Returns the number of messages contained in the messages list.
 	 * @return The number of messages contained in the messages list.
@@ -116,7 +116,7 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	    String imageURL = "";
 	    String statusText = "";
 	    String time = "";
-		LayoutInflater inflater = (LayoutInflater) Platform.getInstance().getContext().getSystemService(Platform.getInstance().getContext().LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		
 	    SBChatMessage msg = mListMessages.get(position);	
 	    if(msg.getInitiator().equalsIgnoreCase(selfFBId))

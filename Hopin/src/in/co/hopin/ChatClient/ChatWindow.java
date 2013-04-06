@@ -11,25 +11,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
-import in.co.hopin.ChatClient.IChatManagerListener;
-import in.co.hopin.ChatClient.IMessageListener;
-import in.co.hopin.ChatClient.ISBChatConnAndMiscListener;
-import in.co.hopin.ChatService.IChatAdapter;
-import in.co.hopin.ChatService.IChatManager;
-import in.co.hopin.ChatService.IXMPPAPIs;
-import in.co.hopin.R;
-
 import in.co.hopin.ChatService.*;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Util.StringUtils;
 
@@ -63,7 +55,7 @@ public class ChatWindow extends Activity{
     private String mParticipantImageURL = "";    
     private SBChatBroadcastReceiver mSBBroadcastReceiver = new SBChatBroadcastReceiver();
     Handler mHandler = new Handler();
-    private SBChatListViewAdapter mMessagesListAdapter = new SBChatListViewAdapter();
+    private SBChatListViewAdapter mMessagesListAdapter = new SBChatListViewAdapter(this);
     private boolean mBinded = false;
     private String mThiUserChatUserName = "";
     private String mThisUserChatPassword = "";
