@@ -66,7 +66,7 @@ public class UserAttributes {
 	public static String  DELETEDAILYINSTATYPE = "insta";
 	
 	//filters
-	public static String  WOMANFLTER = "woman";
+	public static String WOMENFLTER = "women";
 	public static String  FBFRIENDSFILTER = "facebook";
 	
 }

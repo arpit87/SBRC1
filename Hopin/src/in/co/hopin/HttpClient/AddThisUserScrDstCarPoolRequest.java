@@ -1,6 +1,5 @@
 package in.co.hopin.HttpClient;
 
-import android.util.Log;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -71,7 +70,7 @@ public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
         jsonobjAddRequest.put(UserAttributes.DSTADDRESS, ThisUserNew.getInstance().getDestinationFullAddress());       
         jsonobjAddRequest.put(UserAttributes.DATETIME, ThisUserNew.getInstance().getDateAndTimeOfTravel());
         if(ThisAppConfig.getInstance().getBool(ThisAppConfig.WOMANFILTER))
-        	jsonobjAddRequest.put(UserAttributes.WOMANFLTER, 1);
+        	jsonobjAddRequest.put(UserAttributes.WOMENFLTER, 1);
         if(ThisAppConfig.getInstance().getBool(ThisAppConfig.FBFRIENDONLYFILTER))
         	jsonobjAddRequest.put(UserAttributes.FBFRIENDSFILTER, 1);
     }

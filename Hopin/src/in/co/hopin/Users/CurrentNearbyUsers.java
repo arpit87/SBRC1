@@ -2,14 +2,10 @@ package in.co.hopin.Users;
 
 import in.co.hopin.HelperClasses.JSONHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-
-
-import org.json.JSONObject;
-
-import android.util.Log;
 
 /****
  * 
@@ -78,40 +74,34 @@ public class CurrentNearbyUsers {
 	
 	public boolean usersHaveChanged()
 	{
+        boolean haveUsersChanged = false;
 		//Log.i(TAG,"chking if usr changed ");
-		if(updatedToCurrent)
-			return false;
-		if(mCurrentNearbyUserList == null)
-		{			
-			if(mNewNearbyUserList == null)
-				return false; //called before getMatch
-			else
-			{	
-				updateCurrentToNew();			
-				return true; //first time update
-			}
-		}
-		else if(mNewNearbyUserList == null)
-		{
-			ToastTracker.showToast("sorry no match found");
-			updateCurrentToNew();
-			return true; //new number of users is 0 but currently we showing some who moved out	
-		}
-				
-		//check for objects inside..we have overriden equals..yiipee
-		for(NearbyUser n:mNewNearbyUserList)
-		{
-			if(mCurrentNearbyUserList.contains(n))
-				continue;	
-				
-			//Log.i(TAG,"user have changed ");
-			//ToastTracker.showToast("users changed");
-			updateCurrentToNew();
-			return true;
-		}		
-		//Log.i(TAG,"user did not change ");
-		//ToastTracker.showToast("users not changed");
-		return false;
+		if(!updatedToCurrent) {
+            if ((mCurrentNearbyUserList == null && mNewNearbyUserList != null) ||
+                    (mCurrentNearbyUserList != null && mNewNearbyUserList == null)){
+                if (mNewNearbyUserList == null){
+                    ToastTracker.showToast("sorry no match found");
+                }
+                haveUsersChanged = true;
+            } else {
+                if (mCurrentNearbyUserList.size() != mNewNearbyUserList.size()){
+                    haveUsersChanged = true;
+                } else {
+                    for (NearbyUser n : mNewNearbyUserList) {
+                        if (!mCurrentNearbyUserList.contains(n)){
+                            haveUsersChanged = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (haveUsersChanged){
+            updateCurrentToNew();
+        }
+
+        return haveUsersChanged;
 	}
 	
 	public void clearAllData()
