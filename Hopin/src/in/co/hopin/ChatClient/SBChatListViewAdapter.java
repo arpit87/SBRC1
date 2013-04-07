@@ -32,7 +32,13 @@ public class SBChatListViewAdapter extends BaseAdapter {
     public SBChatListViewAdapter(Activity activity) {
         this.activity = activity;
     }
-	/**
+
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
+    /**
 	 * Returns the number of messages contained in the messages list.
 	 * @return The number of messages contained in the messages list.
 	 */
