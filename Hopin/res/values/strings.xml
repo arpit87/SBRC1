@@ -67,5 +67,6 @@
     <string name="source_listview">Search travellers going your way</string>
     <string name="destination_listview">Tap on search icon on bar</string>
     <string name="maplistviewtoggletext">MapView&lt;&gt;ListView</string>
+    <string name="map_api_key_debug">0XJOljncnnganZQESZVOCjDRt1YNfLAnSBEMdPg</string>
 
 </resources>

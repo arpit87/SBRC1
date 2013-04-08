@@ -114,7 +114,7 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 		
 
 	@Override
-	public String getSource() {
+	public String getSource() {		
 		if(source != null)
 			return source.getText().toString();
 		else return "";

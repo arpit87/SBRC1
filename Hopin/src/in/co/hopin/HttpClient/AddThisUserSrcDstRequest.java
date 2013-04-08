@@ -9,6 +9,8 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Server.AddThisUserSrcDstResponse;
@@ -50,7 +52,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
             //Log.e(TAG, e.getMessage());
         }
         postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        //Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
+        Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
         httpQueryAddRequest.setEntity(postEntityAddRequest);
 
 

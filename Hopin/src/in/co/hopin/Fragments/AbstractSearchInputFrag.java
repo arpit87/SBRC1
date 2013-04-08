@@ -2,6 +2,7 @@ package in.co.hopin.Fragments;
 
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.HistoryAdapter;
+import in.co.hopin.ChatService.XMPPConnectionListenersAdapter;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.HelperClasses.ToastTracker;
@@ -21,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import in.co.hopin.R;
@@ -35,24 +37,35 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -141,7 +154,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 		});
         
         if(source!= null)
-        {        	
+        {         	
 	        source.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            @Override
 	            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -163,9 +176,10 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 	            }
 	        
 	        });
-	        source.addTextChangedListener(new CustomTextWatcher(source_progressbar));
+	        source.addTextChangedListener(new CustomTextWatcher(source_progressbar,true));
 	        source.setAdapter(sourceAutoCompleteAdapter);
-        }
+        } 
+        
         destination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -186,7 +200,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             }
         
         });
-        destination.addTextChangedListener(new CustomTextWatcher(destination_progressbar));
+        destination.addTextChangedListener(new CustomTextWatcher(destination_progressbar,false));
         destination.setAdapter(destinationAutoCompleteAdapter);
 	}
 	
@@ -195,50 +209,65 @@ public abstract class AbstractSearchInputFrag extends Fragment{
        return  super.onCreateView(inflater, container, savedInstanceState);
     }
 
+	public void showDestinationSuggestionPopup()
+	{
+		ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching destination suggestions..", "Please wait..");
+		FetchAddressSuggestionsAndShowPopup showSourceList = new FetchAddressSuggestionsAndShowPopup(destination,false);
+		showSourceList.execute(destination.getText().toString());
+	}
+	
+	public void showSourceSuggestionPopup()
+	{
+		ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching source suggestions..", "Please wait..");
+		FetchAddressSuggestionsAndShowPopup showSourceList = new FetchAddressSuggestionsAndShowPopup(source,true);
+		showSourceList.execute(source.getText().toString());
+	}	
+	
 	
 	public void findUsers()
 	{ 
-		if(!destinationSet)
-		{
-			ToastTracker.showToast("Please set destination");
-			return;
-		}		
-		
-        if (!SBConnectivity.isConnected()){
+		if (!SBConnectivity.isConnected()){
             showErrorDialog("No Network found!", "Please check your network connection.");
             return;        
         }
-        
-		//here in abstract type we are setting all..its responsibility of individual class to 
-		// implement these methods and return "" is its not required
-		//we use ThisUSer as intermediate storage place of current state of req of this user
-		//anything map or list which needs to update picks from ThisUSer
-		// we are setting any of source desti address,lat longi
-		ThisUserNew.getInstance().setSourceGeoPoint(getSourceGeopoint());  //this could be null
-		ThisUserNew.getInstance().setDestinationGeoPoint(getDestinationGeopoint());  //this could be null
-		ThisUserNew.getInstance().setSourceFullAddress(getSource());
-		ThisUserNew.getInstance().setDestinationFullAddress(getDestination());
-		ThisUserNew.getInstance().setTimeOfTravel(getTime());
-		ThisUserNew.getInstance().set_Plan_Instant_Type(getPlanInstaTabType());
-		ThisUserNew.getInstance().setDateOfTravel(getDate());
-		ThisUserNew.getInstance().set_Daily_Instant_Type(getDailyInstaType());//0 daily pool,1 instant share
-		ThisUserNew.getInstance().set_Take_Offer_Type(takeRide?0:1);//0 take ,1 offer
-		ThisUserNew.getInstance().setSelected_radio_button_id(getRadioButtonID());
-		MapListActivityHandler.getInstance().updateSrcDstTimeInListView();
 		
-		getActivity().finish();
-		//Log.i(TAG, "user destination set... querying server");
-		ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching users", "Please wait..");
-		SBHttpRequest addThisUserSrcDstRequest;
-		if(getDailyInstaType() == 0)        		
-			addThisUserSrcDstRequest = new AddThisUserScrDstCarPoolRequest();        		
+		if(!sourceSet && getPlanInstaTabType()==0)
+			showSourceSuggestionPopup();
+		else if(!destinationSet)				
+			showDestinationSuggestionPopup();			
 		else
-			addThisUserSrcDstRequest = new AddThisUserSrcDstRequest();        		
-         
-        SBHttpClient.getInstance().executeRequest(addThisUserSrcDstRequest);
-        saveSearch();
+		{
+			//here in abstract type we are setting all..its responsibility of individual class to 
+			// implement these methods and return "" is its not required
+			//we use ThisUSer as intermediate storage place of current state of req of this user
+			//anything map or list which needs to update picks from ThisUSer
+			// we are setting any of source desti address,lat longi
+			ThisUserNew.getInstance().setSourceGeoPoint(getSourceGeopoint());  //this could be null
+			ThisUserNew.getInstance().setDestinationGeoPoint(getDestinationGeopoint());  //this could be null
+			ThisUserNew.getInstance().setSourceFullAddress(getSource());
+			ThisUserNew.getInstance().setDestinationFullAddress(getDestination());
+			ThisUserNew.getInstance().setTimeOfTravel(getTime());
+			ThisUserNew.getInstance().set_Plan_Instant_Type(getPlanInstaTabType());
+			ThisUserNew.getInstance().setDateOfTravel(getDate());
+			ThisUserNew.getInstance().set_Daily_Instant_Type(getDailyInstaType());//0 daily pool,1 instant share
+			ThisUserNew.getInstance().set_Take_Offer_Type(takeRide?0:1);//0 take ,1 offer
+			ThisUserNew.getInstance().setSelected_radio_button_id(getRadioButtonID());
+			MapListActivityHandler.getInstance().updateSrcDstTimeInListView();
+			
+			getActivity().finish();
+			//Log.i(TAG, "user destination set... querying server");
+			ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching users", "Please wait..");
+			SBHttpRequest addThisUserSrcDstRequest;
+			if(getDailyInstaType() == 0)        		
+				addThisUserSrcDstRequest = new AddThisUserScrDstCarPoolRequest();        		
+			else
+				addThisUserSrcDstRequest = new AddThisUserSrcDstRequest();        		
+	         
+	        SBHttpClient.getInstance().executeRequest(addThisUserSrcDstRequest);
+	        saveSearch();
         
         //moveTaskToBack(true);			
+		}
 	}
 	
 	 private void showErrorDialog(String title, String message) {
@@ -357,6 +386,75 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         }
     }
     
+    private class FetchAddressSuggestionsAndShowPopup extends AsyncTask<String, Void, ArrayList<String>>
+    { 
+    	String mAddress = "";
+    	AutoCompleteTextView mThisTextView;
+    	boolean mIsSource = false;
+    	
+    	FetchAddressSuggestionsAndShowPopup(AutoCompleteTextView thisTextView,boolean isSource)
+    	{
+    		super();
+    		mThisTextView = thisTextView;
+    		mIsSource = isSource;
+    	}
+    	
+    	@Override
+    	protected ArrayList<String> doInBackground(String... address) {    		
+    		mAddress = address[0];
+    		ArrayList<String> address_list = autocomplete(mAddress);
+    		return address_list;
+    	}	
+    	
+    	protected void onPostExecute(ArrayList<String> address_list) {
+    		ProgressHandler.dismissDialoge();
+    		if(address_list!= null && address_list.size()>0)
+    		{
+	    		LayoutInflater inflater = getActivity().getLayoutInflater();
+	    		View layout = inflater.inflate(R.layout.search_suggestions, null);	
+	    		ListView suggestion_list = (ListView) layout.findViewById(R.id.search_suggestions_listview);		
+	    		// Create ArrayAdapter  
+	    		ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.address_suggestion_popup_row, address_list);
+	    		suggestion_list.setAdapter(listAdapter);
+	    		final PopupWindow popUpMenu = new PopupWindow(layout,600,800,true);	
+	    		popUpMenu.setFocusable(true);
+	    		popUpMenu.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+	    		popUpMenu.showAtLocation(layout, Gravity.CENTER, 0, 0);
+	    		listAdapter.notifyDataSetChanged();
+	    		
+	    		suggestion_list.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View v,int position, long arg3) {
+						TextView addressRow = (TextView)v;
+						mThisTextView.setText(addressRow.getText().toString());
+						if(mIsSource)
+							sourceSet = true;
+						else
+							destinationSet = true;
+						popUpMenu.dismiss();
+						findUsers();						
+					}
+	    			
+				});   		
+	    		
+	    		
+    		}
+    		else
+    		{
+    			ToastTracker.showToast(mAddress + " not recognized");
+    			if(mIsSource)
+					sourceSet = false;
+				else
+					destinationSet = false;
+    		}
+    	
+    	}
+
+    	
+    }
+    
+    
     /**************************************************************?
      * below all is code for auto complete textview
      * @param input
@@ -416,8 +514,10 @@ public abstract class AbstractSearchInputFrag extends Fragment{
     private class CustomTextWatcher implements TextWatcher {
     	
     	private ProgressBar thisTextProgressBar = null;
-    	public CustomTextWatcher( ProgressBar progressBar)
+    	private boolean mIsSource = false;
+    	public CustomTextWatcher( ProgressBar progressBar, boolean isSource)
     	{
+    		this.mIsSource = isSource;
     		this.thisTextProgressBar = progressBar;
     	}
 
@@ -429,6 +529,10 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if(s.length() > 0) {
             	thisTextProgressBar.setVisibility(View.VISIBLE);
+            	if(mIsSource)
+            		sourceSet = false;
+            	else
+            		destinationSet = false;
             }
 
         }
@@ -484,7 +588,8 @@ public abstract class AbstractSearchInputFrag extends Fragment{
                     else {
                         notifyDataSetInvalidated();
                     }
-                    thisTextProgressBar.setVisibility(View.INVISIBLE);
+                    thisTextProgressBar.setVisibility(View.INVISIBLE);                    
+                    
                 }};
             return filter;
         }

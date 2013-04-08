@@ -77,7 +77,9 @@ public class CurrentNearbyUsers {
         boolean haveUsersChanged = false;
 		//Log.i(TAG,"chking if usr changed ");
 		if(!updatedToCurrent) {
-            if ((mCurrentNearbyUserList == null && mNewNearbyUserList != null) ||
+			if ((mCurrentNearbyUserList == null && mNewNearbyUserList == null))
+					ToastTracker.showToast("Sorry no match found");
+			else if ((mCurrentNearbyUserList == null && mNewNearbyUserList != null) ||
                     (mCurrentNearbyUserList != null && mNewNearbyUserList == null)){
                 if (mNewNearbyUserList == null){
                     ToastTracker.showToast("sorry no match found");

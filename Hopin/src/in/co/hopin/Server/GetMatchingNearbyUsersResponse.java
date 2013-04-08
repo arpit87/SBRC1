@@ -27,7 +27,7 @@ public class GetMatchingNearbyUsersResponse extends ServerResponseBase{
 	public void process() {
 		//Log.i(TAG,"processing GetUsersResponse response..geting json");
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		//Log.i(TAG,"got json "+jobj.toString());
+		Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");			
 		} catch (JSONException e) {
