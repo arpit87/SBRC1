@@ -110,7 +110,9 @@ public class Tutorial extends Activity{
 	
 	@Override
 	public void onResume() {
-		super.onResume();		
+		super.onResume();
+		if(ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+			finish();
 	}
 	
 	@Override
