@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -53,6 +54,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -409,19 +412,17 @@ public abstract class AbstractSearchInputFrag extends Fragment{
     	protected void onPostExecute(ArrayList<String> address_list) {
     		ProgressHandler.dismissDialoge();
     		if(address_list!= null && address_list.size()>0)
-    		{
-	    		LayoutInflater inflater = getActivity().getLayoutInflater();
-	    		View layout = inflater.inflate(R.layout.search_suggestions, null);	
-	    		ListView suggestion_list = (ListView) layout.findViewById(R.id.search_suggestions_listview);		
+    		{	    		
+    			final Dialog suggestion_dialog = new Dialog(getActivity());
+    			suggestion_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    			suggestion_dialog.setCancelable(true);
+    			suggestion_dialog.setContentView(R.layout.search_suggestions);	    		
+    			suggestion_dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+	    		ListView suggestion_list = (ListView) suggestion_dialog.findViewById(R.id.search_suggestions_listview);	    		
 	    		// Create ArrayAdapter  
 	    		ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.address_suggestion_popup_row, address_list);
-	    		suggestion_list.setAdapter(listAdapter);
-	    		final PopupWindow popUpMenu = new PopupWindow(layout,600,800,true);	
-	    		popUpMenu.setFocusable(true);
-	    		popUpMenu.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-	    		popUpMenu.showAtLocation(layout, Gravity.CENTER, 0, 0);
-	    		listAdapter.notifyDataSetChanged();
-	    		
+	    		suggestion_list.setAdapter(listAdapter);	    		
+	    		listAdapter.notifyDataSetChanged();	    		
 	    		suggestion_list.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override
@@ -432,13 +433,12 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 							sourceSet = true;
 						else
 							destinationSet = true;
-						popUpMenu.dismiss();
+						suggestion_dialog.dismiss();
 						findUsers();						
 					}
 	    			
-				});   		
-	    		
-	    		
+				}); 
+	    		suggestion_dialog.show();
     		}
     		else
     		{
@@ -517,6 +517,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
     	private boolean mIsSource = false;
     	public CustomTextWatcher( ProgressBar progressBar, boolean isSource)
     	{
+    		super();
     		this.mIsSource = isSource;
     		this.thisTextProgressBar = progressBar;
     	}
@@ -527,8 +528,11 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(s.length() > 0) {
-            	thisTextProgressBar.setVisibility(View.VISIBLE);
+            if(s!=null && s.length() > 0) {
+            	if(thisTextProgressBar!=null)
+            		thisTextProgressBar.setVisibility(View.VISIBLE);
+            	else
+            		ToastTracker.showToast("textprogressbar none!!report");
             	if(mIsSource)
             		sourceSet = false;
             	else

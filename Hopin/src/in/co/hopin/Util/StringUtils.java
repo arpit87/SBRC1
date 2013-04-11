@@ -109,6 +109,19 @@ public class StringUtils {
 		}		
 		return false;
 	}
+    
+    public static String parseName(String paramString)
+    {
+         if (paramString == null) {
+           return null;
+        }
+        int i = paramString.lastIndexOf("@");
+        if (i <= 0) {
+           return paramString;
+         }
+    
+         return paramString.substring(0, i);
+     }
 	
 	
 }

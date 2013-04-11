@@ -52,7 +52,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
             //Log.e(TAG, e.getMessage());
         }
         postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
+        //Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
         httpQueryAddRequest.setEntity(postEntityAddRequest);
 
 

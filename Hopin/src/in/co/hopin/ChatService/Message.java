@@ -3,10 +3,13 @@ package in.co.hopin.ChatService;
 
 
 import in.co.hopin.ChatClient.SBChatMessage;
+import in.co.hopin.Util.StringUtils;
+
+import org.jivesoftware.smack.packet.XMPPError;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-import org.jivesoftware.smack.packet.XMPPError;
-import org.jivesoftware.smack.util.StringUtils;
+
 
 //mFrom,to should have ip appended
 //getParticipant gives name widout ip

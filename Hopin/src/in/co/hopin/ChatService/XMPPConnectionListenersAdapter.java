@@ -119,6 +119,8 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		mLogin = login;
 		mPassword = password;
 		//Log.d(TAG, "login async called");
+		if(mLogin == "" || mPassword == "")
+			return;
 		if(!mXMPPConnection.isConnected())
 		{
 			if(tryinConnecting.getAndSet(true))

@@ -2,6 +2,7 @@ package in.co.hopin.ChatClient;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class SBChatListViewAdapter extends BaseAdapter {
 
+	private static String TAG = "in.co.hopin.ChatClient.SBChatListViewAdapter";
 	List<SBChatMessage> mListMessages = new ArrayList<SBChatMessage>();
 	HashMap<Long,SBChatMessage> mHashMapSentNotDeliveredMsgs = new HashMap<Long,SBChatMessage>();
 	String participantFBURL = "";
@@ -81,7 +83,7 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	
 	public void addAllToList(List<SBChatMessage> listMessages)
 	{
-		mListMessages.addAll(listMessages);
+		mListMessages.addAll(listMessages);		
 	}
 
 	/**
@@ -122,20 +124,19 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	    String imageURL = "";
 	    String statusText = "";
 	    String time = "";
-		LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-		
+		LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);		
 	    SBChatMessage msg = mListMessages.get(position);	
 	    if(msg.getInitiator().equalsIgnoreCase(selfFBId))
 	    {
 	    	chatRowView = inflater.inflate(R.layout.chat_msg_row_my, null);	    	
 	    	imageURL = selfImageURL;	   
-	    
+	    	 Log.d(TAG,"self msg"+msg.getMessage());
 	    }
 	    else
 	    {
 	    	 chatRowView = inflater.inflate(R.layout.chat_msg_row_other, null);	    	 	
 	 	     imageURL = participantFBURL;		    	
-	
+	 	     Log.d(TAG,"othr person msg"+msg.getMessage());
 	    }  
 	    	msgText = (TextView) chatRowView.findViewById(R.id.chatmessagetext);
 	    	msgStatus = (TextView) chatRowView.findViewById(R.id.chatmessagestatusandtime);

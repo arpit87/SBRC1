@@ -3,6 +3,9 @@ package in.co.hopin.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +23,15 @@ import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.R;
 
 import in.co.hopin.Adapter.HistoryAdapter;
+import in.co.hopin.ChatClient.ChatWindow;
+import in.co.hopin.ChatClient.SBChatMessage;
+import in.co.hopin.ChatService.Message;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
 
 import java.util.LinkedList;
@@ -70,7 +78,7 @@ public class StartStrangerBuddyActivity extends Activity {
 		String uuid = ThisAppInstallation.id(this.getBaseContext());
 		ThisAppConfig.getInstance().putString(ThisAppConfig.APPUUID,uuid);
 		ThisAppConfig.getInstance().putBool(ThisAppConfig.NEWUSERPOPUP,true);
-		ThisAppConfig.getInstance().putInt(ThisAppConfig.APPOPENCOUNT,0);
+		ThisAppConfig.getInstance().putInt(ThisAppConfig.APPOPENCOUNT,1);
 		//with uuid means first time start
 		final Intent show_tutorial = new Intent(this,Tutorial.class);
 		show_tutorial.putExtra("uuid", uuid);
@@ -80,8 +88,48 @@ public class StartStrangerBuddyActivity extends Activity {
 	        	  finish();
 	          }};
 		Platform.getInstance().getHandler().postDelayed(r, 2000);
+		
+		Runnable welcomeMessage = new Runnable() {
+	          public void run() {	        		  
+	        	  String admin_fbid = getResources().getString(R.string.hopin_admin_girl_fbid);
+	        	  int admin_fbid_hash = admin_fbid.hashCode();
+	        	  String admin_name = getResources().getString(R.string.hopin_admin_girl_name);
+	        	  String admin_welcome_message = getResources().getString(R.string.hopin_admin_girl_welcomemessage);
+	        	  sendWelcomeNotification(admin_fbid_hash, admin_fbid, admin_name, admin_welcome_message);
+	          }};
+	    Platform.getInstance().getHandler().postDelayed(welcomeMessage, 1*60*1000);      
 	}
+    
+    public void sendWelcomeNotification(int id,String participant,String participant_name,String chatMessage) {
 
+    	 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		 Intent chatIntent = new Intent(this,ChatWindow.class);
+		 	chatIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		   chatIntent.putExtra(ChatWindow.PARTICIPANT, participant);
+		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		 
+		  	
+		   //Log.i(TAG, "Sending notification") ;	    
+		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
+		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		 
+		 Notification notif = new Notification(R.drawable.launchernew,"Welcome message from "+participant_name,System.currentTimeMillis());
+		 notif.flags |= Notification.FLAG_AUTO_CANCEL;
+		 notif.setLatestEventInfo(this, participant_name, chatMessage, pintent);
+				
+		 Message welcome_message = new Message("", participant, chatMessage, StringUtils.gettodayDateInFormat("hh:mm"),Message.MSG_TYPE_CHAT, SBChatMessage.RECEIVED);
+		 ChatHistory.addtoChatHistory(welcome_message);
+		 
+			notif.ledARGB = 0xff0000ff; // Blue color
+			notif.ledOnMS = 1000;
+			notif.ledOffMS = 1000;
+			notif.defaults |= Notification.DEFAULT_LIGHTS;	
+			notif.sound = sound_uri;
+      
+			notificationManager.notify(id, notif);
+			//Log.i(TAG, "notification sent") ;
+		    }
+
+   
     private boolean isLocationProviderEnabled() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);

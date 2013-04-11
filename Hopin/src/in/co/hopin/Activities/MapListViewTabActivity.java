@@ -109,7 +109,6 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         }
         //checkIfGPSIsEnabled();
         
-        
     }
     
     @Override
@@ -178,7 +177,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     	ThisUserNew.clearAllData();
     	CurrentNearbyUsers.getInstance().clearAllData();    	  
         int count = ThisAppConfig.getInstance().getInt(ThisAppConfig.APPOPENCOUNT);     	
-     	ThisAppConfig.getInstance().putInt(ThisAppConfig.APPOPENCOUNT,++count);
+     	ThisAppConfig.getInstance().putInt(ThisAppConfig.APPOPENCOUNT,count++);
      	if(count%5==0)
      	{
      		//show msg every fifth time ap is closed

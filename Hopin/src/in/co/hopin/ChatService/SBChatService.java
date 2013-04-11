@@ -155,7 +155,7 @@ public class SBChatService extends Service {
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
-		 Notification notif = new Notification(R.drawable.launchernew32,"New message from "+participant_name,System.currentTimeMillis());
+		 Notification notif = new Notification(R.drawable.launchernew,"New message from "+participant_name,System.currentTimeMillis());
 		 notif.flags |= Notification.FLAG_AUTO_CANCEL;
 		 notif.setLatestEventInfo(this, participant_name, chatMessage, pintent);
 				 /*

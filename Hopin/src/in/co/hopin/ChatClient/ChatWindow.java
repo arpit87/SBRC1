@@ -11,13 +11,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
+import in.co.hopin.Activities.SettingsActivity;
 import in.co.hopin.ChatService.*;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
+import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
@@ -29,13 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatWindow extends Activity{
+public class ChatWindow extends FragmentActivity{
 	
 	private static String TAG = "in.co.hopin.ChatClient.ChatWindow";
 	public static String PARTICIPANT = "participant";
 	public static String TRAVELINFO = "travel_info";
 	public static String DAILYINSTATYPE = "daily_insta";
-	public static String PARTICIPANT_NAME = "name";
+	public static String PARTICIPANT_NAME = "name";	
 	private IXMPPAPIs xmppApis = null;
 	private TextView mContactNameTextView;
    // private ImageView mContactPicFrame;	 
@@ -50,9 +54,9 @@ public class ChatWindow extends Activity{
     private IMessageListener mMessageListener = new SBOnChatMessageListener();
     private ISBChatConnAndMiscListener mCharServiceConnMiscListener = new SBChatServiceConnAndMiscListener();
     private final ChatServiceConnection mChatServiceConnection = new ChatServiceConnection();
-    private String mParticipantFBID = "";  
+    private String mParticipantFBID = "";
     private String mParticipantName = "";       
-    private String mParticipantImageURL = "";    
+    private String mParticipantImageURL = "";   
     private SBChatBroadcastReceiver mSBBroadcastReceiver = new SBChatBroadcastReceiver();
     Handler mHandler = new Handler();
     private SBChatListViewAdapter mMessagesListAdapter = new SBChatListViewAdapter(this);
@@ -64,6 +68,7 @@ public class ChatWindow extends Activity{
 	private FacebookConnector fbconnect; // required if user not logged in
 	PopupWindow popUpMenu;
     private NotificationManager notificationManager;
+    private boolean mFBLoggedIn = false;
 
     
 		    
@@ -106,6 +111,7 @@ public class ChatWindow extends Activity{
 		mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
 		mThisUserChatFullName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
 }
 	    
 	    
@@ -114,7 +120,7 @@ public class ChatWindow extends Activity{
 @Override
 public void onResume() {
 	super.onResume();
-	//set participant before binding
+	//set participant before binding	
 	mParticipantFBID = getIntent().getStringExtra(PARTICIPANT);	
     if(StringUtils.isBlank(mParticipantFBID))
 	  return;
@@ -122,25 +128,19 @@ public void onResume() {
 	mParticipantName = getIntent().getStringExtra(PARTICIPANT_NAME);
 	mContactNameTextView.setText(mParticipantName);
 	mParticipantImageURL = "http://graph.facebook.com/" + mParticipantFBID + "/picture?type=small";
-	mMessagesListAdapter.setParticipantFBURL(mParticipantImageURL);
+	mMessagesListAdapter.clearList();
+	mMessagesListAdapter.setParticipantFBURL(mParticipantImageURL);	
 	//mContactNameTextView.setText(mReceiver);
 	//getParticipantInfoFromFBID(mParticipantFBID);
 	if (!mBinded) 
 		bindToService();
 	else
-		try {
-			changeCurrentChat();
+		try {			
+				changeCurrentChat();
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	
-		
-		//String fromMessage = getIntent().getStringExtra("frommessage");
-		//mMessagesListAdapter.addMessage(new SBChatMessage(from, from, fromMessage, false, new Date().toString()));    
-		//mMessagesListAdapter.notifyDataSetChanged();		
-	
-	//setTitle(getString(R.string.conversation_name) +": " +jid);
 	
 }
 
@@ -291,7 +291,14 @@ private void showPopupMenu(View v)
 		private void sendMessage() {
 		final String inputContent = mInputField.getText().toString();	
 		SBChatMessage lastMessage = null;
-		if(!"".equals(inputContent))
+		if(!mFBLoggedIn)
+		{
+			//Log.i(TAG,"chat sent click but not fb logged in");			
+			fbconnect = new FacebookConnector(ChatWindow.this);
+			FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
+			fblogin_dialog.show(ChatWindow.this.getSupportFragmentManager(), "fblogin_dialog");  					
+		}
+		else if(!"".equals(inputContent))
 		{
 			Message newMessage = new Message(mParticipantFBID);
 			newMessage.setBody(inputContent);
@@ -361,7 +368,6 @@ private void showPopupMenu(View v)
 	    		chatAdapter.setOpen(true);
 	    		chatAdapter.addMessageListener(mMessageListener);
 	    		fetchPastMsgsIfAny();
-	    	    
 	    	}
 	    	//getParticipantInfoFromFBID(participant);	    	
 	    	
@@ -371,19 +377,23 @@ private void showPopupMenu(View v)
 	     * Get all messages from the current chat and refresh the activity with them.
 	     * @throws RemoteException If a Binder remote-invocation error occurred.
 	     */
-	    private void fetchPastMsgsIfAny() throws RemoteException {
-	    	mMessagesListAdapter.clearList();
+	private void fetchPastMsgsIfAny() throws RemoteException {
+		mMessagesListAdapter.clearList();		
 		if (chatAdapter != null) {
 			List<Message> chatMessages = chatAdapter.getMessages();
-			if(chatMessages.size()>0)
-			{
-			    List<SBChatMessage> msgList = convertMessagesList(chatMessages);
-			    mMessagesListAdapter.addAllToList(msgList);
-			    mMessagesListAdapter.notifyDataSetChanged();
-			    mMessagesListView.setSelection(mMessagesListView.getCount()-1);
-			}
+		
+		if (chatMessages.size() > 0) {
+			List<SBChatMessage> msgList = convertMessagesList(chatMessages);
+			mMessagesListAdapter.addAllToList(msgList);
+			Log.d(TAG,
+					"list adapter size in fetch past"
+							+ mMessagesListAdapter.getCount());
+			mMessagesListAdapter.notifyDataSetChanged();
+			mMessagesListView.setSelection(mMessagesListView.getCount() - 1);
 		}
-	    }
+		}
+	}
+	    
 
 	    /**
 	     * Convert a list of Message coming from the service to a list of MessageText that can be displayed in UI.

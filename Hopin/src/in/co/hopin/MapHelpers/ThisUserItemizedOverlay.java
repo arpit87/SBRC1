@@ -1,6 +1,7 @@
 package in.co.hopin.MapHelpers;
 
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
+import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
 
@@ -41,10 +42,13 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 	
 	@Override
 	public void addThisUser() {
-		
-		selfOverlayItem=new ThisUserOverlayItem(ThisUserNew.getInstance().getCurrentGeoPoint(), ThisUserNew.getInstance().getUserID(), "",mMapView);
-		userList.add(selfOverlayItem);
-		populate();
+		SBGeoPoint currentGeopoint = ThisUserNew.getInstance().getCurrentGeoPoint();
+		if(currentGeopoint != null)
+		{
+			selfOverlayItem=new ThisUserOverlayItem(currentGeopoint, ThisUserNew.getInstance().getUserID(), "",mMapView);
+			userList.add(selfOverlayItem);
+			populate();
+		}
 	}
 	
 	public void  updateThisUser()
@@ -55,10 +59,14 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 		{			
 			userList.remove(selfOverlayItem);			
 		}
-		selfOverlayItem=new ThisUserOverlayItem(ThisUserNew.getInstance().getSourceGeoPoint(), ThisUserNew.getInstance().getUserID(), "",mMapView);
-		//Log.i(TAG,"adding new this overlay");
-		userList.add(selfOverlayItem);
-		populate();
+		SBGeoPoint sourceGeopoint = ThisUserNew.getInstance().getSourceGeoPoint();
+		if(sourceGeopoint != null)
+		{
+			selfOverlayItem=new ThisUserOverlayItem(sourceGeopoint, ThisUserNew.getInstance().getUserID(), "",mMapView);
+			//Log.i(TAG,"adding new this overlay");
+			userList.add(selfOverlayItem);
+			populate();
+		}
 	}
 	
 	protected boolean onTap(int i)
