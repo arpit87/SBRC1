@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:gravity="center"
+    android:background="@color/black">
+ <Button
+     android:id="@+id/chat_popupmenu_profile"     
+     android:text="Profile"
+     android:textColor="@color/white"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"
+     android:background="@drawable/borderless_button"
+     android:textSize="20sp"
+     android:paddingTop="5dip"
+     android:paddingBottom="5dip"
+     android:paddingLeft="20dip"
+     android:paddingRight="20dip"
+    />
+ <View android:layout_height="1dip"
+     android:layout_width="match_parent"
+     android:background="@color/light_gray"/>
+ 
+  <Button
+     android:id="@+id/chat_popupmenu_block"
+     android:soundEffectsEnabled="true"       
+     android:text="Block"
+     android:background="@drawable/borderless_button"
+     android:textColor="@color/white"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent"
+     android:textSize="20sp"
+     android:paddingTop="5dip"
+     android:paddingBottom="5dip"     
+     />
+    
+
+</LinearLayout>

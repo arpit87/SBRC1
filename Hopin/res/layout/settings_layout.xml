@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:gravity="center_horizontal">
+
+    <TextView
+            android:id="@+id/search_users_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2.0dip"
+            android:paddingTop="2.0dip"
+            android:text="Settings"
+            android:textColor="@color/black"
+            android:textSize="20dip"
+            android:textStyle="bold"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_rectangle_background_gray"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="2dip"
+            android:orientation="vertical">
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="20dip"
+                        android:text="Popup notifications"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    <TableRow android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginTop="5dip">
+                        <TextView
+                                android:id="@+id/settings_newuser_showpopup_text"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/gray"
+                                android:textSize="15dip"
+                                android:text="Show popup when new matching user found"
+                                android:paddingLeft="10dip"
+                                android:paddingRight="40dip"
+                                android:layout_weight="4"                               
+                                android:ellipsize="marquee"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"
+                                />
+
+                        <CheckBox
+                                android:id="@+id/settings_newuser_showpopup_checkbox"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/checkbox_selector"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                />
+                         </TableRow>
+                </TableLayout>
+                   
+            
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/gray"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+            
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="20dip"
+                        android:text="Privacy"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+                <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    <TableRow android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginTop="5dip">
+                        <TextView
+                                android:id="@+id/settings_fbfriendonly_text"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/gray"
+                                android:textSize="15dip"
+                                android:text="Visible only to FB friends and FOF"
+                                android:paddingLeft="10dip"
+                                android:paddingRight="40dip"
+                                android:layout_weight="4"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"
+                                />
+
+                        <CheckBox
+                                android:id="@+id/settings_fbfriendonly_checkbox"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/checkbox_selector"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                />
+                    </TableRow>
+
+                    <TableRow android:id="@+id/settings_womenfilter_tablerow"
+                         	   android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_marginTop="5dip">
+                        <TextView
+                                android:id="@+id/settings_womenfilter_text"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/gray"
+                                android:textSize="15dip"
+                                android:text="Visible only to women and vice versa"
+                                android:paddingLeft="10dip"
+                                android:paddingRight="40dip"
+                                android:layout_weight="4"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"
+                                />
+
+                        <CheckBox
+                                android:id="@+id/settings_womenfilter_checkbox"
+                                android:layout_width="0dip"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/checkbox_selector"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                />
+                    </TableRow>
+                </TableLayout>
+
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/gray"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+
+
+                <LinearLayout
+                        android:id="@+id/settings_blockedusers_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:clickable="true">
+
+                    <TextView
+                            android:id="@+id/settings_blockedusers_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="20dip"
+                            android:text="Blocked"
+                            android:layout_marginTop="10dip"
+                            android:layout_marginLeft="5dip"/>
+
+                    <TextView
+                            android:id="@+id/settings_blockedusers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="15dip"
+                            android:text="Unblock the blocked people"
+                            android:layout_marginLeft="5dip"
+                            android:layout_marginBottom="10dip"/>
+
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/gray"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+                
+                 <LinearLayout
+                        android:id="@+id/settings_feedback_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:clickable="true">
+  					<TextView
+                            android:id="@+id/settings_feedback_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="20dip"
+                            android:text="Feedback"
+                            android:layout_marginTop="10dip"
+                            android:layout_marginLeft="5dip"/>
+
+                    <TextView
+                            android:id="@+id/settings_feedbacktext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="15dip"
+                            android:text="We will be very grateful to have your valuable feedback"
+                            android:layout_marginLeft="5dip"
+                            android:layout_marginBottom="10dip"/>
+
+                </LinearLayout>
+                
+                   <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/gray"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginLeft="5dip"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
