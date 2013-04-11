@@ -229,6 +229,9 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 	
 	public void findUsers()
 	{ 
+		if(source_progressbar!=null)
+			source_progressbar.setVisibility(View.INVISIBLE);
+		destination_progressbar.setVisibility(View.INVISIBLE);
 		if (!SBConnectivity.isConnected()){
             showErrorDialog("No Network found!", "Please check your network connection.");
             return;        
@@ -394,12 +397,13 @@ public abstract class AbstractSearchInputFrag extends Fragment{
     	String mAddress = "";
     	AutoCompleteTextView mThisTextView;
     	boolean mIsSource = false;
+    	ProgressBar mThisProgressBar = null;
     	
     	FetchAddressSuggestionsAndShowPopup(AutoCompleteTextView thisTextView,boolean isSource)
     	{
     		super();
     		mThisTextView = thisTextView;
-    		mIsSource = isSource;
+    		mIsSource = isSource;    		
     	}
     	
     	@Override
@@ -531,8 +535,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             if(s!=null && s.length() > 0) {
             	if(thisTextProgressBar!=null)
             		thisTextProgressBar.setVisibility(View.VISIBLE);
-            	else
-            		ToastTracker.showToast("textprogressbar none!!report");
+            	
             	if(mIsSource)
             		sourceSet = false;
             	else

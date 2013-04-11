@@ -130,13 +130,13 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	    {
 	    	chatRowView = inflater.inflate(R.layout.chat_msg_row_my, null);	    	
 	    	imageURL = selfImageURL;	   
-	    	 Log.d(TAG,"self msg"+msg.getMessage());
+	    	// Log.d(TAG,"self msg"+msg.getMessage());
 	    }
 	    else
 	    {
 	    	 chatRowView = inflater.inflate(R.layout.chat_msg_row_other, null);	    	 	
 	 	     imageURL = participantFBURL;		    	
-	 	     Log.d(TAG,"othr person msg"+msg.getMessage());
+	 	    // Log.d(TAG,"othr person msg"+msg.getMessage());
 	    }  
 	    	msgText = (TextView) chatRowView.findViewById(R.id.chatmessagetext);
 	    	msgStatus = (TextView) chatRowView.findViewById(R.id.chatmessagestatusandtime);

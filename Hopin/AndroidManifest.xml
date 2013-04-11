@@ -2,8 +2,8 @@
 <manifest 
 	xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.co.hopin"
-    android:versionCode="2"
-    android:versionName="HopinBeta 1.1"   >
+    android:versionCode="3"
+    android:versionName="HopinBeta 1.2"   >
     
      <uses-sdk android:minSdkVersion="8" 
           android:targetSdkVersion="11"
@@ -20,7 +20,7 @@
         android:icon="@drawable/launchernew"
         android:label="@string/app_name"
         android:name="in.co.hopin.Activities.StrangerBuddy"
-        android:debuggable="true"
+        android:debuggable="false"
         android:theme="@style/Theme.HopinTheme"
         android:screenOrientation="portrait"
          >

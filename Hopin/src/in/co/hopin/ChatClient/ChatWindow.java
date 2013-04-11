@@ -385,9 +385,7 @@ private void showPopupMenu(View v)
 		if (chatMessages.size() > 0) {
 			List<SBChatMessage> msgList = convertMessagesList(chatMessages);
 			mMessagesListAdapter.addAllToList(msgList);
-			Log.d(TAG,
-					"list adapter size in fetch past"
-							+ mMessagesListAdapter.getCount());
+			//Log.d(TAG,"list adapter size in fetch past"	+ mMessagesListAdapter.getCount());
 			mMessagesListAdapter.notifyDataSetChanged();
 			mMessagesListView.setSelection(mMessagesListView.getCount() - 1);
 		}
