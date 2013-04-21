@@ -2,7 +2,11 @@ package in.co.hopin.Users;
 
 import in.co.hopin.HelperClasses.JSONHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.Platform.Platform;
+
 import org.json.JSONObject;
+
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +33,7 @@ public class CurrentNearbyUsers {
 	{		
 		//we temporarily put new users in new list and MapHandler has to check if changed and callupdate then we change current to new
 		//we return null for 0 users so check for null always while getting nearby users
-		//Log.i(TAG,"updating nearby users");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"updating nearby users");
 		updatedToCurrent = false;
 		mNewNearbyUserList = JSONHandler.getInstance().GetNearbyUsersInfoFromJSONObject(body);	
 		if(mNewNearbyUserList!=null)
@@ -75,7 +79,7 @@ public class CurrentNearbyUsers {
 	public boolean usersHaveChanged()
 	{
         boolean haveUsersChanged = false;
-		//Log.i(TAG,"chking if usr changed ");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"chking if usr changed ");
 		if(!updatedToCurrent) {
 			if ((mCurrentNearbyUserList == null && mNewNearbyUserList == null))
 					ToastTracker.showToast("Sorry no match found");

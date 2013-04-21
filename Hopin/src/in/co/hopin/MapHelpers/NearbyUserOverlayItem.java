@@ -147,20 +147,27 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 		hometown_str = mNearbyUser.getUserFBInfo().getHometown();
 		gender_str = mNearbyUser.getUserFBInfo().getGender();
 		
-		if(name_str!="")
-			fb_name.setText(name_str);
+		fb_name.setText(name_str);		
 		
-		if(worksat_str!="")
+		if(worksat_str!="null")
 			works_at.setText("Works at "+worksat_str);
+		else
+			works_at.setVisibility(View.GONE);
 		
-		if(studiedat_str!="")
+		if(studiedat_str!="null")
 			studied_at.setText("Studied at " +studiedat_str);
+		else
+			studied_at.setVisibility(View.GONE);
 		
-		if(hometown_str!="")
+		if(hometown_str!="null")
 			hometown.setText("HomeTown " + hometown_str);
+		else
+			hometown.setVisibility(View.GONE);
 		
-		if(gender_str!="")
+		if(gender_str!="null")
 			gender.setText("Gender "+gender_str);
+		else
+			gender.setVisibility(View.GONE);
 		
 		
 	}
@@ -277,7 +284,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			isVisibleExpanded = false;
 		}
 		else {
-			//Log.i(TAG,"trying to remove expanded null View");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove expanded null View");
         }
 	}	
 	
@@ -289,7 +296,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			isVisibleSmall = false;
 		}
 		else {
-			//Log.i(TAG,"trying to remove null View");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove null View");
         }
 	}	
 	

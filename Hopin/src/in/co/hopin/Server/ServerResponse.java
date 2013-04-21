@@ -1,5 +1,7 @@
 package in.co.hopin.Server;
 
+import in.co.hopin.Platform.Platform;
+
 import java.io.*;
 
 import org.apache.http.HttpEntity;
@@ -83,14 +85,14 @@ public class ServerResponse {
 			}
             json = builder.toString();
         } catch (Exception e) {
-            //Log.e("Buffer Error", "Error converting result " + e.toString());
+            //if (Platform.getInstance().isLoggingEnabled()) Log.e("Buffer Error", "Error converting result " + e.toString());
         }
  
         // try parse the string to a JSON object
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
-            //Log.e("JSON Parser", "Error parsing data " + e.toString());
+           // if (Platform.getInstance().isLoggingEnabled()) Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
  
         // return JSON String

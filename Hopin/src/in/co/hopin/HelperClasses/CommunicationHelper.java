@@ -55,7 +55,7 @@ public class CommunicationHelper {
 			}
 			else 
 			{
-				//Log.d(TAG,"FBLogged in but not chat!!Server working properly for chat req?sending again");
+				if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"FBLogged in but not chat!!Server working properly for chat req?sending again");
 				//sending fbinfo n chatreq again
 				if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
 				{

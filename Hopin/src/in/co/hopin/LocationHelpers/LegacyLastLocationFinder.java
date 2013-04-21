@@ -16,6 +16,8 @@
 
 package in.co.hopin.LocationHelpers;
 
+import in.co.hopin.Platform.Platform;
+
 import java.util.List;
 
 import android.content.Context;
@@ -120,7 +122,7 @@ public class LegacyLastLocationFinder implements ILastLocationFinder {
    */
   protected LocationListener singeUpdateListener = new LocationListener() {
     public void onLocationChanged(Location location) {
-      //Log.d(TAG, "Single Location Update Received: " + location.getLatitude() + "," + location.getLongitude());
+      if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Single Location Update Received: " + location.getLatitude() + "," + location.getLongitude());
       if (locationListener != null && location != null)
         locationListener.onLocationChanged(location);
       locationManager.removeUpdates(singeUpdateListener);

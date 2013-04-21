@@ -142,6 +142,42 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         final AlertDialog alert = builder.create();
         alert.show();
     }
+    
+    private void buildOnExitAlertDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final String instaReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_INSTA);
+        final String carpoolReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_CARPOOL);
+        if(StringUtils.isBlank(instaReqJson) && StringUtils.isBlank(carpoolReqJson))
+        {
+           Platform.getInstance().stopChatService();
+           finish();
+           return;
+        }       
+        builder.setMessage("Do you want to delete the carpool request(s) you placed?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                    	if(!StringUtils.isBlank(instaReqJson))
+                    	{
+                    		DeleteRequest deleteInstaRequest = new DeleteRequest(1);
+                    		SBHttpClient.getInstance().executeRequest(deleteInstaRequest);
+                    	}
+                    	if(!StringUtils.isBlank(carpoolReqJson))
+                    	{
+                    		DeleteRequest deleteCarPoolRequest = new DeleteRequest(0);
+                    		SBHttpClient.getInstance().executeRequest(deleteCarPoolRequest);
+                    	}
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                    	finish();
+                        return;
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
     @Override
     public void onStop(){
@@ -256,8 +292,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         	break;
         case R.id.exit_app_menuitem:
         	//delete user request,close service
-        	Platform.getInstance().stopChatService();
-        	finish();
+        	buildOnExitAlertDialog();
+                     	
         	break; 
    	/* case R.id.test_app_menuitem:
    		ShowActiveReqPrompt activereq_dialog = new ShowActiveReqPrompt();
@@ -349,8 +385,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     		mMapView.getOverlays().clear();    		
     		MapListActivityHandler.getInstance().setMapView(mMapView);
             MapListActivityHandler.getInstance().setUnderlyingActivity(this);
-            //Log.i(TAG,"initialize handler");
-            //Log.i(TAG,"initialize mylocation");
+            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize handler");
+            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize mylocation");
             MapListActivityHandler.getInstance().initMyLocation();
     		//mMapViewContainer.removeView(mMapView);
     	}

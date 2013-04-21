@@ -7,6 +7,7 @@ import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.HttpClient.GetMatchingCarPoolUsersRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserAttributes;
 import android.util.Log;
 import org.apache.http.HttpResponse;
@@ -28,10 +29,10 @@ public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
 	@Override
 	public void process() {
 		//this process is not called if u make syncd consecutive requests,that time only last process called
-		//Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"processing AddUsersResponse response.status:"+this.getStatus());	
 		
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		//Log.i(TAG,"got json "+jobj.toString());
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");
 			//ToastTracker.showToast("added this user src,dst for car pool,fetching match");
@@ -42,7 +43,7 @@ public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
 	        SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
 			
 		} catch (JSONException e) {
-			//Log.e(TAG, "Error returned by server on user add scr dst");
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add scr dst");
 			ToastTracker.showToast("Network error,try again");
 			ProgressHandler.dismissDialoge();
 			e.printStackTrace();

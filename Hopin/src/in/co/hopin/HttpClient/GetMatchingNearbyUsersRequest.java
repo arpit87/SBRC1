@@ -1,5 +1,6 @@
 package in.co.hopin.HttpClient;
 
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.GetMatchingNearbyUsersResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
@@ -55,7 +56,7 @@ public class GetMatchingNearbyUsersRequest extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntitygetNearbyUsers.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		//Log.d("debug", "calling server:"+jsonobjGetNearbyUsers.toString());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobjGetNearbyUsers.toString());	
 		httpQueryGetNearbyUsers.setEntity(postEntitygetNearbyUsers);
 		
 	}

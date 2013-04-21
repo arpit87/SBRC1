@@ -126,7 +126,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			isVisibleSmall = false;
 		}
 		else {
-			//Log.i(TAG,"trying to remove null View");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove null View");
         }
 	}	
 	
@@ -138,7 +138,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			isVisibleExpanded = false;
 		}
 		else {
-			//Log.i(TAG,"trying to remove expanded null View");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove expanded null View");
         }
 	}	
 	
@@ -149,7 +149,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			viewOnMarkerIndividualExpanded.setVisibility(View.GONE);			
 		}
 		else {
-			//Log.i(TAG,"trying to remove expanded null View");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove expanded null View");
         }
 	}
 	
@@ -392,8 +392,11 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 					removeExpandedView();
 					showSmallView();
 				}
-				});
+				});			
 			
+			int numUsers = gridViewAdapter.getCount();
+			if(numUsers < 3)
+				picGridView.setNumColumns(numUsers);
 			picGridView.setAdapter(gridViewAdapter);
             mMapView.addNearbyUserView(viewOnMarkerExpanded, params);
 			viewOnMarkerExpanded.setVisibility(View.VISIBLE);

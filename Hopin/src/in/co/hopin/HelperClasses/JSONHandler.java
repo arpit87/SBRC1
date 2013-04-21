@@ -1,5 +1,6 @@
 package in.co.hopin.HelperClasses;
 
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 
 import java.io.BufferedReader;
@@ -71,14 +72,14 @@ public class JSONHandler {
 				}			
             json = builder.toString();
         } catch (Exception e) {
-            Log.e("Buffer Error", "Error converting result " + e.toString());
+            if (Platform.getInstance().isLoggingEnabled()) Log.e("Buffer Error", "Error converting result " + e.toString());
         }
  
         // try parse the string to a JSON object
         try {
             jObj = new JSONObject(json);            
         } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
+            if (Platform.getInstance().isLoggingEnabled()) Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
 		return jObj;
 		
@@ -99,7 +100,7 @@ public class JSONHandler {
 			for(int i=0;i<users.length();i++)
 			{
 				JSONObject thisOtherUser=users.getJSONObject(i);
-				//Log.d("json",thisOtherUser.toString());
+				if (Platform.getInstance().isLoggingEnabled()) Log.d("json",thisOtherUser.toString());
 				NearbyUser u = new NearbyUser(thisOtherUser);
 				nearbyUsers.add((u));				
 			}

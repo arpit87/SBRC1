@@ -11,6 +11,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.GetMatchingCarPoolUsersResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
@@ -52,7 +53,7 @@ public class GetMatchingCarPoolUsersRequest  extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntitygetNearbyUsers.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		//Log.d("debug", "calling server:"+jsonobjGetNearbyUsers.toString());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobjGetNearbyUsers.toString());	
 		httpQueryGetNearbyUsers.setEntity(postEntitygetNearbyUsers);
 		
 	}

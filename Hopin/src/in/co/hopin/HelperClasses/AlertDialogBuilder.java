@@ -14,14 +14,14 @@ public class AlertDialogBuilder {
 
 			public void run() {				
 				alertDialog = new AlertDialog.Builder(context).create(); 
-	    		  alertDialog.setTitle(title);
-	    		  alertDialog.setMessage(message);
-	    		  alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+				alertDialog.setTitle(title);
+				alertDialog.setMessage(message);
+				alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
 	    	           public void onClick(DialogInterface dialog, int id) {
 	    	                dialog.cancel();
 	    	           }
 	    	       });
-	    		  alertDialog.show();			
+				alertDialog.show();			
 			}}));
 	}
 	

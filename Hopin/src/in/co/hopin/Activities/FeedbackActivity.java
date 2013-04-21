@@ -76,7 +76,7 @@ public class FeedbackActivity extends Activity{
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
+                    	dialog.cancel();
                         finish();
                     }
                 });

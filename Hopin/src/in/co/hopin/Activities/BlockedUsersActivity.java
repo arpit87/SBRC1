@@ -61,7 +61,7 @@ public class BlockedUsersActivity extends ListActivity{
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
+                    	dialog.cancel();
                     }
                 });
         final AlertDialog alert = builder.create();

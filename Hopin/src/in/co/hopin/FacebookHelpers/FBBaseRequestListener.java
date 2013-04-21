@@ -1,5 +1,7 @@
 package in.co.hopin.FacebookHelpers;
 
+import in.co.hopin.Platform.Platform;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,25 +19,25 @@ public abstract class FBBaseRequestListener implements RequestListener {
 
      
     public void onFacebookError(FacebookError e, final Object state) {
-        //Log.e("Facebook", e.getMessage());
+        if (Platform.getInstance().isLoggingEnabled()) Log.e("Facebook", e.getMessage());
         e.printStackTrace();
     }
 
      
     public void onFileNotFoundException(FileNotFoundException e, final Object state) {
-        //Log.e("Facebook", e.getMessage());
+        if (Platform.getInstance().isLoggingEnabled()) Log.e("Facebook", e.getMessage());
         e.printStackTrace();
     }
 
      
     public void onIOException(IOException e, final Object state) {
-        //Log.e("Facebook", e.getMessage());
+        if (Platform.getInstance().isLoggingEnabled()) Log.e("Facebook", e.getMessage());
         e.printStackTrace();
     }
 
      
     public void onMalformedURLException(MalformedURLException e, final Object state) {
-        //Log.e("Facebook", e.getMessage());
+        if (Platform.getInstance().isLoggingEnabled()) Log.e("Facebook", e.getMessage());
         e.printStackTrace();
     }
 

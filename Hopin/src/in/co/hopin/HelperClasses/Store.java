@@ -27,7 +27,7 @@ public class Store {
 	
 	public void saveBitmapToFile(Bitmap bm,String filename)
 	{
-		//Log.i(TAG,"saving bitmap to file");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"saving bitmap to file");
 	try
 	{
 		if(bm!=null && filename!=null)
@@ -39,19 +39,19 @@ public class Store {
 				bos.close();			
 			}
 		else {
-			//Log.i(TAG,"Bitmap,filename is null!!");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Bitmap,filename is null!!");
         }
 	}
 	catch(Exception e)
 	{
-		//Log.e(TAG,"Error saving bitmap"+e);
+		if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG,"Error saving bitmap"+e);
 		e.printStackTrace();
 	}
 	}
 	
 	public Bitmap getBitmapFromFile(String filename)
 	{
-		//Log.i(TAG,"getting bitmap from file");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"getting bitmap from file");
 		Bitmap bitmap = null;
 		try
 		{
@@ -62,12 +62,12 @@ public class Store {
 					bitmap = BitmapFactory.decodeFile(filePath);				
 				}
 			else {
-				//Log.i(TAG,"file doesnt exist!!");
+				if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"file doesnt exist!!");
             }
 		}
 		catch(Exception e)
 		{
-			//Log.e(TAG,"Error fetching bitmap"+e);
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG,"Error fetching bitmap"+e);
 			e.printStackTrace();
 		}
 		
@@ -85,12 +85,12 @@ public class Store {
 					f.delete();				
 				}
 			else {
-				//Log.i(TAG,"file doesnt exist!!");
+				if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"file doesnt exist!!");
             }
 		}
 		catch(Exception e)
 		{
-			//Log.e(TAG,"Error fetching bitmap"+e);
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG,"Error fetching bitmap"+e);
 			e.printStackTrace();
 		}
 	}

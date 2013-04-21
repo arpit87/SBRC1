@@ -108,7 +108,7 @@ public class StartStrangerBuddyActivity extends Activity {
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT, participant);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		 
 		  	
-		   //Log.i(TAG, "Sending notification") ;	    
+		   if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Sending notification") ;	    
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
@@ -126,7 +126,7 @@ public class StartStrangerBuddyActivity extends Activity {
 			notif.sound = sound_uri;
       
 			notificationManager.notify(id, notif);
-			//Log.i(TAG, "notification sent") ;
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "notification sent") ;
 		    }
 
    
@@ -141,7 +141,7 @@ public class StartStrangerBuddyActivity extends Activity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        //Log.e(TAG, "clicked yes..");
+                        if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "clicked yes..");
                         startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),0);
                     }
                 })
@@ -172,7 +172,7 @@ public class StartStrangerBuddyActivity extends Activity {
     public void onResume()
     {   	
     	super.onResume();
-        //Log.e(TAG, "onresume");
+        if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "onresume");
         if (!isLocationProviderEnabled()){
             buildAlertMessageForLocationProvider();           
         }
@@ -183,7 +183,7 @@ public class StartStrangerBuddyActivity extends Activity {
         else        	
         {
 	
-	        //Log.i(TAG,"started network listening ");
+	        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"started network listening ");
 	        SBLocationManager.getInstance().StartListeningtoNetwork();
             loadHistoryFromDB();
 	        platformContext = Platform.getInstance().getContext();
@@ -237,7 +237,7 @@ public class StartStrangerBuddyActivity extends Activity {
          public void run() 
          {
         	 counter++;
-        	 //Log.i(TAG, "timer task counter:"+counter);
+        	 if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "timer task counter:"+counter);
         	 SBGeoPoint currGeo;
         	 
         	 //check if it got location by singleUpdateintent which works for froyo+
@@ -267,12 +267,12 @@ public class StartStrangerBuddyActivity extends Activity {
 
     private void loadHistoryFromDB() {
         LinkedList<HistoryAdapter.HistoryItem> historyItemList = null;
-        //Log.e(TAG, "Fetching searches");
+        if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Fetching searches");
         ContentResolver cr = getContentResolver();
         Cursor cursor = cr.query(mHistoryUri, columns, null, null, null);
 
         if (cursor == null || cursor.getCount() == 0) {
-            //Log.e(TAG, "Empty result");
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Empty result");
         } else {
             LinkedList<HistoryAdapter.HistoryItem> historyItems = new LinkedList<HistoryAdapter.HistoryItem>();
             if (cursor.moveToFirst()) {

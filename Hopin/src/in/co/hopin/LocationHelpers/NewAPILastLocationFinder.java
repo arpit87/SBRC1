@@ -16,6 +16,8 @@
 
 package in.co.hopin.LocationHelpers;
 
+import in.co.hopin.Platform.Platform;
+
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -135,7 +137,7 @@ public class NewAPILastLocationFinder implements ILastLocationFinder {
       
       String key = LocationManager.KEY_LOCATION_CHANGED;
       Location location = (Location)intent.getExtras().get(key);
-      //Log.d(TAG, "Single Location intent Update Received: " + location.getLatitude() + "," + location.getLongitude());
+      if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Single Location intent Update Received: " + location.getLatitude() + "," + location.getLongitude());
       if (locationListener != null && location != null)
         locationListener.onLocationChanged(location);
       

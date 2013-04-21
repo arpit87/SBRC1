@@ -1,6 +1,7 @@
 package in.co.hopin.HttpClient;
 
 import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.DeleteReqResponse;
 import in.co.hopin.Server.FeedbackResponse;
 import in.co.hopin.Server.ServerConstants;
@@ -58,7 +59,7 @@ public class FeedbackRequest extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntityUser.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		//Log.d("debug", "calling server:"+jsonobj.toString());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntityUser);
         
 	}

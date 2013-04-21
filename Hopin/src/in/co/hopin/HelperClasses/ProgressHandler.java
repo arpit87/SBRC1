@@ -72,8 +72,8 @@ public class ProgressHandler {
 			{
 				Platform.getInstance().getHandler().post((new Runnable(){
 					public void run() {
-					progressDialog.setTitle(title);
-					progressDialog.setMessage(message);
+						progressDialog.setTitle(title);
+						progressDialog.setMessage(message);
 				}}));
 			}
 		}

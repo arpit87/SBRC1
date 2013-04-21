@@ -33,10 +33,10 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		//Log.i(TAG,"processing GetOtherUserProfileResponse response.status:"+this.getStatus());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"processing GetOtherUserProfileResponse response.status:"+this.getStatus());	
 		
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		//Log.i(TAG,"got json "+jobj.toString());
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"got json "+jobj.toString());
 		try {
 			ProgressHandler.dismissDialoge();
 			body = jobj.getJSONObject("body");
@@ -51,7 +51,7 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 			//ToastTracker.showToast("fb save:"+status);
 		} catch (JSONException e) {			
 			ToastTracker.showToast("Some error occured");
-			//Log.e(TAG, "Error returned by server get fb info for user and show popup");
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");
 			e.printStackTrace();
 		}
 		

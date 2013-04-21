@@ -12,6 +12,7 @@ import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
 
@@ -34,13 +35,13 @@ public class SBListFragment extends ListFragment {
 	public void onCreate(Bundle savedState) {
         super.onCreate(null);
 		//update listview
-        //Log.i(TAG,"on create list view");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"on create list view");
         nearbyUserlist = CurrentNearbyUsers.getInstance().getAllNearbyUsers();
         if(nearbyUserlist!=null)
         {
 			NearbyUsersListViewAdapter adapter = new NearbyUsersListViewAdapter(getActivity(), nearbyUserlist);
 			setListAdapter(adapter);
-			//Log.i(TAG,"nearby users:"+nearbyUserlist.toString());
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"nearby users:"+nearbyUserlist.toString());
         }
         MapListActivityHandler.getInstance().setListFrag(this);
 	}
@@ -56,7 +57,7 @@ public class SBListFragment extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
-		//Log.i(TAG,"oncreateview listview");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview listview");
 		mListViewContainer=  MapListActivityHandler.getInstance().getThisListContainerWithListView();
 		return mListViewContainer;
 	}
@@ -74,7 +75,7 @@ public class SBListFragment extends ListFragment {
 	@Override
     public void onDestroyView() {
         super.onDestroyView();
-        //Log.i(TAG,"ondestroyview listview");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"ondestroyview listview");
         ViewGroup parentViewGroup = (ViewGroup) mListViewContainer.getParent();
 		if( null != parentViewGroup ) {
 			parentViewGroup.removeView( mListViewContainer );

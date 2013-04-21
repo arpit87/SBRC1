@@ -11,7 +11,7 @@ public class SBConnectivity {
 	final static Context context = Platform.getInstance().getContext();
 	public static boolean isConnected() {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		//Log.d("SBConnectivity", "ConnectivityManager:"+cm.toString());
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("SBConnectivity", "ConnectivityManager:"+cm.toString());
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		return ni != null && ni.isConnected();
 	    }

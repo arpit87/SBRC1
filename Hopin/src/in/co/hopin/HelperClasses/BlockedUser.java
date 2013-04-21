@@ -37,14 +37,14 @@ public class BlockedUser {
     }
 
     public static List<BlockedUser> getList(){
-        //Log.i(TAG, "Fetching blocked Users");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Fetching blocked Users");
         List<BlockedUser> blockedUsers;
         
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, null, null, null);
 
         if (cursor == null || cursor.getCount() == 0) {
-            //Log.i(TAG, "Empty result");
+            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Empty result");
             blockedUsers = Collections.emptyList();
         } else {
             blockedUsers = new ArrayList<BlockedUser>();
@@ -64,13 +64,13 @@ public class BlockedUser {
     }
 
     public static boolean isUserBlocked(String fbId){
-        //Log.i(TAG, "Checking if '" + fbId + "' is blocked");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Checking if '" + fbId + "' is blocked");
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, "fbId = ?", new String[]{fbId}, null);
 
         boolean isUserBlocked = true;
         if (cursor == null || cursor.getCount() == 0){
-        	//Log.i(TAG, "fbid:" + fbId + "' is not blocked ");
+        	if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "fbid:" + fbId + "' is not blocked ");
             isUserBlocked = false;
         }
 
@@ -78,17 +78,17 @@ public class BlockedUser {
             cursor.close();
         }
 
-        //Log.i(TAG, "fbid:" + fbId + "' is blocked :"+isUserBlocked);
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "fbid:" + fbId + "' is blocked :"+isUserBlocked);
         return isUserBlocked;
     }
 
     public static void addtoList(final String fbId, final String name){
         if (isUserBlocked(fbId)) {
-            //Log.i(TAG, "User already blocked");
+            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "User already blocked");
             return;
         }
 
-        //Log.i(TAG, "Adding '" +fbId + "' to blocked users list");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Adding '" +fbId + "' to blocked users list");
         new Thread("blockUser") {
             @Override
             public void run() {
@@ -107,7 +107,7 @@ public class BlockedUser {
             values.put(columns[1], name);
             cr.insert(mUri, values);
         } catch (RuntimeException e) {
-            //Log.e(TAG, "BlockUserQueryError", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "BlockUserQueryError", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class BlockedUser {
             ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
             cr.delete(mUri, null, null);
         } catch (RuntimeException e) {
-            //Log.e(TAG, "ClearAllQueryError", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "ClearAllQueryError", e);
         }
     }
 
@@ -125,7 +125,7 @@ public class BlockedUser {
             ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
             cr.delete(mUri, "fbId = ?", new String[]{fbId});
         } catch (RuntimeException e){
-            //Log.e(TAG, "Error in deleting user : " + fbId, e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error in deleting user : " + fbId, e);
         }
     }
 }

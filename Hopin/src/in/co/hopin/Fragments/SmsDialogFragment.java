@@ -89,7 +89,7 @@ public class SmsDialogFragment extends DialogFragment{
 	
 	/*@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        Alertdialog.Builder builder = new Alertdialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder.setView(inflater.inflate(R.layout.fblogin_newdialog, null)).setTitle("Facebook Login")

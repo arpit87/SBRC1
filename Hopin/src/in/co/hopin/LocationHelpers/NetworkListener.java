@@ -25,7 +25,7 @@ public class NetworkListener implements LocationListener{
 	
 	public void start()
 	{
-		//Log.i(TAG,"strted listening to network");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"strted listening to network");
 		//ToastTracker.showToast("strted listning to network");
 		//thisWindowBestLocation = null;
 		
@@ -34,7 +34,7 @@ public class NetworkListener implements LocationListener{
 	
 	public void start(long minTime,float minDistance)
 	{
-		//Log.i(TAG,"strted listening to network wid mintim"+minTime+",mindist:"+minDistance);
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"strted listening to network wid mintim"+minTime+",mindist:"+minDistance);
 		this.minTime=minTime;
 		this.minDistnce=minDistance;
 		thisWindowBestLocation = lastWindowBestLocation;
@@ -45,7 +45,7 @@ public class NetworkListener implements LocationListener{
 	{
 		if(thisWindowBestLocation != null)
 		{
-			//Log.i(TAG,"stopped listening to network,best loc thiswindowbestacc:"+thisWindowBestLocation.getAccuracy());
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"stopped listening to network,best loc thiswindowbestacc:"+thisWindowBestLocation.getAccuracy());
 			lastWindowBestLocation = thisWindowBestLocation;
 		}		
 		SBLocationManager.getInstance().locManager.removeUpdates(this);
@@ -54,8 +54,8 @@ public class NetworkListener implements LocationListener{
 	public void onLocationChanged(Location location) {
 		//we see that location bursts come in windows n then idle for given time
 		//so we find most accurate location of a window and set it to thisWindowBest
-		//Log.i(TAG,"network location changed");
-		//Log.i(TAG,"new network location acc:"+ location.getAccuracy());
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"network location changed");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"new network location acc:"+ location.getAccuracy());
 		//ToastTracker.showToast("loc changed:acc:"+location.getAccuracy());
 		
 		//locChangeCount = (locChangeCount+1)%LOC_CHANGE_PER_WINDOW;
@@ -96,7 +96,7 @@ public class NetworkListener implements LocationListener{
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		/*Log.i(TAG,"network status changed to:"+status);
+		/*if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"network status changed to:"+status);
 		//Toast toast = Toast.makeText(Platform.getInstance().getContext(), "Network status change to:"+status, Toast.LENGTH_SHORT);       
 		//toast.show();
 		if(thisWindowBestLocation!=null)

@@ -60,7 +60,7 @@ public class SettingsActivity extends FragmentActivity{
  			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
  				if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
  				{
- 					//Log.i(TAG,"woman filter clicked,checked:"+isChecked);
+ 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"woman filter clicked,checked:"+isChecked);
  					womenFilter.setChecked(false);
  					fbconnect = new FacebookConnector(SettingsActivity.this);
   					FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
@@ -87,11 +87,11 @@ public class SettingsActivity extends FragmentActivity{
   			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
   				if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
   				{
-  					//Log.i(TAG,"fb chk clicked,checked:"+isChecked);
+  					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"fb chk clicked,checked:"+isChecked);
   					fbfriendsOnlyFilter.setChecked(false);
   					fbconnect = new FacebookConnector(SettingsActivity.this);
   					FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
-					fblogin_dialog.show(SettingsActivity.this.getSupportFragmentManager(), "fblogin_dialog");  					
+  					fblogin_dialog.show(SettingsActivity.this.getSupportFragmentManager(), "fblogin_dialog");  					
   				}
   				else
   				{  					
@@ -129,13 +129,13 @@ public class SettingsActivity extends FragmentActivity{
 		 if(ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN) &&
 		   !ThisUserConfig.getInstance().getString(ThisUserConfig.GENDER).equalsIgnoreCase("female"))
 		 {
-			 //Log.i(TAG,"not woman"); 
+			 if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"not woman"); 
 			womanFilterView.setVisibility(View.GONE);
 		 }
 		else				
 			womenFilter.setChecked(ThisAppConfig.getInstance().getBool(ThisAppConfig.WOMANFILTER));
 		 fbfriendsOnlyFilter.setChecked(ThisAppConfig.getInstance().getBool(ThisAppConfig.FBFRIENDONLYFILTER));
-		 //Log.i(TAG,"woman filter gender is:"+ThisUserConfig.getInstance().getString(ThisUserConfig.GENDER));		 
+		 if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"woman filter gender is:"+ThisUserConfig.getInstance().getString(ThisUserConfig.GENDER));		 
 	 }
 	 
 	 @Override

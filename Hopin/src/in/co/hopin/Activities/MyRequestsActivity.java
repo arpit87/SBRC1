@@ -7,6 +7,7 @@ import in.co.hopin.HelperClasses.BroadCastConstants;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.*;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.R;
@@ -127,8 +128,8 @@ public class MyRequestsActivity extends Activity {
     	super.onResume();
         String instaReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_INSTA);
         String carpoolReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_CARPOOL);   
-        //Log.i(TAG,"carpooljson:"+carpoolReqJson);
-        //Log.i(TAG,"instajson:"+instaReqJson);
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"carpooljson:"+carpoolReqJson);
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"instajson:"+instaReqJson);
         if(!StringUtils.isBlank(carpoolReqJson))
         {
         	carPoolActiveLayout.setVisibility(View.VISIBLE);

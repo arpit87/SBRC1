@@ -1,5 +1,6 @@
 package in.co.hopin.HttpClient;
 
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerResponseBase;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -30,7 +31,7 @@ public class SBHttpClient {
 		if (count<=3)
 			new NewAsyncTask().execute(request);
 		else {
-			//Log.e(TAG, "Max 3 http request per thread allowed");
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Max 3 http request per thread allowed");
         }
 	}	
 	

@@ -1,6 +1,7 @@
 package in.co.hopin.HttpClient;
 
 import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.AddUserResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
@@ -60,7 +61,7 @@ public class AddUserRequest extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntityUser.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		//Log.d("debug", "calling server:"+jsonobj.toString());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntityUser);
 	}
 	

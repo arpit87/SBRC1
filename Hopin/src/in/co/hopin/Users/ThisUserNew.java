@@ -4,6 +4,7 @@ import android.util.Log;
 
 import in.co.hopin.Adapter.HistoryAdapter;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Util.StringUtils;
 
 import java.util.LinkedList;
@@ -53,12 +54,12 @@ public class ThisUserNew {
     }
 
 	public void setUserID(String userID) {
-		//Log.i(TAG,"set user id");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"set user id");
 		this.userID = userID;
 	}
 	
 	public String getUserID() {
-		//Log.i(TAG,"get user id"+this.userID);
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"get user id"+this.userID);
 		return this.userID;
 	}
 	public static ThisUserNew getInstance() {

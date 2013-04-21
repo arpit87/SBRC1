@@ -23,8 +23,8 @@ public class DeleteReqResponse extends ServerResponseBase{
 	@Override
 	public void process() {
 		ProgressHandler.dismissDialoge();
-		//Log.i(TAG,"processing PostUserReqDataResponse");
-		//Log.i(TAG,"server response:"+jobj.toString());
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"processing PostUserReqDataResponse");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"server response:"+jobj.toString());
 		try {
 			//body = jobj.getJSONObject("body");
 			String body = jobj.getString("body");

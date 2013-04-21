@@ -53,7 +53,7 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 	
 	public void  updateThisUser()
 	{
-		//Log.i(TAG,"updating this user,removing overlay");		
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"updating this user,removing overlay");		
 		mMapView.removeSelfView();
 		if(selfOverlayItem!=null)
 		{			
@@ -63,7 +63,7 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 		if(sourceGeopoint != null)
 		{
 			selfOverlayItem=new ThisUserOverlayItem(sourceGeopoint, ThisUserNew.getInstance().getUserID(), "",mMapView);
-			//Log.i(TAG,"adding new this overlay");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"adding new this overlay");
 			userList.add(selfOverlayItem);
 			populate();
 		}
@@ -71,7 +71,7 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 	
 	protected boolean onTap(int i)
 	{
-		//Log.i(TAG,"toggling this user view");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"toggling this user view");
 		selfOverlayItem.ToggleView();
 		return true;
 		

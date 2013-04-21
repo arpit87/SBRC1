@@ -2,6 +2,7 @@ package in.co.hopin.Fragments;
 
 import in.co.hopin.Activities.MapListViewTabActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
 import android.media.AudioRecord.OnRecordPositionUpdateListener;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class SBMapFragment extends Fragment implements View.OnClickListener, Vie
 	@Override
 	public void onCreate(Bundle savedState) {
         super.onCreate(null);
-        //Log.i(TAG,"oncreate,mapview");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreate,mapview");
         MapListActivityHandler.getInstance().setMapFrag(this);
 	}
 	
@@ -32,7 +33,7 @@ public class SBMapFragment extends Fragment implements View.OnClickListener, Vie
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
-		//Log.i(TAG,"oncreateview,mapview");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview,mapview");
 		mMapViewContainer = ((MapListViewTabActivity)getActivity()).getThisMapContainerWithMapView();
 		if(mMapView == null)
 			mMapView = (MapView) mMapViewContainer.findViewById(R.id.map_view);
@@ -44,7 +45,7 @@ public class SBMapFragment extends Fragment implements View.OnClickListener, Vie
 	@Override
     public void onDestroyView() {
         super.onDestroyView();
-        //Log.i(TAG,"ondestroyview,mapview");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"ondestroyview,mapview");
         ViewGroup parentViewGroup = (ViewGroup) mMapViewContainer.getParent();
 		if( null != parentViewGroup ) {
 			parentViewGroup.removeView( mMapViewContainer );

@@ -46,7 +46,7 @@ public class SBMapView extends MapView implements OnGestureListener {
     
     public void setOldZoomLevel(int level)
     {
-    	//Log.i(TAG,"setting old zoom level to:"+level);
+    	if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"setting old zoom level to:"+level);
     	oldZoomLevel = level;
     }
     
@@ -85,9 +85,9 @@ public class SBMapView extends MapView implements OnGestureListener {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        //Log.i(TAG,"dispatchDraw oldzoon:"+oldZoomLevel+",curzoom:"+getZoomLevel());
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"dispatchDraw oldzoon:"+oldZoomLevel+",curzoom:"+getZoomLevel());
         if (getZoomLevel() != oldZoomLevel && oldZoomLevel!= -1) {  
-        	//Log.i(TAG,"updateOverlayOnZoomChange ll be called");
+        	if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"updateOverlayOnZoomChange ll be called");
             oldZoomLevel  = getZoomLevel();
             MapListActivityHandler.getInstance().updateOverlayOnZoomChange();
         }

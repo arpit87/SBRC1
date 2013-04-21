@@ -11,6 +11,7 @@ import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
@@ -261,7 +262,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 			MapListActivityHandler.getInstance().updateSrcDstTimeInListView();
 			
 			getActivity().finish();
-			//Log.i(TAG, "user destination set... querying server");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "user destination set... querying server");
 			ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching users", "Please wait..");
 			SBHttpRequest addThisUserSrcDstRequest;
 			if(getDailyInstaType() == 0)        		
@@ -335,9 +336,9 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             values.put(columns[8], thisUser.getSelected_radio_button_id());
             values.put(columns[9], System.currentTimeMillis());
             cr.insert(mHistoryUri, values);
-            //Log.d(TAG, "saveHistoryQuery:" +  values.toString());
+            if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "saveHistoryQuery:" +  values.toString());
         } catch (RuntimeException e) {
-            //Log.e(TAG, "saveHistoryQueryerror", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "saveHistoryQueryerror", e);
         }
 
         // Shorten the list (if it has become too long)
@@ -388,7 +389,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
             }
             cr.delete(mHistoryUri, selection, null);
         } catch (RuntimeException e) {
-            //Log.e(TAG, "truncateHistory", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "truncateHistory", e);
         }
     }
     
@@ -487,10 +488,10 @@ public abstract class AbstractSearchInputFrag extends Fragment{
                 jsonResults.append(buff, 0, read);
             }
         } catch (MalformedURLException e) {
-            //Log.e(TAG, "Error processing Places API URL", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error processing Places API URL", e);
             return resultList;
         } catch (IOException e) {
-            //Log.e(TAG, "Error connecting to Places API", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error connecting to Places API", e);
             return resultList;
         } finally {
             if (conn != null) {
@@ -509,7 +510,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
-            //Log.e(TAG, "Cannot process JSON results", e);
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Cannot process JSON results", e);
         }
 
         return resultList;
@@ -531,16 +532,14 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(s!=null && s.length() > 0) {
-            	if(thisTextProgressBar!=null)
-            		thisTextProgressBar.setVisibility(View.VISIBLE);
+        public void onTextChanged(CharSequence s, int start, int before, int count) { 
+        	
+            	thisTextProgressBar.setVisibility(View.VISIBLE);
             	
             	if(mIsSource)
             		sourceSet = false;
             	else
-            		destinationSet = false;
-            }
+            		destinationSet = false;            
 
         }
 

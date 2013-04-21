@@ -31,10 +31,10 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 	
 	@Override
 	public void process() {
-		//Log.i(TAG,"processing GetFBInfoResponse response.status:"+this.getStatus());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"processing GetFBInfoResponse response.status:"+this.getStatus());	
 		
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
-		//Log.i(TAG,"got json "+jobj.toString());
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"got json "+jobj.toString());
 		try {
 			body = jobj.getJSONObject("body");
 			JSONArray nearbyUSers =  body.getJSONArray("NearbyUsers");
@@ -49,7 +49,7 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 			
 			//ToastTracker.showToast("fb save:"+status);
 		} catch (JSONException e) {			
-			//Log.e(TAG, "Error returned by server get fb info for user and show popup");
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");
 			e.printStackTrace();
 		}
 		

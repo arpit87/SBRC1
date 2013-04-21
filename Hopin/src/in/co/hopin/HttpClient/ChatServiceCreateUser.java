@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ChatServiceCreateUserResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
@@ -56,7 +57,7 @@ public class ChatServiceCreateUser extends SBHttpRequest{
 				e.printStackTrace();
 			}
 			postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-			//Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());	
+			if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());	
 			httpQueryAddRequest.setEntity(postEntityAddRequest);
 			
 					

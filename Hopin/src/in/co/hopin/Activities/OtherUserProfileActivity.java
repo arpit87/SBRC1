@@ -2,6 +2,7 @@ package in.co.hopin.Activities;
 
 import in.co.hopin.R;
 import in.co.hopin.HelperClasses.SBImageLoader;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserFBInfo;
 
 import org.json.JSONException;
@@ -36,7 +37,7 @@ public class OtherUserProfileActivity extends Activity{
 	{
 		super.onResume();
 		fbinfoJsonStr = getIntent().getStringExtra("fb_info");
-		//Log.d("debug","got json str:"+fbinfoJsonStr);
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug","got json str:"+fbinfoJsonStr);
 		try {
 			fbInfoJSON = new JSONObject(fbinfoJsonStr);
 			userFBInfo = new UserFBInfo(fbInfoJSON);

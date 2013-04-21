@@ -108,7 +108,7 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 			isVisible = false;
 		}
 		else {
-			//Log.i(TAG,"trying to remove null thisUserMapView");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove null thisUserMapView");
         }
 	}	
 	
@@ -130,7 +130,7 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 		else
 		{
 			createAndDisplayView();
-			//Log.i(TAG,"trying to show null thisUserMapView");
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to show null thisUserMapView");
 		}
 	}
 	

@@ -13,6 +13,7 @@ import android.util.Log;
 
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.AddThisUserSrcDstResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
@@ -49,10 +50,10 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
         try {
             postEntityAddRequest = new StringEntity(jsonobjAddRequest.toString());
         } catch (UnsupportedEncodingException e) {
-            //Log.e(TAG, e.getMessage());
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, e.getMessage());
         }
         postEntityAddRequest.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        //Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
+        if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "calling server:" + jsonobjAddRequest.toString());
         httpQueryAddRequest.setEntity(postEntityAddRequest);
 
 
@@ -83,7 +84,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
         try {
             response = httpclient.execute(httpQueryAddRequest);
         } catch (Exception e) {
-            //Log.e(TAG, e.getMessage());
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, e.getMessage());
         }
 
         try {
@@ -91,7 +92,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
 				return null;
             jsonStr = responseHandler.handleResponse(response);
         } catch (Exception e) {
-            //Log.e(TAG, e.getMessage());
+            if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, e.getMessage());
         }
 
         addThisUserResponse = new AddThisUserSrcDstResponse(response, jsonStr);
