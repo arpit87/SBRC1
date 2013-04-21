@@ -1,11 +1,10 @@
 package in.co.hopin.Activities;
 
+import in.co.hopin.R;
 import in.co.hopin.Fragments.HistoryInstaShareFragment;
 import in.co.hopin.Fragments.HistoryPlanFragment;
 import in.co.hopin.Fragments.SearchUserInstaFrag;
 import in.co.hopin.Fragments.SearchUserPlanFrag;
-import in.co.hopin.R;
-import android.app.SearchableInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
