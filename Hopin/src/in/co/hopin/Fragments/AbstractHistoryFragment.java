@@ -1,22 +1,7 @@
 package in.co.hopin.Fragments;
 
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.Adapter.HistoryAdapter;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.SBConnectivity;
-import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
-import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.HttpClient.SBHttpRequest;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.ThisUserNew;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import in.co.hopin.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -26,6 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.Adapter.HistoryAdapter;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.SBConnectivity;
+import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
+import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.R;
+import in.co.hopin.Users.ThisUserNew;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractHistoryFragment extends ListFragment {
     public static final String TAG = "in.co.hopin.Fragments.AbstractHistoryFragment";
@@ -49,7 +48,7 @@ public abstract class AbstractHistoryFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         if(adapter!=null)
         {
-            if (!SBConnectivity.isConnected()){
+            if (!SBConnectivity.isOnline()){
                 showErrorDialog("No Network found!", "Please check your network connection.");
                 return;
             }

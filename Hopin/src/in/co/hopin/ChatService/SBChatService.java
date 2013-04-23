@@ -13,19 +13,17 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
-import in.co.hopin.R;
-import org.jivesoftware.smack.*;
-import org.jivesoftware.smack.Roster.SubscriptionMode;
-
 import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.HelperClasses.BroadCastConstants;
 import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
+import org.jivesoftware.smack.*;
+import org.jivesoftware.smack.Roster.SubscriptionMode;
 
 import java.io.File;
 import java.util.List;
@@ -33,6 +31,7 @@ import java.util.List;
 public class SBChatService extends Service {
 
 	private static String TAG = "in.co.hopin.ChatService.SBChatService";
+    private static final int POLL_FREQ = 1 * 60 * 1000;
 	private XMPPConnection mXMPPConnection = null;
 	NotificationManager mNotificationManager = null;
 	private ConnectionConfiguration mConnectionConfiguration = null;
@@ -41,6 +40,7 @@ public class SBChatService extends Service {
 	private int DEFAULT_XMPP_PORT = 5222;	
 	int mPort;
 	private SBChatBroadcastReceiver mReceiver = new SBChatBroadcastReceiver();
+    private ConnectivityMonitor connectivityMonitor;
 	private String mHost = ServerConstants.CHATSERVERIP;
 	String mErrorMsg = "";	
 	public static boolean isRunning=false;
@@ -76,7 +76,11 @@ public class SBChatService extends Service {
 		mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection,this);
 		mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);		
 		Roster.setDefaultSubscriptionMode(SubscriptionMode.accept_all);	
-		
+
+        connectivityMonitor = new ConnectivityMonitor(mConnectionAdapter);
+        IntentFilter intentFilter = new IntentFilter("in.co.hopin.ChatService.ConnectivityMonitor");
+        registerReceiver(connectivityMonitor, intentFilter);
+
 		mXMPPAPIs = new XMPPAPIs(mConnectionAdapter);
 		if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Created ChatService");
 		isRunning = true;
@@ -93,9 +97,19 @@ public class SBChatService extends Service {
         {
         String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);		
 		String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
-		if(login != "" && password != "")
+		if(!login.equals("") && !password.equals(""))
         	mConnectionAdapter.loginAsync(login, password);
         }
+
+        Intent connectivityMonitorIntent = new Intent("in.co.hopin.ChatService.ConnectivityMonitor");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+                connectivityMonitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + POLL_FREQ,
+                POLL_FREQ, pendingIntent);
+
+
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
         return START_STICKY;
@@ -110,6 +124,13 @@ public class SBChatService extends Service {
 	unregisterReceiver(mReceiver);
 	if (mConnectionAdapter.isAuthenticated() && SBConnectivity.isConnected())
 		mConnectionAdapter.disconnect();
+
+    Intent connectivityMonitorIntent = new Intent(this, ConnectivityMonitor.class);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+            connectivityMonitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    alarmManager.cancel(pendingIntent);
+
 	if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Stopping the service");	
     }
 	
@@ -194,15 +215,9 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 	    }
 	} else if (intentAction.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 		if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"connectivity changed");
-	    if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {		
-		//network may be temporarily lost..check if android trying to connect to other network like wifi/gprs switch(failover)
-		 String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);		 
-         boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-         //Toast.makeText(context, "network lost:( "+reason+",failover:"+isFailover,  Toast.LENGTH_SHORT).show();
-         if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"connectivity changed ,network lost:( "+reason+",failover:"+isFailover);
-        //need a reconnection mechanism        	 
-		//context.stopService(new Intent(context, SBChatService.class));
-	    }
+        if (!SBConnectivity.isOnline()) {   
+            if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Connectivity Lost");
+        }
 	    else
 	    {
 	    	//network came up again
@@ -231,7 +246,7 @@ class SBChatBroadcastReceiver extends BroadcastReceiver{
 		for (NearbyUser n:nearbyUserList)
 		{
 			String fbid = n.getUserFBInfo().getFbid();
-			if(fbid!="")
+			if(!fbid.equals(""))
 				try {	
 					Message msg = new Message(fbid,Message.MSG_TYPE_NEWUSER_BROADCAST);					
 					if(chatManager != null)					

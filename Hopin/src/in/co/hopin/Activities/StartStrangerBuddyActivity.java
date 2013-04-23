@@ -1,11 +1,7 @@
 package in.co.hopin.Activities;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,10 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import com.google.analytics.tracking.android.EasyTracker;
-import in.co.hopin.R;
-
 import in.co.hopin.Adapter.HistoryAdapter;
 import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.ChatClient.SBChatMessage;
@@ -30,6 +23,7 @@ import in.co.hopin.HelperClasses.*;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.R;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
@@ -108,7 +102,7 @@ public class StartStrangerBuddyActivity extends Activity {
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT, participant);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		 
 		  	
-		   if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Sending notification") ;	    
+		   if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Sending notification") ;
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
@@ -176,7 +170,7 @@ public class StartStrangerBuddyActivity extends Activity {
         if (!isLocationProviderEnabled()){
             buildAlertMessageForLocationProvider();           
         }
-        else  if(!SBConnectivity.isConnected())
+        else  if(!SBConnectivity.isOnline())
         {
         	buildAlertMessageForNoNetwork();	           
         }
