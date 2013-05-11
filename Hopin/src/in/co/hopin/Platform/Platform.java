@@ -41,7 +41,7 @@ public class Platform {
 		this.context= context;			
 		SBHttpClient.getInstance();
 		handler = new Handler();
-		ENABLE_LOGGING = false;
+		ENABLE_LOGGING = true;
 		CurrentNearbyUsers.getInstance().clearAllData();
 		ThisUserNew.getInstance();
 		startChatService();

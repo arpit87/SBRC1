@@ -106,7 +106,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 				public boolean onTouch(View arg0, MotionEvent arg1) {
 					removeSmallView();
 					createAndDisplayExpandedView();
-					MapListActivityHandler.getInstance().centreMapToPlusLilUp(mGeoPoint);
+					MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
 					return true;
 				}
 			});		

@@ -34,7 +34,7 @@ public class SBChatService extends Service {
 
     private static String TAG = "in.co.hopin.ChatService.SBChatService";
     private static final String INTENT_ACTION = "in.co.hopin.ChatService.ConnectivityMonitor";
-    private static final int POLL_FREQ = 5 * 60 * 1000;
+    private static final int POLL_FREQ = 1 * 60 * 1000;
     private XMPPConnection mXMPPConnection = null;
     NotificationManager mNotificationManager = null;
     private ConnectionConfiguration mConnectionConfiguration = null;

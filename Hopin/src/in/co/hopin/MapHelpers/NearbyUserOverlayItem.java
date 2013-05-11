@@ -402,7 +402,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 		public boolean onTouch(View v, MotionEvent event) {
 			removeSmallView();
 			showExpandedView();
-			MapListActivityHandler.getInstance().centreMapToPlusLilUp(mGeoPoint);
+			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
 			return true;
 		}
 		

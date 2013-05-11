@@ -16,7 +16,7 @@ import org.apache.http.params.HttpParams;
 
 public class SBConnectivity {
     final static Context context = Platform.getInstance().getContext();
-
+    private static String TAG = "in.co.hopin.HelperClasses.SBConnectivity";
     public static boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (Platform.getInstance().isLoggingEnabled()) Log.d("SBConnectivity", "ConnectivityManager:"+cm.toString());
@@ -26,6 +26,7 @@ public class SBConnectivity {
 
     public static boolean isConnected() {
         try {
+        	if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "chking data available by http timeout");
             HttpGet request = new HttpGet(ServerConstants.SERVER_ADDRESS);
             HttpParams httpParameters = new BasicHttpParams();
             int timeoutConnection = 10000; //timeout of 10 seconds
@@ -38,9 +39,11 @@ public class SBConnectivity {
             HttpEntity entity = response.getEntity();
 
             if (entity != null) {
+            	if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "yes data available by http timeout");
                 return true;
             }
             //Log.d("in.co.hopin.HelperClasses.SBConnectivity", "No response");
+            if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "no data available by http timeout");
             return false;
         } catch (Exception e) {
             //Log.e("in.co.hopin.HelperClasses.SBConnectivity", e.getMessage());

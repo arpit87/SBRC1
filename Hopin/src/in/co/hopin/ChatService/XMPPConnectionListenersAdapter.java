@@ -81,13 +81,17 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 
 	public boolean connect() throws RemoteException {
 		if (mXMPPConnection.isConnected())
+		{
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Already connected..smpp.IsConnect is true");
 			return true;
+		}
 		else {
 		    try {
 		    	if(SBConnectivity.isConnected())
 		    	{
 		    		mXMPPConnection.connect();
 		    		mXMPPConnection.addConnectionListener(mConnectionListener);
+		    		if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Isconnect is false...making new connection");
 		    	}
 		    	else
 		    		ToastTracker.showToast("Not connected to internet");
@@ -290,6 +294,13 @@ private class ConnectToChatServerTask extends AsyncTask<XMPPConnectionListenersA
 		
 	}
 	}
+	
+	@Override
+    protected void onCancelled() {
+	if (mXMPPConnection != null && mXMPPConnection.isAuthenticated()) {
+		mXMPPConnection.disconnect();
+	}
+    }
 
 	
 }

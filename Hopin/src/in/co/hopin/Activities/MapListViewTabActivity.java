@@ -154,27 +154,30 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
            return;
         }       
         builder.setMessage("Do you want to delete the carpool request(s) you placed?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                    	if(!StringUtils.isBlank(instaReqJson))
-                    	{
-                    		DeleteRequest deleteInstaRequest = new DeleteRequest(1);
-                    		SBHttpClient.getInstance().executeRequest(deleteInstaRequest);
-                    	}
-                    	if(!StringUtils.isBlank(carpoolReqJson))
-                    	{
-                    		DeleteRequest deleteCarPoolRequest = new DeleteRequest(0);
-                    		SBHttpClient.getInstance().executeRequest(deleteCarPoolRequest);
-                    	}
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                    	finish();
-                        return;
-                    }
-                });
+        .setCancelable(false)
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, final int id) {
+            	if(!StringUtils.isBlank(instaReqJson))
+            	{
+            		DeleteRequest deleteInstaRequest = new DeleteRequest(1);
+            		SBHttpClient.getInstance().executeRequest(deleteInstaRequest);
+            	}
+            	if(!StringUtils.isBlank(carpoolReqJson))
+            	{
+            		DeleteRequest deleteCarPoolRequest = new DeleteRequest(0);
+            		SBHttpClient.getInstance().executeRequest(deleteCarPoolRequest);
+            	}
+            	Platform.getInstance().stopChatService();
+            	finish();
+            	return;
+            }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, final int id) {
+            	finish();
+                return;
+            }
+        });
         final AlertDialog alert = builder.create();
         alert.show();
     }

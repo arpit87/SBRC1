@@ -105,14 +105,13 @@ public class ChatWindow extends FragmentActivity{
 			public void onClick(View v) {
 				showPopupMenu(v);				
 			}
-		});
+		});		
 		
-		
-		mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
-		mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
-		mThisUserChatFullName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);    
         mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
+    	mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
+    	mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+    	mThisUserChatFullName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
 }
 	    
 	    
@@ -294,6 +293,12 @@ private void showPopupMenu(View v)
 		SBChatMessage lastMessage = null;
 		if(!mFBLoggedIn)
 		{
+			//check the status again..this is imp as by now it could have logged in
+			mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
+			mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
+			mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+			
+			
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"chat sent click but not fb logged in");			
 			fbconnect = new FacebookConnector(ChatWindow.this);
 			FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
