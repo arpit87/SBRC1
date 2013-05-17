@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_centerHorizontal="true"
+             android:orientation="vertical" >
+
+             <TextView
+                 android:id="@+id/tutorial_welcometext"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:paddingTop="25.0dip"
+                 android:text="Welcome"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="@color/light_gray"
+                 android:textSize="30dip"
+                 android:textStyle="italic" />
+
+             <TextView
+                 
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:text="to"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="@color/light_gray"
+                 android:textSize="30dip"
+                 android:textStyle="italic" />
+
+             <TextView
+           
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:text="Hopin"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="@color/frame_green"
+                 android:textSize="30dip" />
+
+             <TextView
+                 android:id="@id/tutorial_welcometext"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="20dip"
+                 android:gravity="center_horizontal"
+                 android:text="Lets take a tour"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="#ff0f6cf6"
+                 android:textSize="30dip" />
+
+             <ImageView
+                 android:id="@+id/scene0_scrollArrow"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:src="@drawable/intro_dottedarrow" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:paddingBottom="20.0dip"
+                 android:text="Scroll Down"
+                 android:textAppearance="?android:textAppearanceSmall"
+                 android:textColor="#ffa9a9a9" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:gravity="center_horizontal"                 
+                 
+                 android:paddingLeft="40dip"
+                 android:paddingRight="40dip"
+                 android:text="Hopin is platform for people to connect to nearby commuters going same way"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="@color/light_gray"
+                 android:textSize="20dip" />
+              <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:gravity="center_horizontal"
+                 android:paddingLeft="40dip"
+                 android:paddingRight="40dip"
+                 android:text="INSTANTLY!"
+                 android:textAppearance="?android:textAppearanceLarge"
+                 android:textColor="@color/frame_red"
+                 android:textSize="20dip" />
+
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dip"
+                 android:layout_centerHorizontal="true"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="10dip"
+                 android:background="@color/gray"
+                 android:layout_marginLeft="20dip"
+                 android:layout_marginRight="20dip" />
+             
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:paddingTop="20.0dip"
+                 android:text="Begin with search button"
+                 android:textAppearance="?android:textAppearanceSmall"
+                 android:textColor="@color/very_dark_gray" />
+             <RelativeLayout 
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+                 <ImageView  
+                     android:id="@+id/tutorial_search_icon"
+                     android:layout_width="wrap_content" 
+                     android:layout_height="wrap_content" 
+                     android:layout_centerHorizontal="true"
+                     android:src="@drawable/search_icon"
+                     android:layout_alignParentTop="true"
+                     android:layout_marginTop="10dip"
+                     />
+
+                    <ImageView
+                        android:id="@+id/arrow_plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/tutorial_search_icon"
+                        android:layout_marginTop="50dip"
+                        android:layout_marginLeft="10dip"
+                        android:src="@drawable/intro_arrowright" />
+
+                    <ImageView
+                        android:id="@+id/arrow_insta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="50dip"
+                        android:layout_marginRight="10dip"
+                        android:layout_toLeftOf="@+id/tutorial_search_icon"
+                        android:src="@drawable/intro_arrowleft" />
+                    
+             </RelativeLayout>
+               
+          <TableLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" 
+              android:orientation="vertical">
+              <TableRow 
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+                  
+                      <TextView
+                          android:id="@+id/tutorial_insta_text"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="40dip"
+                    android:layout_marginRight="20dip"
+                     android:padding="5dip"
+                     android:background="@drawable/tab_green"
+                     android:gravity="center_horizontal"
+                     android:text="Insta"                     
+                     android:textColor="@color/black"
+                     android:textSize="20dip" />
+
+                 <TextView
+                     android:id="@+id/tutorial_plan_text"
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:padding="5dip"
+                     android:layout_weight="1"
+                     android:layout_marginRight="40dip"
+                    android:layout_marginLeft="20dip"          
+                     android:background="@drawable/tab_green"
+                     android:gravity="center_horizontal"
+                     android:text="Plan"
+                     android:textColor="@color/black"
+                     android:textSize="20dip" />
+                
+              </TableRow>
+              <TableRow >
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text"                
+                     android:textColor="@color/black"
+                     android:layout_weight="1"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="20dip"
+                     android:layout_marginRight="10dip"
+                     android:layout_marginTop="10dip"
+                     android:text="  Travelling in next"/>
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text"                   
+                     android:layout_marginTop="10dip"
+                     android:layout_weight="1"
+                     android:textColor="@color/black"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="10dip"
+                     android:layout_marginRight="20dip"
+                     android:text="Are you looking for"/>
+              </TableRow>
+                <TableRow >
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text"                     
+                     android:textColor="@color/black"
+                     android:layout_weight="1"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="20dip"
+                     android:layout_marginRight="10dip"               
+                     android:text="-15min"/>
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text"                 
+                     android:layout_weight="1"
+                     android:textColor="@color/black"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="10dip"
+                     android:layout_marginRight="20dip"
+                     android:text="-daily carpool"/>
+              </TableRow>
+                <TableRow >
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text"                    
+                     android:textColor="@color/black"
+                     android:layout_weight="1"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="20dip"
+                     android:layout_marginRight="10dip"
+                  
+                     android:text="-30min"/>
+                   <TextView 
+                     android:layout_width="0dip"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/tutorial_insta_text" 
+                     android:layout_weight="1"
+                     android:textColor="@color/black"
+                     android:gravity="center_horizontal"
+                     android:layout_marginLeft="10dip"
+                     android:layout_marginRight="20dip"
+                     android:text="-one time travel"/>
+              </TableRow>
+          </TableLayout>
+           <ImageView
+                android:layout_marginTop="10dip"
+                 android:id="@+id/scrollArrow"
+                 android:layout_width="170dip"
+                 android:layout_height="70dip"
+                 android:scaleType="fitXY"
+                 android:gravity="center"
+                 android:layout_gravity="center_horizontal"
+                 android:src="@drawable/common_arrow" />
+              <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_marginLeft="30dip"
+                 android:layout_marginRight="30dip"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"      
+                 android:gravity="center"          
+                 android:text="Enter travel details and see matching nearby commuters"
+                 android:textAppearance="?android:textAppearanceSmall"
+                 android:textColor="@color/very_dark_gray" />
+              <RelativeLayout
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent" >
+              <ImageView 
+                  android:id="@+id/tutorial_smallpicmapview" 
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/map1fortutorial"
+                  android:clickable="true"/>
+              <ImageView
+                  android:id="@+id/tutorial_expandedpicmapview" 
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:src="@drawable/map2fortutorial"
+                  android:visibility="gone"
+                  android:clickable="false"/>
+
+              <TextView
+                  android:id="@+id/tutorial_maptaptextview"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center_horizontal"
+                  android:paddingTop="170dip"                  
+                  android:text="Tap frame"
+                  android:textStyle="bold"
+                  android:textColor="@color/black" />
+
+              </RelativeLayout>
+              
+              
+             <ImageView
+                 android:id="@+id/toggle_arrow"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:src="@drawable/arrow_small" />
+             
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_marginLeft="30dip"
+                 android:layout_marginRight="30dip"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"      
+                 android:gravity="center" 
+                 android:text="@string/maplistviewtoggletext"
+                 android:textSize="20dip"
+                 android:textColor="@color/very_dark_gray" />
+                         
+              <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dip"
+                 android:layout_centerHorizontal="true"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="10dip"
+                 android:background="@color/gray"
+                 android:layout_marginLeft="20dip"
+                 android:layout_marginRight="20dip" />
+              
+              <TextView
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:textSize="20dip"
+                  android:layout_gravity="center_horizontal"
+                  android:gravity="center_horizontal"
+                  android:layout_marginTop="10dip"
+                  android:textColor="@color/black"
+                  android:text="Privacy settings" />
+              <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_marginLeft="30dip"
+                 android:layout_marginRight="30dip"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="5dip" 
+                 android:layout_gravity="left"      
+                 android:gravity="left"          
+                 android:text="-Limit visibility to FB friends"
+                 android:textSize="15dip"
+                 android:textColor="@color/very_dark_gray" />
+              <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_marginLeft="30dip"
+                 android:layout_marginRight="30dip"
+                 android:layout_height="wrap_content"
+                 android:paddingTop="5dip"
+                 android:layout_gravity="left"      
+                 android:gravity="left"          
+                 android:text="-women visible only to women"
+                 android:textSize="15dip"
+                 android:textColor="@color/very_dark_gray" />
+               <TextView
+                 android:layout_width="match_parent"
+                 android:layout_marginLeft="30dip"
+                 android:layout_marginRight="30dip"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="left" 
+                 android:layout_marginTop="5dip"     
+                 android:gravity="right"          
+                 android:text="*FB login required"
+                 android:textSize="10dip"
+                 android:textColor="@color/black" />
+          
+               <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dip"
+                 android:layout_centerHorizontal="true"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="10dip"
+                 android:background="@color/gray"
+                 android:layout_marginLeft="20dip"
+                 android:layout_marginRight="20dip" />
+     
+                 
+              <TextView
+                  android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:textSize="20dip"
+                  android:layout_gravity="center_horizontal"
+                  android:gravity="center_horizontal"
+                  android:layout_marginTop="10dip"
+                  android:textColor="@color/black"
+                  android:text="Are you ready?" />
+              
+            
+           
+    <Button
+        android:id="@+id/tutorial_signInViaFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="30dip" 
+        android:layout_marginTop="15dip"       
+        android:layout_gravity="center_horizontal"       
+        android:background="@drawable/fblogin_bigbutton_selector"
+        android:focusable="true"
+         />  
+         
+       <TextView
+                 android:layout_width="match_parent"
+                 android:layout_marginLeft="20dip"
+                 android:layout_marginRight="80dip"               
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="right"                
+                 android:gravity="right"          
+                 android:text="*recommended"
+                 android:textSize="10dip"
+                 android:textColor="@color/black" />  
+      
+         
+    <TextView
+          android:layout_width="wrap_content"               
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal" 
+          android:layout_marginTop="8dip"     
+          android:gravity="center_horizontal"          
+          android:text="Or"
+          android:textSize="20dip"
+          android:textColor="@color/very_dark_gray" />
+               
+        <EditText
+        android:id="@+id/tutorial_name_edittext"         
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"   
+        android:textSize="15dip"     
+        android:layout_marginLeft="20dip" 
+        android:layout_marginRight="20dip"          
+        android:textColor="@color/black"
+        android:background="@drawable/gray_green_background_selector" 
+        android:gravity="left"  
+        android:paddingLeft="10dip"
+        android:hint="Enter name"  
+        android:layout_marginTop="10dip"      
+        /> 
+        
+       <EditText        
+        android:id="@+id/tutorial_mobile_edittext"         
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"   
+        android:textSize="15dip"     
+        android:layout_marginLeft="20dip" 
+        android:layout_marginRight="20dip"          
+        android:textColor="@color/black"
+        android:background="@drawable/gray_green_background_selector" 
+        android:gravity="left"  
+        android:paddingLeft="10dip"
+       android:layout_marginTop="8dip"
+       android:inputType="phone"
+        android:hint="Optional mobile number(kept secret)"        
+        /> 
+        
+        <Button
+              android:id="@+id/tutorial_startbutton"
+            android:textSize="15dip" 
+            android:textColor="@color/white" 
+            android:layout_gravity="center_horizontal"
+             android:background="@drawable/green_gradient_btn_selector"
+             android:layout_marginTop="20dip"                        
+             android:layout_width="wrap_content"
+             android:layout_height="30dip"
+             android:paddingLeft="3dip"
+             android:paddingRight="3dip"
+             android:text="Get Started with Hopin"
+             />     
+           <View
+             android:layout_width="match_parent"
+             android:layout_height="60dip"/>    
+         </LinearLayout>
+       
+
+    </ScrollView>
+
+</LinearLayout>

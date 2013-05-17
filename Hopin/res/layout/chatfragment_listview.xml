@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/chatlist_fragment_emptyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/white"
+        android:text="No chats"
+        android:textSize="25dip"
+        android:textColor="@color/gray"
+        android:visibility="gone">
+        
+    </TextView>
+    <ListView 
+              android:id="@android:id/list"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/white"
+              android:cacheColorHint="@android:color/transparent"
+              android:divider="@color/dark_gray"
+              android:dividerHeight="1dip"/>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dip"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<RelativeLayout
+        android:id="@+id/map_expanded_grid_header_layout"      
+        android:background="@drawable/balloon_expanded_top"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingLeft="5dip"
+    	android:paddingRight="3dip">
+
+            <TextView
+            android:id="@+id/map_expanded_grid_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:textSize="20dip"                       
+            android:layout_marginLeft="1.0dip"            
+            android:layout_marginRight="1.0dip" 
+            android:layout_centerVertical="true" 
+            android:textColor="@color/white"           
+             />
+            
+        <ImageView
+            android:id="@+id/map_expanded_grid_buttonclose"
+            android:layout_width="30dip"
+            android:layout_height="30dip"            
+            android:src="@drawable/button_close_white"
+            android:paddingRight="5dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"                    
+            android:scaleType="centerCrop" />
+            
+     </RelativeLayout>    
+<LinearLayout 
+    android:id="@+id/map_expanded_grid_main_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/balloon_expanded_bottom"    
+    android:orientation="vertical"
+    android:paddingBottom="20dip"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
+     >
+<GridView 
+    android:id="@+id/gridview"
+    android:layout_width="280dip" 
+    android:layout_height="match_parent"
+    android:columnWidth="60dp"    
+    android:numColumns="auto_fit"
+    android:verticalSpacing="5dp"
+    android:horizontalSpacing="5dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center" >
+    
+
+</GridView>
+</LinearLayout>
+</LinearLayout>
