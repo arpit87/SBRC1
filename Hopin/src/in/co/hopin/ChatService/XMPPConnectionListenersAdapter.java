@@ -282,7 +282,7 @@ private class ConnectToChatServerTask extends AsyncTask<XMPPConnectionListenersA
 		tryinConnecting.set(false);
 	if(connected)
 	{		
-		if(mLogin != "" && mPassword != ""){
+		if(!("".equals(mLogin)) && (!"".equals(mPassword))){
 			if(tryinLogging.getAndSet(true))
 				return;
 			loginToServer = new LoginToChatServerTask();

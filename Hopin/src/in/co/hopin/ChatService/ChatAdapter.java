@@ -198,6 +198,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 			Message msg = new Message(message);
 			if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "new msg of type:"+msg.getType());
 			if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "chat is open?" + mIsOpen);
+            if (msg.getInitiator() == null) {
+                Logger.i(TAG, "Dropping message as no initiator present");
+                return;
+            }
 			// if broadcast message from new user then do getMatch req
 			if (msg.getType() == Message.MSG_TYPE_NEWUSER_BROADCAST) {
 				// caution..call back listener to chatwindow might not be
