@@ -5,19 +5,21 @@ import android.os.RemoteException;
 import android.util.Log;
 import in.co.hopin.ChatClient.IMessageListener;
 import in.co.hopin.ChatClient.SBChatMessage;
-import in.co.hopin.HelperClasses.*;
+import in.co.hopin.HelperClasses.BlockedUser;
+import in.co.hopin.HelperClasses.ChatHistory;
+import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPException;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /***
@@ -34,13 +36,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 class ChatAdapter extends IChatAdapter.Stub {
 
+    private static final long DELAY = 20 * 1000;
+    private static final long THRESHOLD_DELAY = 15 * 1000;
 	private static final int HISTORY_MAX_SIZE = 50;
+    private static final int MAX_RECVD_IDS = 10;
 	private static final String TAG = "in.co.hopin.ChatService.ChatAdapter";
 	private Boolean mIsOpen = false;
 	private final Chat mSmackChat;
 	private final String mParticipant;	
 	private List<Message> mMessages;
-	private final HashMap<Long, Message> mSentNotDeliveredMsgHashSet;
+    private final Map<Long, Message> mSentNotDeliveredMsgsMap;
 	private SBChatManager mChatManager;
 	SBMsgListener mMsgListener = null;
 	//int notificationid = 0;
@@ -48,6 +53,8 @@ class ChatAdapter extends IChatAdapter.Stub {
 	private final RemoteCallbackList<IMessageListener> mRemoteListeners = new RemoteCallbackList<IMessageListener>();
 	private LinkedBlockingQueue<Message> mMsgqueue = null;
 	SenderThread mSenderThread = null;
+    private Timer timer;
+    private TreeSet<Long> receivedChatIds = new TreeSet<Long>();
 
 	// small chat participant should be complete as to is overridden inside
 	// sendMsg by smack to participant
@@ -61,7 +68,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 		mMsgqueue = new LinkedBlockingQueue<Message>();
 		mSmackChat.addMessageListener(mMsgListener);
 		mChatManager = chatManager;
-		mSentNotDeliveredMsgHashSet = new HashMap<Long, Message>();
+        mSentNotDeliveredMsgsMap = new LinkedHashMap<Long, Message>();
 		//notificationid = mChatManager.numChats() + 1;
 		mImageURL = ThisUserConfig.getInstance().getString(
 				ThisUserConfig.FBPICURL);
@@ -220,12 +227,15 @@ class ChatAdapter extends IChatAdapter.Stub {
 			{
 				// ack has same unique id as the msg
 				// we are doing so as we cant send long in body
-				if (msg.getInitiator() == "" || msg.getBody() == "")
+                if (("").equals(msg.getInitiator()) || ("").equals(msg.getBody()))
 					return;
 				// do not add ack to list
 				// ack msgs have time in body
-				Message origMsg = mSentNotDeliveredMsgHashSet.get(msg
+                Message origMsg;
+                synchronized (mSentNotDeliveredMsgsMap) {
+                    origMsg = mSentNotDeliveredMsgsMap.get(msg
 						.getUniqueMsgIdentifier());
+                }
 				if (origMsg != null) {
 					origMsg.setTimeStamp((String)message.getProperty(Message.TIME));
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "got ack for msg: " + origMsg.getBody());
@@ -233,8 +243,9 @@ class ChatAdapter extends IChatAdapter.Stub {
 						updateMessageStatusInList(origMsg, SBChatMessage.BLOCKED);						
 					else
 						updateMessageStatusInList(origMsg, SBChatMessage.DELIVERED);					
-					mSentNotDeliveredMsgHashSet.remove(origMsg);
-					setPriorUndeliveredMsgsToFailed(origMsg);
+                    synchronized (mSentNotDeliveredMsgsMap) {
+                        mSentNotDeliveredMsgsMap.remove(msg.getUniqueMsgIdentifier());
+                    }
 				} else {
 					if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"got ack but not msg uniqid: "	+ msg.getUniqueMsgIdentifier());
 				}
@@ -247,6 +258,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 
 			// this is chat coming from outside,send ack to this msg
 			if (msg.getType() == Message.MSG_TYPE_CHAT) {
+                Logger.i(TAG, "Got chat with msg id: " + msg.getUniqueMsgIdentifier() + " and body: " + msg.getBody());
 				try {
 					Message ackmsg = null;					
 					if (BlockedUser.isUserBlocked(msg.getInitiator()))
@@ -265,6 +277,11 @@ class ChatAdapter extends IChatAdapter.Stub {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+                if (receivedChatIds.contains(msg.getUniqueMsgIdentifier())) {
+                    Logger.i(TAG, "Already delivered message with id : " + msg.getUniqueMsgIdentifier() + " and body :" + msg.getBody());
+                    //already delivered message
+                    return;
+                }
 				//active chat for incoming added here and for outgoing added in chatwindow				
 				if (mMessages.size() == HISTORY_MAX_SIZE)
 					mMessages.remove(0);
@@ -272,6 +289,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 				msg.setTimeStamp((String) message.getProperty(Message.TIME));			
 				
 				addMessageToList(msg);
+                if (receivedChatIds.size() == MAX_RECVD_IDS) {
+                    receivedChatIds.pollFirst();
+                }
+                receivedChatIds.add(msg.getUniqueMsgIdentifier());
 
 				if (mIsOpen) {
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chat is open");
@@ -279,7 +300,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				} else {
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chat not open,Sending notification");
 					String participant_name = msg.getSubject();
-					if (participant_name == "")
+                    if (participant_name.equals(""))
 						participant_name = "Unknown";
 					
 					mChatManager.notifyChat(msg.getInitiator().hashCode(), msg.getInitiator(),participant_name,msg.getBody());
@@ -289,31 +310,6 @@ class ChatAdapter extends IChatAdapter.Stub {
 			}
 		}
 
-	}
-	
-	private void setPriorUndeliveredMsgsToFailed(Message lastDeliveredMsg)
-	{
-		int oneBeforedeliveredMsgIndex = mMessages.lastIndexOf(lastDeliveredMsg)-1;
-		while (oneBeforedeliveredMsgIndex >= 0)
-		{
-			Message oneBeforedeliveredMsg = mMessages.get(oneBeforedeliveredMsgIndex);
-			if(oneBeforedeliveredMsg.getStatus()==SBChatMessage.RECEIVED)
-			{
-				oneBeforedeliveredMsgIndex--;
-				continue;
-			}
-			
-			if(oneBeforedeliveredMsg.getStatus()==SBChatMessage.DELIVERED ||
-				oneBeforedeliveredMsg.getStatus()==SBChatMessage.BLOCKED 	)
-			break;  //break if delivered found before this msg
-			
-			updateMessageStatusInList(oneBeforedeliveredMsg, SBChatMessage.SENDING_FAILED);
-			mSentNotDeliveredMsgHashSet.remove(oneBeforedeliveredMsg);
-			if (mIsOpen) {				
-				callListeners(oneBeforedeliveredMsg);
-			}
-			oneBeforedeliveredMsgIndex--;
-		}
 	}
 
 	private boolean sendAck(Message msg) {
@@ -338,25 +334,38 @@ class ChatAdapter extends IChatAdapter.Stub {
 		return true;
 	}
 
-	private boolean sendChatMessage(Message msg) {
+    private org.jivesoftware.smack.packet.Message createSmackMessage(Message msg) {
 		// every chat msg should havae:
 		// 1) unique id
 		// 2) msg type
 		// 3) time		
-		org.jivesoftware.smack.packet.Message msgToSend = new org.jivesoftware.smack.packet.Message();
+        org.jivesoftware.smack.packet.Message smackMsg = new org.jivesoftware.smack.packet.Message();
 		String msgBody = msg.getBody();
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "message sending to " + msg.getTo());
-		msgToSend.setBody(msgBody);
-		msgToSend.setSubject(msg.getSubject());
-		msgToSend.setProperty(Message.UNIQUEID, msg.getUniqueMsgIdentifier());
-		msgToSend.setProperty(Message.SBMSGTYPE, Message.MSG_TYPE_CHAT);
-		msgToSend.setProperty(Message.TIME, msg.getTimestamp());		
+        smackMsg.setBody(msgBody);
+        smackMsg.setSubject(msg.getSubject());
+        smackMsg.setProperty(Message.UNIQUEID, msg.getUniqueMsgIdentifier());
+        smackMsg.setProperty(Message.SBMSGTYPE, Message.MSG_TYPE_CHAT);
+        smackMsg.setProperty(Message.TIME, msg.getTimestamp());
+        return smackMsg;
+    }
+
+    private boolean sendChatMessage(Message msg) {
+        Logger.i(TAG, "message sending to " + msg.getTo() + " Body :" + msg.getBody());
+
+        org.jivesoftware.smack.packet.Message msgToSend = createSmackMessage(msg);
 	
 		try {			
 			mSmackChat.sendMessage(msgToSend);
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chat message sent to " + msg.getTo());
+            Logger.i(TAG, "chat message sent to " + msg.getTo());
 			updateMessageStatusInList(msg, SBChatMessage.SENT);			
-			mSentNotDeliveredMsgHashSet.put(msg.getUniqueMsgIdentifier(), msg);
+            synchronized (mSentNotDeliveredMsgsMap) {
+                boolean wasEmpty = mSentNotDeliveredMsgsMap.isEmpty();
+                mSentNotDeliveredMsgsMap.put(msg.getUniqueMsgIdentifier(), msg);
+                if (wasEmpty) {
+                    timer = new Timer();
+                    timer.schedule(new ReSenderThread(), DELAY);
+                }
+            }
 			
 		} catch (XMPPException e) {
 			// TODO retry sending msg?
@@ -364,7 +373,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 			updateMessageStatusInList(msg, SBChatMessage.SENDING_FAILED);			
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			e.printStackTrace();
+            Logger.e(TAG, "Error in sending message", e);
 			return false;
 		}
 		// we do a callback to update this msg status to sent or sending failed
@@ -436,6 +445,38 @@ class ChatAdapter extends IChatAdapter.Stub {
 	@Override
 	public List<Message> getMessages() throws RemoteException {
 		return mMessages;
+    }
+
+    class ReSenderThread extends TimerTask {
+
+        @Override
+        public void run() {
+            Logger.i(TAG, "Resender thread resumed..");
+            boolean wasAnyMsgResent = false;
+            long now = System.currentTimeMillis();
+            synchronized (mSentNotDeliveredMsgsMap) {
+                for (Map.Entry<Long, Message> entry : mSentNotDeliveredMsgsMap.entrySet()) {
+                    Logger.i(TAG, "Retrieved message with Id :" + entry.getKey());
+                    if (entry.getKey() > (now - THRESHOLD_DELAY)) {
+                        Logger.i(TAG, "Message not old enough");
+                        break;
+                    }
+
+                    wasAnyMsgResent = true;
+                    try {
+                        Logger.i(TAG, "Resending message with id :" + entry.getKey());
+                        mSmackChat.sendMessage(createSmackMessage(entry.getValue()));
+                    } catch (Exception e) {
+                        Logger.e(TAG, "Encountered exception while resending message", e);
+                    }
+                }
+            }
+
+            if (wasAnyMsgResent) {
+                timer = new Timer();
+                timer.schedule(new ReSenderThread(), DELAY);
+            }
+        }
 	}
 
 }

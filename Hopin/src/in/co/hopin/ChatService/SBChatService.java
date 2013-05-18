@@ -22,8 +22,11 @@ import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
+import in.co.hopin.Util.Logger;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.Roster.SubscriptionMode;
+import org.jivesoftware.smackx.ServiceDiscoveryManager;
+import org.jivesoftware.smackx.ping.PingManager;
 
 import java.io.File;
 import java.util.List;
@@ -34,7 +37,7 @@ public class SBChatService extends Service {
 
     private static String TAG = "in.co.hopin.ChatService.SBChatService";
     private static final String INTENT_ACTION = "in.co.hopin.ChatService.ConnectivityMonitor";
-    private static final int POLL_FREQ = 1 * 60 * 1000;
+    private static final int POLL_FREQ = 2 * 60 * 1000;
     private XMPPConnection mXMPPConnection = null;
     NotificationManager mNotificationManager = null;
     private ConnectionConfiguration mConnectionConfiguration = null;
@@ -43,11 +46,11 @@ public class SBChatService extends Service {
     private int DEFAULT_XMPP_PORT = 5222;
     int mPort;
     private SBChatBroadcastReceiver mReceiver = new SBChatBroadcastReceiver();
-    private ConnectivityMonitor connectivityMonitor;
     private String mHost = ServerConstants.CHATSERVERIP;
     String mErrorMsg = "";
     public static boolean isRunning = false;
-
+    private Timer timer;
+    private PingManager mPingManager;
 
     /**
      * Broadcast intent type.
@@ -76,14 +79,14 @@ public class SBChatService extends Service {
         mXMPPConnection = new XMPPConnection(mConnectionConfiguration);
 
         if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "made xmpp connection");
+
+        ServiceDiscoveryManager.setIdentityName("Hopin");
+        ServiceDiscoveryManager.setIdentityType("Bot");
+
         //service has connection adapter which has all listeners
         mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection, this);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Roster.setDefaultSubscriptionMode(SubscriptionMode.accept_all);
-
-        connectivityMonitor = new ConnectivityMonitor();
-        IntentFilter intentFilter = new IntentFilter(INTENT_ACTION);
-        registerReceiver(connectivityMonitor, intentFilter);
 
         mXMPPAPIs = new XMPPAPIs(mConnectionAdapter);
         if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Created ChatService");
@@ -96,23 +99,14 @@ public class SBChatService extends Service {
         if (Platform.getInstance().isLoggingEnabled())
             Log.i("LocalService", "Received start id " + startId + ": " + intent);
         //ToastTracker.showToast("service strted with id:"+startId);
-        if (mConnectionAdapter == null)
-            mConnectionAdapter = new XMPPConnectionListenersAdapter(mXMPPConnection, this);
-        else {
-            String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
-            String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
-            if (!login.equals("") && !password.equals(""))
-                mConnectionAdapter.loginAsync(login, password);
-        }
 
-        Intent connectivityMonitorIntent = new Intent(INTENT_ACTION);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                connectivityMonitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
+        String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+        if (!login.equals("") && !password.equals(""))
+            mConnectionAdapter.loginAsync(login, password);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + POLL_FREQ,
-                POLL_FREQ, pendingIntent);
-
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new ConnectionMonitorTask(), POLL_FREQ, POLL_FREQ);
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
@@ -263,53 +257,39 @@ public class SBChatService extends Service {
         }
     }
 
-    class ConnectivityMonitor extends BroadcastReceiver {
-        private static final String TAG = "in.co.hopin.ChatService.ConnectivityMonitor";
-        private static final int RETRY_FREQ = 1 * 60 * 1000;
+    class ConnectionMonitorTask extends TimerTask {
 
-        private Timer timer;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (SBConnectivity.isOnline()) {
-                if (Platform.getInstance().isLoggingEnabled()) {
-                    Log.d(TAG, "Checking if connected");
-                }
-                final String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
-                final String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
-                if (SBConnectivity.isConnected()) {
-                    if (Platform.getInstance().isLoggingEnabled()) {
-                        Log.d(TAG, "Connected.. trying to login");
-                    }
-                    if (!login.equals("") && !password.equals("")) {
-                        mConnectionAdapter.loginAsync(login, password);
-                    }
+        public void run() {
+            Logger.i(TAG, "ConnectivityMonitor task resumed");
+            //ToastTracker.showToast("ConnectivityMonitor task resumed");
+            if (mPingManager == null) {
+                if (ServiceDiscoveryManager.getInstanceFor(mXMPPConnection) != null) {
+                    mPingManager = PingManager.getInstanceFor(mXMPPConnection);
                 } else {
-                    if (Platform.getInstance().isLoggingEnabled()) {
-                        Log.d(TAG, "Not connected");
-                    }
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        int counter = 0;
-
-                        @Override
-                        public void run() {
-                            counter++;
-                            if (counter == 5) {
-                                if (Platform.getInstance().isLoggingEnabled()) {
-                                    Log.d(TAG, "Cancelling timer");
-                                }
-                                timer.cancel();
-                                timer.purge();
-                                return;
-                            }
-                            if (Platform.getInstance().isLoggingEnabled()) {
-                                Log.d(TAG, "Trying to reconnect");
-                            }
-                            mConnectionAdapter.loginAsync(login, password);
-                        }
-                    }, 0, RETRY_FREQ);
+                    //Logger.d(TAG, "No service discovery manager found");
+                    return;
                 }
+            }
+
+            boolean isServerReachable = mPingManager.pingMyServer();
+            Logger.i(TAG, "Is server reachable? " + isServerReachable);
+
+            if (isServerReachable) {
+                //ToastTracker.showToast("Connected. Trying to login");
+                login();
+            } else {
+                Logger.d(TAG, "Server not reachable.");
+                //ToastTracker.showToast("Server not reachable.");
+                mConnectionAdapter.setWasConnectionLost(true);
+                login();
+            }
+        }
+        
+        public void login() {
+            final String login = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
+            final String password = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+            if (!login.equals("") && !password.equals("")) {
+                mConnectionAdapter.loginAsync(login, password);
             }
         }
     }
