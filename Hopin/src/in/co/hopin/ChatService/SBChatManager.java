@@ -1,33 +1,24 @@
 package in.co.hopin.ChatService;
 
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
+import android.util.Log;
+import in.co.hopin.ChatClient.IChatManagerListener;
+import in.co.hopin.ChatClient.IMessageListener;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerConstants;
+import org.jivesoftware.smack.*;
+import org.jivesoftware.smack.util.StringUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import in.co.hopin.ChatClient.IChatManagerListener;
-import in.co.hopin.ChatClient.IMessageListener;
-import in.co.hopin.ChatService.IChatAdapter;
-import in.co.hopin.ChatService.IChatManager;
-
-import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.ChatManager;
-import org.jivesoftware.smack.ChatManagerListener;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.util.StringUtils;
-
-import android.os.RemoteCallbackList;
-import android.os.RemoteException;
-import android.util.Log;
-
 public class SBChatManager extends IChatManager.Stub {
 	
-	private ChatManager mChatManager;	
-	private XMPPConnection mXMPPConnection = null;
+	private ChatManager mChatManager;
+	private XMPPConnection mXMPPConnection;
 	private Roster mRoster;	
 	private static final String TAG = "in.co.hopin.ChatService.SBChatManager";
     private final Map<String, ChatAdapter> mAllChats = new HashMap<String, ChatAdapter>();
@@ -42,10 +33,29 @@ public class SBChatManager extends IChatManager.Stub {
 		this.mChatManager = xmppConnection.getChatManager();
 		this.mService = service;
 		this.mRoster = xmppConnection.getRoster();				
-		this.mChatManager.addChatListener(mChatAndInitialMsgListener);		
+		//this.mChatManager.addChatListener(mChatAndInitialMsgListener);
+        addChatListener();
+
 	}
-	
-	
+
+    private void resetChatManager() {
+        mChatManager = mXMPPConnection.getChatManager();
+    }
+    
+    private void addChatListener() {
+        mChatManager.addChatListener(mChatAndInitialMsgListener);
+    }
+
+    public synchronized void resetOnConnection() {
+        resetChatManager();
+        addChatListener();
+        for (Map.Entry<String, ChatAdapter> entry : mAllChats.entrySet()) {
+            String key = entry.getKey() + "@" + ServerConstants.CHATSERVERIP;
+            Chat chat = mChatManager.createChat(key, null);
+            entry.getValue().resetChatOnConnection(chat);
+        }
+    }
+
 	/**
      * Get an existing ChatAdapter or create it if necessary.
      * @param chat The real instance of smack chat
@@ -79,7 +89,7 @@ public class SBChatManager extends IChatManager.Stub {
     }
 
 	@Override
-	public IChatAdapter createChat(String participant, IMessageListener listener) throws RemoteException {
+	public synchronized IChatAdapter createChat(String participant, IMessageListener listener) throws RemoteException {
 			String key = participant+"@"+ServerConstants.CHATSERVERIP;
 			ChatAdapter chatAdapter;
 			if (mAllChats.containsKey(participant)) {
@@ -96,7 +106,7 @@ public class SBChatManager extends IChatManager.Stub {
 		    }
 	
 	@Override
-    public ChatAdapter getChat(String participant) {	
+    public synchronized ChatAdapter getChat(String participant) {
 		String key = participant;
 		if (mAllChats.containsKey(key)) {
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Chat returned for:"+key);
@@ -175,7 +185,7 @@ public class SBChatManager extends IChatManager.Stub {
 			//which will then take care of further msgs
 			 ChatAdapter newchatAdapter;
 			 String key = StringUtils.parseName(chat.getParticipant());
-			 if(!in.co.hopin.Util.StringUtils.isBlank(key))
+			 if(!in.co.hopin.Util.StringUtils.isBlank(key)) {
 				if (mAllChats.containsKey(key)) {
 					newchatAdapter= mAllChats.get(key);
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"returning old adapter for:"+key);
@@ -186,8 +196,11 @@ public class SBChatManager extends IChatManager.Stub {
 					newchatAdapter = new ChatAdapter(chat,SBChatManager.this);	
 					mAllChats.put(key,newchatAdapter);
 				}
-				//newchatAdapter.addMessageListener(mChatAndInitialMsgListener);
-			    if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Insane smack " + chat.toString() + " created locally " + locally + " with blank key?: " + key);			   
+             }
+             else {
+                    //newchatAdapter.addMessageListener(mChatAndInitialMsgListener);
+			        if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Insane smack " + chat.toString() + " created locally " + locally + " with blank key?: " + key);
+             }
 		
 		}	
 		}

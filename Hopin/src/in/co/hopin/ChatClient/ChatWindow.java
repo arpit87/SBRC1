@@ -1,6 +1,5 @@
 package in.co.hopin.ChatClient;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -18,15 +17,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
-import in.co.hopin.Activities.SettingsActivity;
 import in.co.hopin.ChatService.*;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.R;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Util.StringUtils;
 
@@ -586,32 +584,6 @@ private class SBOnChatMessageListener extends IMessageListener.Stub {
 	    
 	}
 }
-
-//this is the callback class to track chatmanger on ChatService
-private class ChatManagerListener extends IChatManagerListener.Stub {
-
-	@Override
-	public void chatCreated(IChatAdapter chat, boolean locally) {
-	    if (locally)
-		return;
-	    try {
-	    	mParticipantFBID = chat.getParticipant();
-	    	//changeCurrentChat(mParticipant);
-		//String chatJid = chat.getParticipant().getJIDWithRes();
-		
-		    if (chatAdapter != null) {
-		    	chatAdapter.setOpen(false);
-		    	chatAdapter.removeMessageListener(mMessageListener);
-		    }
-		    chatAdapter = chat;
-		    chatAdapter.setOpen(true);
-		    chatAdapter.addMessageListener(mMessageListener);		   
-		
-	    } catch (RemoteException ex) {
-		if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "A remote exception occurs during the creation of a chat", ex);
-	    }
-	}
-    }
 
 private class SBChatServiceConnAndMiscListener extends ISBChatConnAndMiscListener.Stub{
 

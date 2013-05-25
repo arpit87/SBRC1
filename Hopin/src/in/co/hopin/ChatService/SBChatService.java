@@ -51,6 +51,7 @@ public class SBChatService extends Service {
     public static boolean isRunning = false;
     private Timer timer;
     private PingManager mPingManager;
+    private ChatManager chatManager;
 
     /**
      * Broadcast intent type.
@@ -291,6 +292,12 @@ public class SBChatService extends Service {
             if (!login.equals("") && !password.equals("")) {
                 mConnectionAdapter.loginAsync(login, password);
             }
+
+            ChatManager tempChatManager = mXMPPConnection.getChatManager();
+            if (tempChatManager != chatManager && tempChatManager != null) {
+                mConnectionAdapter.resetOnConnection();
+            }
+            chatManager = tempChatManager;
         }
     }
 }

@@ -42,7 +42,7 @@ class ChatAdapter extends IChatAdapter.Stub {
     private static final int MAX_RECVD_IDS = 10;
 	private static final String TAG = "in.co.hopin.ChatService.ChatAdapter";
 	private Boolean mIsOpen = false;
-	private final Chat mSmackChat;
+	private Chat mSmackChat;
 	private final String mParticipant;	
 	private List<Message> mMessages;
     private final Map<Long, Message> mSentNotDeliveredMsgsMap;
@@ -81,6 +81,11 @@ class ChatAdapter extends IChatAdapter.Stub {
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chatadapter created for:" + mParticipant);
 	}
 
+    public void resetChatOnConnection(final Chat chat) {
+        mSmackChat.removeMessageListener(mMsgListener);
+        mSmackChat = chat;
+        mSmackChat.addMessageListener(mMsgListener);
+    }
 	
 	private void addMessageToList(Message msg)
 	{

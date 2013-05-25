@@ -37,6 +37,10 @@ public class XMPPConnectionListenersAdapter {
 	private final RemoteCallbackList<ISBChatConnAndMiscListener> mRemoteMiscListeners = new RemoteCallbackList<ISBChatConnAndMiscListener>();
     private AtomicBoolean wasConnectionLost = new AtomicBoolean(false);
 
+    public void resetOnConnection() {
+        mChatManager.resetOnConnection();
+    }
+
     public void setWasConnectionLost(boolean val){
         wasConnectionLost.set(val);
     }
