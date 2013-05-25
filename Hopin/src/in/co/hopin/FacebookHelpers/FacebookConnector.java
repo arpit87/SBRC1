@@ -1,40 +1,31 @@
 package in.co.hopin.FacebookHelpers;
 
-import in.co.hopin.Activities.Tutorial;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.Store;
-import in.co.hopin.HelperClasses.ThisAppConfig;
-import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.AddUserRequest;
-import in.co.hopin.HttpClient.ChatServiceCreateUser;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.HttpClient.SBHttpRequest;
-import in.co.hopin.HttpClient.SaveFBInfoRequest;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Util.StringUtils;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.google.analytics.tracking.android.EasyTracker;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.HttpClient.*;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 public class FacebookConnector {
 	
@@ -55,6 +46,7 @@ public class FacebookConnector {
     {
     	this.underlying_activity =  underlying_activity;
     	this.permissions = FB_PERMISSIONS;
+        EasyTracker.getInstance().setContext(Platform.getInstance().getContext());
     }
     
     public void logoutFromFB()
@@ -106,7 +98,8 @@ public class FacebookConnector {
     }
     
     class LoginDialogListener implements DialogListener {
-	    public void onComplete(Bundle values) {	    	
+	    public void onComplete(Bundle values) {
+            EasyTracker.getTracker().sendEvent("callback_event", "callback_received", "FBLogin_callback", 1L);
 	    	ThisUserConfig.getInstance().putString(ThisUserConfig.FBACCESSTOKEN, facebook.getAccessToken());
         	ThisUserConfig.getInstance().putLong(ThisUserConfig.FBACCESSEXPIRES, facebook.getAccessExpires());
         	ProgressHandler.showInfiniteProgressDialoge(underlying_activity, "Authentication successsful", "Please wait..");

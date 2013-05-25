@@ -1,37 +1,22 @@
 package in.co.hopin.Activities;
 
-import in.co.hopin.R;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.*;
+import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.AddUserRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.R;
 import in.co.hopin.Util.StringUtils;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.analytics.tracking.android.EasyTracker;
 
 public class Tutorial extends Activity{
 	ImageView map1View;
@@ -100,6 +85,7 @@ public class Tutorial extends Activity{
 			
 			@Override
 			public void onClick(View v) {
+                EasyTracker.getTracker().sendEvent("ui_action", "button_press", "FbLogin_button", 1L);
 				Toast.makeText(Tutorial.this, "Logging...please wait..", Toast.LENGTH_SHORT).show();
 				fbconnect = new FacebookConnector(Tutorial.this);
 				fbconnect.loginToFB();
