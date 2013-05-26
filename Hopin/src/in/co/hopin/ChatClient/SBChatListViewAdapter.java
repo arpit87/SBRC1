@@ -2,7 +2,6 @@ package in.co.hopin.ChatClient;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +71,8 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	     {
 	    	 msg.setStatus(status);
 	    	 if(status == SBChatMessage.DELIVERED)
-	    		 mHashMapSentNotDeliveredMsgs.remove(msg);
-	     }		
+	    		 mHashMapSentNotDeliveredMsgs.remove(unique_ID);
+	     }
 	}
 	
 	public void clearList()

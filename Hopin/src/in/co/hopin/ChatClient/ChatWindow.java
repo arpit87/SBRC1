@@ -26,6 +26,7 @@ import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
+import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 
 import java.util.ArrayList;
@@ -346,7 +347,7 @@ private void showPopupMenu(View v)
 	  	private void loginWithProgress() 
 	    {	    	
 	    	try {
-				if(mThiUserChatUserName != "" && mThisUserChatPassword != "")
+				if(!"".equals(mThiUserChatUserName) && !"".equals(mThisUserChatPassword))
 				{
 					//progressDialog = Progressdialog.show(ChatWindow.this, "Logging in", "Please wait..", true);
 			    	if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"logging in chat window  with username,pass:" + mThiUserChatUserName + ","+mThisUserChatPassword);
@@ -523,66 +524,60 @@ private class SBOnChatMessageListener extends IMessageListener.Stub {
 	@Override
 	public void processMessage(final IChatAdapter chatAdapter, final Message msg)
 			throws RemoteException {
-		
-		mHandler.post(new Runnable() {
-	 		
-		    @Override
-		    public void run() {
-		
-		   
-		  if(msg.getType() == Message.MSG_TYPE_ACKFOR_DELIVERED)
-		  {
-			  //here we should receive acks of only open chats
-			  //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
-			  //he fetches all the msgs which have been updated in adapter.
-			  mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.DELIVERED);
-		  }
-		  else  if(msg.getType() == Message.MSG_TYPE_ACKFOR_BLOCKED)
-		  {
-			  //here we should receive acks of only open chats
-			  //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
-			  //he fetches all the msgs which have been updated in adapter.
-			  mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.BLOCKED);
-		  }
-		  else if(msg.getType() == Message.MSG_TYPE_CHAT)
-		  {
-			  //here we can get two type of chat msg
-			  //1) self msg after status change to sent/sending failed
-			  //2) incoming msg from other user
-			  
-			  //handle 1)
-			  if(msg.getStatus() == SBChatMessage.SENT || msg.getStatus() == SBChatMessage.SENDING_FAILED )
-			  {
-				  mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), msg.getStatus());
-			  }
-			  else if(msg.getStatus() == SBChatMessage.RECEIVED){
-			  if (msg.getBody() != null) {
-				  	//incomiing added in chatadapter
-				  	//ActiveChat.addChat(mParticipantFBID, mThisUserChatFullName, msg.getBody());
-				    SBChatMessage lastMessage = null;
-				    
-				    if (mMessagesListAdapter.getCount() != 0)
-				    	lastMessage = (SBChatMessage) mMessagesListAdapter.getItem(mMessagesListAdapter.getCount()-1);
 
-				    if (lastMessage != null && !lastMessage.getInitiator().equals(mThiUserChatUserName)) {
-				    	lastMessage.setMessage(lastMessage.getMessage().concat("\n" + msg.getBody()));
-				    	lastMessage.setTimestamp(msg.getTimestamp());					    
-				    	mMessagesListAdapter.setMessage(mMessagesListAdapter.getCount() - 1, lastMessage);
-				    
-				    } else if (msg.getBody() != null){
-				    	mMessagesListAdapter.addMessage(new SBChatMessage(msg.getInitiator(), msg.getReceiver(), msg.getBody(),false, msg.getTimestamp(),msg.getStatus(),msg.getUniqueMsgIdentifier()));
-				    }	   
-				
-			    }
-			  }
-		  }			  
-		  		   
-		 	
-				    	 mMessagesListAdapter.notifyDataSetChanged();				    
-				}});
-		    
-	    
-	}
+        mHandler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Logger.i(TAG, "Msg of type :" + msg.getType() + " received.");
+
+                if (msg.getType() == Message.MSG_TYPE_ACKFOR_DELIVERED) {
+                    //here we should receive acks of only open chats
+                    //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
+                    //he fetches all the msgs which have been updated in adapter.
+                    mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.DELIVERED);
+                } else if (msg.getType() == Message.MSG_TYPE_ACKFOR_BLOCKED) {
+                    //here we should receive acks of only open chats
+                    //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
+                    //he fetches all the msgs which have been updated in adapter.
+                    mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.BLOCKED);
+                } else if (msg.getType() == Message.MSG_TYPE_CHAT) {
+                    //here we can get two type of chat msg
+                    //1) self msg after status change to sent/sending failed
+                    //2) incoming msg from other user
+
+                    //handle 1)
+                    if (msg.getStatus() == SBChatMessage.SENT || msg.getStatus() == SBChatMessage.SENDING_FAILED) {
+                        mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), msg.getStatus());
+                    } else if (msg.getStatus() == SBChatMessage.RECEIVED) {
+                        if (msg.getBody() != null) {
+                            //incomiing added in chatadapter
+                            //ActiveChat.addChat(mParticipantFBID, mThisUserChatFullName, msg.getBody());
+                            SBChatMessage lastMessage = null;
+
+                            if (mMessagesListAdapter.getCount() != 0)
+                                lastMessage = (SBChatMessage) mMessagesListAdapter.getItem(mMessagesListAdapter.getCount() - 1);
+
+                            if (lastMessage != null && !lastMessage.getInitiator().equals(mThiUserChatUserName)) {
+                                lastMessage.setMessage(lastMessage.getMessage().concat("\n" + msg.getBody()));
+                                lastMessage.setTimestamp(msg.getTimestamp());
+                                mMessagesListAdapter.setMessage(mMessagesListAdapter.getCount() - 1, lastMessage);
+
+                            } else if (msg.getBody() != null) {
+                                mMessagesListAdapter.addMessage(new SBChatMessage(msg.getInitiator(), msg.getReceiver(), msg.getBody(), false, msg.getTimestamp(), msg.getStatus(), msg.getUniqueMsgIdentifier()));
+                            }
+
+                        }
+                    }
+                }
+
+                Logger.i(TAG, "Notifying adapter.");
+                mMessagesListAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+    }
 }
 
 private class SBChatServiceConnAndMiscListener extends ISBChatConnAndMiscListener.Stub{
