@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hopin</string>
+    <string name="url_strangerbuddy">www.hopin.co.in</string>
+    <string name="title1">Hopin</string>
+    <color name="white">#ffffffff</color>
+    <color name="dark_gray">#808080</color>
+    <string name="slogan">Lets move, together</string>
+    <string name="buttonlogin">Login</string>
+    <string name="buttoncarpool">Pool search</string>
+    <string name="buttonhirenow">Hire Now</string>
+    <string name="map_api_key">0QyEE3la-iK1u0cSktskMg3H3KjK5eevsHVbjEQ</string>
+    <string name="chat_header">Chat:</string>
+    <string name="searchaddressheader">Address search</string>
+    <string name="full_name">Name:</string>
+    <string name="stringpassword">Password:</string>
+    <string name="retype_pass">Retype Pass:</string>
+    <string name="buttonregister">Not Registered?</string>
+    <string name="username">Username</string>
+    <string name="stringlogin">Login</string>
+    <string name="registerButton">Register</string>
+    <string name="buttonFindBuddies">Find</string>
+    <string name="MyLocationHintString">My Location</string>
+    <string name="hintDestinationSearch">Enter destination</string>    
+    <string name="arpit">arpit</string>
+    <string name="AcceptContactRequest">%s has just added you to his/her buddy list.</string>
+	<string name="AcceptContactRequestFrom">Authorize %s to contact you.</string>
+    <color name="black">#ff000000</color>
+    <string name="sloganl1">Share,</string>
+    <string name="sloganl2">right now,</string><string name="stranger">Stranger</string>
+    <string name="buddy">Buddy</string>
+    <color name="red">#ffff0000</color>
+    <color name="yellow">#ffffff00</color>
+    
+    <string name="sloganl3">right here</string>
+    <color name="green">#ff00ff00</color>
+    <color name="springgreen">#008B45</color>
+    <color name="firebrickred">#8b1a1a</color>
+    <string name="fblogintext1">One time FaceBook login </string>
+    <string name="fblogintext2">Establish your credentials</string>
+    <string name="fblogintext3">See other users credentials</string>
+    <string name="fblogintext4">Chat with nearby users</string>
+    <string name="fb_logout">logout</string>
+    <string name="hopon">hopon</string>
+    <string name="locationupdaterservice">locationupdaterservice</string>
+    <string name="request_active">You will be notified if anyone mooovs by you</string>
+    <string name="request_cancel">Click to cancel request</string>
+    <string name="mapviewstr">MapView</string>
+    <string name="listviewstr">ListView</string>
+    <string name="icon_my_location">MyLocationIcon</string>
+    <string name="menu_search">Destination?</string>
+    <string name="no_results">No results found for \"%s\"</string>
+
+    <plurals name="search_results">
+        <item quantity="one">%1$d result for \"%2$s\": </item>
+        <item quantity="other">%1$d results for \"%2$s\": </item>
+    </plurals>
+    <string name="chatserver">54.243.171.212</string>
+    <string name="NetworkConnectivityLost">Sorry, no network</string>
+    <string name="chatservice">chatservice</string>
+    <string name="sbchatservicedescription">chat service</string>
+    <string name="serverip">54.243.171.212</string>
+    <string name="icon_offerride">offer ride?</string>
+    <string name="crash_toast_text">App has crashed</string>
+    <string name="set_username">Set UserName</string>
+    <string name="cancel">Cancel</string>
+    <string name="source_listview">Search travellers going your way</string>
+    <string name="destination_listview">Tap on search icon on bar</string>
+    <string name="maplistviewtoggletext">MapView&lt;&gt;ListView</string>
+
+</resources>

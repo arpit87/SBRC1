@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ffffffff">   
+              
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"        
+        android:padding="2dip"
+        android:layout_marginTop="50dip"
+       >
+			
+   
+    
+  <ImageView
+        android:id="@+id/selfthumbnail"
+        android:layout_width="70dip"
+        android:layout_height="70dip"
+        android:layout_margin="9dip"  
+        android:layout_centerVertical="true" 
+        android:scaleType="fitXY"        
+         />
+  
+   <ImageView
+        android:id="@+id/selfthumbnailframe"
+        android:layout_width="82dip"
+        android:layout_height="82dip"
+        android:background="@drawable/icon_frame"       
+        android:layout_margin="3dip"
+        android:layout_centerVertical="true" 
+         />
+  <LinearLayout
+      android:id="@+id/selfInfoLayout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"    
+      
+      android:layout_toRightOf="@+id/selfthumbnail"
+      android:orientation="vertical"
+      android:layout_marginLeft="5dip"
+      android:layout_marginTop="5dip" >
+
+      <TextView
+          android:id="@+id/my_name_listview"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:ellipsize="marquee"
+          android:maxLines="1"
+          android:textColor="#040404"
+          android:textSize="18sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/my_source_listview"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:maxLines="1"
+          android:text="@string/source_listview"
+          android:textColor="#040404"
+          android:textSize="13sp" />
+      
+       <TextView
+          android:id="@+id/my_destination_listview"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:maxLines="1" 
+          android:text="@string/destination_listview"         
+          android:textColor="#040404"
+          android:textSize="13sp" />
+       
+       <TextView
+          android:id="@+id/my_time_listview"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"          
+          android:maxLines="2"
+          android:textColor="#040404"
+          android:textSize="13sp" />
+       
+  </LinearLayout>
+  
+    </RelativeLayout>
+    <View android:layout_width="fill_parent" android:layout_height="2dp"
+          android:fadingEdge="horizontal" android:background="@color/gray"/>
+
+    <ListView 
+              android:id="@android:id/list"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:textSize="24dp"
+              android:cacheColorHint="@android:color/transparent"
+              android:divider="@color/dark_gray"
+              android:dividerHeight="1dip">
+    </ListView>
+
+    <TextView android:id="@id/android:empty"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#D3D3D3"/>
+</LinearLayout>
+

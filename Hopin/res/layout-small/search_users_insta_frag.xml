@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="5dip"
+    android:paddingTop="20dip" 
+    android:background="@color/white">
+    
+    <TextView android:text="Enter destination"
+     android:textColor="@color/frame_blue"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"     
+     android:layout_gravity="left"
+     android:textSize="15dip"
+     android:layout_marginTop="15dip" 
+     android:layout_marginLeft="15dip"      
+     android:layout_marginBottom="3dip"     
+     />
+
+ <AutoCompleteTextView        
+         android:id="@+id/search_user_insta_destination"         
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"         
+       	android:layout_marginLeft="15dip" 
+     	android:layout_marginRight="15dip"          
+        android:textColor="@color/black"
+        android:background="@drawable/gray_green_background_selector"
+        android:gravity="left"
+        android:paddingLeft="10dip"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"    
+        android:completionThreshold="2"    
+		android:hint="Enter destination"
+		
+        />
+ <TextView android:text="Travel in"
+     android:textColor="@color/frame_blue"
+     android:layout_height="wrap_content"
+     android:layout_width="wrap_content"     
+     android:layout_gravity="left"
+     android:textSize="15dip"
+     android:layout_marginTop="20dip" 
+     android:layout_marginLeft="15dip"
+     />
+ 
+ <RadioGroup 
+    android:id="@+id/search_user_insta_radio_group"   
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginLeft="12dip"      
+    >
+    <RadioButton
+        android:id="@+id/search_user_insta_radiobutton_5min" 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:text="5 min"
+        android:textColor="@color/black"
+        android:button="@drawable/radio_button" 
+        android:paddingLeft="22dip"       
+        android:layout_weight="1"
+        
+        />
+    <RadioButton 
+        android:id="@+id/search_user_insta_radiobutton_15min" 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:text="15 min"
+        android:textColor="@color/black"
+        android:button="@drawable/radio_button"
+        android:paddingLeft="22dip"
+        android:layout_weight="1"
+        />
+    <RadioButton
+        android:id="@+id/search_user_insta_radiobutton_30min"  
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:text="30 min"
+        android:textColor="@color/black"
+        android:button="@drawable/radio_button"
+        android:paddingLeft="22dip"
+        android:layout_weight="1"
+        />
+    
+</RadioGroup>
+
+ <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"                
+        android:orientation="horizontal"
+        
+        android:layout_marginTop="10dip">
+
+        <Button
+            android:id="@+id/search_usersinsta_btn_cancelfindusers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_grey"
+            android:text="Cancel"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:textColor="@color/black" />        
+
+        <Button
+            android:id="@+id/search_usersinsta_btn_takeride"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_green"
+            android:text="Take ride"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:textColor="@color/black" />
+        
+         <Button
+            android:id="@+id/search_usersinsta_btn_offerride"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_blue"
+            android:text="Offer ride"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+    
+
+</LinearLayout>

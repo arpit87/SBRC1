@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    
+    <ImageView
+            android:id="@+id/grid_imageview_pic"
+            android:padding="5dip"
+            android:layout_width="60.0dip"
+            android:layout_height="60.0dip"            
+            android:scaleType="centerCrop" 
+            android:src="@drawable/userpicicon"/>
+    
+</RelativeLayout>
