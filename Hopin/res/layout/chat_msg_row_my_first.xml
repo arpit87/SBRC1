@@ -3,7 +3,7 @@
 	android:layout_height="wrap_content"
 	android:layout_width="fill_parent"
 	android:id="@+id/relativelayout_chatmsgrow"	
-	android:paddingTop="3dip"
+	android:paddingTop="53dip"
 	android:paddingBottom="3dip"	
 	>
 	

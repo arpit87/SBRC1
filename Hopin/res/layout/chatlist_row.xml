@@ -35,11 +35,32 @@
         android:layout_marginTop="2dip"
         android:layout_marginLeft="5dip"        
         android:layout_toRightOf="@id/chatlist_image_frame"/>
+   
+    <ImageView
+            android:id="@+id/chatlist_offline"
+            android:layout_width="16.0dip"
+            android:layout_height="16dp"     
+            android:layout_toRightOf="@id/chatlist_name"   
+            android:layout_marginTop="3dip"    
+            android:layout_marginLeft="3dip"                 
+            android:scaleType="centerCrop"
+            android:src="@drawable/chat_dot_gray" />
+      
+      <ImageView
+            android:id="@+id/chatlist_online"
+            android:layout_width="16.0dip"
+            android:layout_height="16dp"    
+            android:layout_marginLeft="3dip" 
+            android:layout_toRightOf="@id/chatlist_name"  
+            android:layout_marginTop="3dip"                    
+            android:scaleType="centerCrop"
+            android:src="@drawable/chat_dot_green" />  
+            
    <TextView
         android:id="@+id/chatlist_lastchat"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Powai Vihar, powai, mumbai"
+        android:text="Hi,how are you"
         android:textColor="#343434"
         android:textSize="15dip"             
         android:maxLines="1"
