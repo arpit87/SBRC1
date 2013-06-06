@@ -3,15 +3,25 @@ package in.co.hopin.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import in.co.hopin.R;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
+import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
+import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
@@ -45,6 +55,12 @@ public class SBListFragment extends ListFragment {
         }
         MapListActivityHandler.getInstance().setListFrag(this);
 	}
+	
+	@Override
+	public void onActivityCreated(Bundle icicle) {    
+		super.onActivityCreated(icicle);
+	    registerForContextMenu(getListView());
+	}
 
     @Override
     public void onResume(){
@@ -72,6 +88,7 @@ public class SBListFragment extends ListFragment {
         //ToastTracker.showToast("Chat with user at: " + position);
     }
 	
+	
 	@Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -82,6 +99,30 @@ public class SBListFragment extends ListFragment {
 		}
 		//mListViewContainer.removeAllViews();
     }  
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
+	    super.onCreateContextMenu(menu, v, menuInfo);
+	    MenuInflater inflater = getActivity().getMenuInflater();
+	    inflater.inflate(R.menu.listview_longclick_menu, menu);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {	 
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();		
+		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(info.position);
+	    switch (item.getItemId()) {
+	    case R.id.listview_hopin_profile:
+	    	ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching user profile", "Please wait..");
+	    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(userAtthisPosition.getUserFBInfo().getFbid());
+			SBHttpClient.getInstance().executeRequest(req);	
+	    	break;
+	    case R.id.listview_fb_profile:
+	    	CommunicationHelper.getInstance().onFBIconClickWithUser(getActivity(), userAtthisPosition.getUserFBInfo().getFbid(), userAtthisPosition.getUserFBInfo().getFBUsername());
+	    	break;
+	    }
+	    return false;
+	}
 	
 
 }

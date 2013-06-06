@@ -59,7 +59,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
 	private ImageButton selfLocationButton = null;
 	private ToggleButton offerRideButton = null;
 	
-	ActionBar ab;
+	
 	private boolean currentIsOfferMode;
 	
 	private FacebookConnector fbconnect;
@@ -70,6 +70,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     private SBListFragment sbListFragment;
     private ImageView mFbLogin;
     private Menu mMenu;
+    ActionBar ab;
 	
 	public FacebookConnector getFbConnector()
 	{
@@ -85,16 +86,18 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         super.onCreate(null);
        // requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
        // requestWindowFeature((int) Window.FEATURE_ACTION_BAR & ~Window.FEATURE_ACTION_BAR_OVERLAY);
-        setContentView(R.layout.maplistview);        
-        showMapView();
-        ab= getSupportActionBar();
+        setContentView(R.layout.maplistview);    
         
+        ab = getSupportActionBar();
         ab.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_black));   
         
         //ToastTracker.showToast("Your userid:"+ThisUserNew.getInstance().getUserID());
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);       
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayShowTitleEnabled(true);
+        
+        showMapView();
+       
         this.registerReceiver(mapListActivityHandler,new IntentFilter(BroadCastConstants.NEARBY_USER_UPDATED));    
         fbconnect = new FacebookConnector(this);
         

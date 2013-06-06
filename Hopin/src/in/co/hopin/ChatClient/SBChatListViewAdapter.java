@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -127,16 +129,23 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	    SBChatMessage msg = mListMessages.get(position);	
 	    if(msg.getInitiator().equalsIgnoreCase(selfFBId))
 	    {
-	    	chatRowView = inflater.inflate(R.layout.chat_msg_row_my, null);	    	
+	    	if(position == 0)
+	    		chatRowView = inflater.inflate(R.layout.chat_msg_row_my_first, null);
+	    	else	
+	    		chatRowView = inflater.inflate(R.layout.chat_msg_row_my, null);
 	    	imageURL = selfImageURL;	   
 	    	// if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"self msg"+msg.getMessage());
 	    }
 	    else
-	    {
-	    	 chatRowView = inflater.inflate(R.layout.chat_msg_row_other, null);	    	 	
+	    {	
+	    	if(position == 0)
+	    		chatRowView = inflater.inflate(R.layout.chat_msg_row_other_first, null);
+	    	else
+	    	 	chatRowView = inflater.inflate(R.layout.chat_msg_row_other, null);	    	 	
 	 	     imageURL = participantFBURL;		    	
 	 	    // if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"othr person msg"+msg.getMessage());
 	    }  
+	  
 	    	msgText = (TextView) chatRowView.findViewById(R.id.chatmessagetext);
 	    	msgStatus = (TextView) chatRowView.findViewById(R.id.chatmessagestatusandtime);
 	    	imgView = (ImageView) chatRowView.findViewById(R.id.chat_msg_pic);

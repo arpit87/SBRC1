@@ -16,7 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.*;
+import in.co.hopin.Activities.MyChatsActivity;
+import in.co.hopin.Activities.MyRequestsActivity;
+import in.co.hopin.Activities.SearchInputActivityNew;
+import in.co.hopin.Activities.SettingsActivity;
 import in.co.hopin.ChatService.*;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
@@ -32,8 +37,14 @@ import in.co.hopin.Util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
-public class ChatWindow extends FragmentActivity{
+
+public class ChatWindow extends SherlockFragmentActivity{
 	
 	private static String TAG = "in.co.hopin.ChatClient.ChatWindow";
 	public static String PARTICIPANT = "participant";
@@ -41,23 +52,20 @@ public class ChatWindow extends FragmentActivity{
 	public static String DAILYINSTATYPE = "daily_insta";
 	public static String PARTICIPANT_NAME = "name";	
 	private IXMPPAPIs xmppApis = null;
-	private TextView mContactNameTextView;
-   // private ImageView mContactPicFrame;	 
-    private TextView mTravelDetails;	
-    //private ImageView mContactPic;   
+	  
     private ListView mMessagesListView;
     private EditText mInputField;
     private Button mSendButton; 
-    private ImageView mMenuButton;
+   
+    private Menu mMenu;
     private IChatAdapter chatAdapter;
     private IChatManager mChatManager;   
     private IMessageListener mMessageListener = new SBOnChatMessageListener();
-    private ISBChatConnAndMiscListener mCharServiceConnMiscListener = new SBChatServiceConnAndMiscListener();
+   
     private final ChatServiceConnection mChatServiceConnection = new ChatServiceConnection();
     private String mParticipantFBID = "";
     private String mParticipantName = "";       
-    private String mParticipantImageURL = "";   
-    private SBChatBroadcastReceiver mSBBroadcastReceiver = new SBChatBroadcastReceiver();
+    private String mParticipantImageURL = ""; 
     Handler mHandler = new Handler();
     private SBChatListViewAdapter mMessagesListAdapter = new SBChatListViewAdapter(this);
     private boolean mBinded = false;
@@ -65,24 +73,25 @@ public class ChatWindow extends FragmentActivity{
     private String mThisUserChatPassword = "";
     private String mThisUserChatFullName =  "";
 	private ProgressDialog progressDialog;
-	private FacebookConnector fbconnect; // required if user not logged in
-	PopupWindow popUpMenu;
+	private FacebookConnector fbconnect; // required if user not logged in	
     private NotificationManager notificationManager;
     private boolean mFBLoggedIn = false;
+    ActionBar ab;
 
     
 		    
 	    @Override
 		public void onCreate(Bundle savedInstanceState) {	    	
-		super.onCreate(savedInstanceState);			
-		setContentView(R.layout.chatwindow);
+		super.onCreate(savedInstanceState);		
 		
-		//this.registerReceiver(mSBBroadcastReceiver, new IntentFilter(SBBroadcastReceiver.SBCHAT_CONNECTION_CLOSED));
-	    mContactNameTextView = (TextView) findViewById(R.id.chat_contact_name);
-	    mMenuButton = (ImageView) findViewById(R.id.chatwindow_menuButton);
-	   // mContactPicFrame = (ImageView) findViewById(R.id.chat_contact_pic_frame);
-	    	    
-	   // mContactPic = (ImageView) findViewById(R.id.chat_contact_pic);
+		setContentView(R.layout.chatwindow);
+		ab= getSupportActionBar();
+        
+        ab.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_black));
+        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);       
+        ab.setDisplayHomeAsUpEnabled(false);
+        ab.setDisplayShowTitleEnabled(true);
+        	  
 	    mMessagesListView = (ListView) findViewById(R.id.chat_messages);
 	    mMessagesListView.setAdapter(mMessagesListAdapter);
 	    mInputField = (EditText) findViewById(R.id.chat_input);		
@@ -97,14 +106,6 @@ public class ChatWindow extends FragmentActivity{
 		    		sendMessage();
 		    }
 		});	
-		
-		mMenuButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				showPopupMenu(v);				
-			}
-		});		
 		
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);    
         mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
@@ -125,7 +126,8 @@ public void onResume() {
 	  return;
     notificationManager.cancel(mParticipantFBID.hashCode());
 	mParticipantName = getIntent().getStringExtra(PARTICIPANT_NAME);
-	mContactNameTextView.setText(mParticipantName);
+	ab.setTitle(mParticipantName);
+	//mContactNameTextView.setText(mParticipantName);
 	mParticipantImageURL = "http://graph.facebook.com/" + mParticipantFBID + "/picture?type=small";
 	mMessagesListAdapter.clearList();
 	mMessagesListAdapter.setParticipantFBURL(mParticipantImageURL);	
@@ -142,50 +144,6 @@ public void onResume() {
 		}
 	
 }
-
-private void showPopupMenu(View v)
-{
-	LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	View layout = inflater.inflate(R.layout.chat_popupmenu, null);	
-	popUpMenu = new PopupWindow(layout,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);	
-	popUpMenu.setFocusable(true);
-	popUpMenu.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-	popUpMenu.showAsDropDown(v);
-	Button show_profile = (Button) layout.findViewById(R.id.chat_popupmenu_profile);
-	show_profile.setOnClickListener(new OnClickListener() {		
-		@Override
-		public void onClick(View v) {
-			ProgressHandler.showInfiniteProgressDialoge(ChatWindow.this, "Fetching user profile", "Please wait..");
-	    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(mParticipantFBID);
-			SBHttpClient.getInstance().executeRequest(req);	
-			popUpMenu.dismiss();
-		}
-	});
-	
-	final Button block_unblock_user = (Button) layout.findViewById(R.id.chat_popupmenu_block);
-	if(BlockedUser.isUserBlocked(mParticipantFBID))
-		block_unblock_user.setText("Unblock");
-	block_unblock_user.setOnClickListener(new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			if(BlockedUser.isUserBlocked(mParticipantFBID))
-			{
-				BlockedUser.deleteFromList(mParticipantFBID);
-				Toast.makeText(ChatWindow.this,mParticipantName + " unblocked", Toast.LENGTH_SHORT).show();
-				block_unblock_user.setText("Block");
-			}
-			else
-			{
-				BlockedUser.addtoList(mParticipantFBID, mParticipantName);
-		        Toast.makeText(ChatWindow.this,mParticipantName + " blocked", Toast.LENGTH_SHORT).show();
-		        block_unblock_user.setText("Unblock");
-			}
-	        popUpMenu.dismiss();
-		}
-	});
-}
-
 
     @Override
     protected void onPause() {
@@ -218,7 +176,7 @@ private void showPopupMenu(View v)
     	xmppApis = null;	
     	chatAdapter = null;
     	mChatManager = null;    	
-    }
+    }   
     
     
     @Override
@@ -226,6 +184,55 @@ private void showPopupMenu(View v)
 	super.onNewIntent(intent);
 	setIntent(intent);	
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.mMenu = menu;
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.chat_menu, menu);
+        if(BlockedUser.isUserBlocked(mParticipantFBID))
+		{
+        	mMenu.getItem(mMenu.size()-1).setTitle("UnBlock");
+		}
+        else
+        {
+        	mMenu.getItem(mMenu.size()-1).setTitle("Block");
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    	
+        switch (menuItem.getItemId())
+        {
+        case R.id.chat_menu_block:
+        	if(BlockedUser.isUserBlocked(mParticipantFBID))
+			{
+				BlockedUser.deleteFromList(mParticipantFBID);
+				Toast.makeText(ChatWindow.this,mParticipantName + " unblocked", Toast.LENGTH_SHORT).show();
+				menuItem.setTitle("Block");
+			}
+			else
+			{
+				BlockedUser.addtoList(mParticipantFBID, mParticipantName);
+		        Toast.makeText(ChatWindow.this,mParticipantName + " blocked", Toast.LENGTH_SHORT).show();
+		        menuItem.setTitle("UnBlock");
+			}
+        	break;  
+        case R.id.chat_menu_hopin_profile:	
+        	ProgressHandler.showInfiniteProgressDialoge(ChatWindow.this, "Fetching user profile", "Please wait..");
+	    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(mParticipantFBID);
+			SBHttpClient.getInstance().executeRequest(req);	
+			break;
+        case R.id.chat_menu_fb_profile:		
+        	CommunicationHelper.getInstance().onFBIconClickWithUser(this, mParticipantFBID, mParticipantName);
+        	break;
+        default:
+        	break;     
+        } 
+        return super.onOptionsItemSelected(menuItem);
+    }   
     
     private void bindToService() {
             if (Platform.getInstance().isLoggingEnabled()) Log.d( TAG, "binding chat to service" );        
@@ -252,35 +259,7 @@ private void showPopupMenu(View v)
     		}
 	    }
 	    
-	 /*   public void getParticipantInfoFromFBID(String fbid)
-	    {
-	    	NearbyUser thisNearbyUser = CurrentNearbyUsers.getInstance().getNearbyUserWithFBID(fbid);
-	    	if(thisNearbyUser != null)
-	    	{
-	    		String travelInfo = "";
-		    	mContactNameTextView.setText(thisNearbyUser.getUserFBInfo().getFullName());
-		    	//SBImageLoader.getInstance().displayImageElseStub(thisNearbyUser.getUserFBInfo().getImageURL(), mContactPic,R.drawable.userpicicon);
-		    	//travelInfo = thisNearbyUser.getUserLocInfo().getUserSrcLocality() +" to "+thisNearbyUser.getUserLocInfo().getUserDstLocality() ;
-		    	//mContactDestination.setText(travelInfo);
-		    	//if(thisNearbyUser.getUserOtherInfo().isOfferingRide())
-		    	//	mContactPicFrame.setImageResource(R.drawable.list_frame_green_new);
-		    	//else
-		    	//	mContactPicFrame.setImageResource(R.drawable.list_frame_blue_new);
-		    	//mContactStatusMsgTextView.setText("Status message if any");		    	
-	    	}
-	    	else
-	    	{
-	    		//some new user not yet visible to this user has initiated chat
-	    		//so we call server to get nearby user which should have this user
-	    		ProgressHandler.showInfiniteProgressDialoge(this, "Please wait..", "Fetching your info");
-	    		SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
-	    	    SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
-	    		//this.registerReceiver(mSBBroadcastReceiver, new IntentFilter(ServerConstants.NEARBY_USER_UPDATED));
-	    		//SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
-	    	    //SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);	    		
-	    	}
-	    }*/
-	    
+		    
 	    public String getParticipantFBID() {
 			return mParticipantFBID;
 		}

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import in.co.hopin.R;
@@ -68,13 +69,11 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
 		View thisUserView=convertView;
         if(convertView==null)
         	thisUserView = inflater.inflate(R.layout.nearbyuser_list_row, null);
-        ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_image); 
-        ImageView fbProfileView = (ImageView)thisUserView.findViewById(R.id.fbProfileView);
-        ImageView userProfileView = (ImageView)thisUserView.findViewById(R.id.userProfileView);        
-        TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyusername);
-        TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyusersource);
-        TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuserdestination);
-        TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyusertime);        
+        ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_image);
+        TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
+        TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserFromText);
+        TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserToText);
+        TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserTimeText);        
         SBImageLoader.getInstance().displayImageElseStub(thisUser.getUserFBInfo().getImageURL(), userImageView, R.drawable.userpicicon);
         final UserFBInfo thisUserFBInfo = thisUser.getUserFBInfo();
         UserLocInfo thisUserLocInfo = thisUser.getUserLocInfo();
@@ -90,7 +89,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         userDestination.setText(destination);
         userTime.setText(formattedTravelInfo);
         
-        fbProfileView.setOnClickListener(new OnClickListener() {				
+      /*  fbProfileView.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View chatIconView) {
 				FacebookConnector fbconnect = new FacebookConnector(underLyingActivity);
@@ -105,7 +104,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
 				i.putExtra("fb_info", thisUserFBInfo.getJsonObj().toString());
 				underLyingActivity.startActivity(i);						
 			}
-		});
+		});*/
         
 		return thisUserView;
 	}
