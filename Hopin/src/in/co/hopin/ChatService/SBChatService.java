@@ -136,7 +136,7 @@ public class SBChatService extends Service {
     private void initializeConfigration() {
         mConnectionConfiguration = new ConnectionConfiguration(mHost, mPort);
         mConnectionConfiguration.setReconnectionAllowed(true);
-        mConnectionConfiguration.setDebuggerEnabled(true);
+        mConnectionConfiguration.setDebuggerEnabled(false);
         mConnectionConfiguration.setSendPresence(true);
         SmackConfiguration.setPacketReplyTimeout(10000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {

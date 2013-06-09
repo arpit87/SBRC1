@@ -61,6 +61,7 @@ public class UserAttributes {
 	//chat 
 	public static String  CHATUSERID = "user_id";
 	public static String  CHATUSERNAME = "username";
+	public static String  ISAVAILABLE = "is_available";
 	
 	//delete
 	public static String  DELETEDAILYINSTATYPE = "insta";

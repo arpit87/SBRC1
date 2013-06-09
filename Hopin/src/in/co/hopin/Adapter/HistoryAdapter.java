@@ -50,9 +50,10 @@ public class HistoryAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         final HistoryItem historyItem = historyItemList.get(position);
         View view=convertView;
-        if(convertView==null) {
-            view = inflater.inflate(R.layout.history_list_row, null);
-        }
+       	if( position == historyItemList.size()-1)
+       		view = inflater.inflate(R.layout.history_list_lastrow, null);
+       	else        		
+       		view = inflater.inflate(R.layout.history_list_row, null);
                       
         TextView source = (TextView)view.findViewById(R.id.history_source);
         TextView destination = (TextView)view.findViewById(R.id.history_destination);        

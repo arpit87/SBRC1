@@ -15,6 +15,7 @@ public class UserOtherInfo {
 	private String percent_match = "0";	
 	private String username ="";
 	private String userid = "";
+	private String is_available = "0";
 	
 	
 		
@@ -36,6 +37,10 @@ public class UserOtherInfo {
 		try {
 			userid = allInfo.getString(UserAttributes.USERID);			
 		} catch (JSONException e) {	}
+		
+		try {
+			is_available = allInfo.getString(UserAttributes.ISAVAILABLE);			
+		} catch (JSONException e) {	}
 				
 	}
 	
@@ -49,6 +54,14 @@ public class UserOtherInfo {
 			return false;
 		else
 			return true;
+	}
+	
+	public boolean isAvailable()
+	{
+		if(is_available.equals("1"))
+			return true;
+		else
+			return false;
 	}
 	
 	

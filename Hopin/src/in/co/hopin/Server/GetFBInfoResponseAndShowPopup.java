@@ -1,6 +1,8 @@
 package in.co.hopin.Server;
 
 import in.co.hopin.Activities.NewUserDialogActivity;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
@@ -48,7 +50,9 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 			//ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
 			
 			//ToastTracker.showToast("fb save:"+status);
-		} catch (JSONException e) {			
+		} catch (JSONException e) {		
+			ProgressHandler.dismissDialoge();
+			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");
 			e.printStackTrace();
 		}

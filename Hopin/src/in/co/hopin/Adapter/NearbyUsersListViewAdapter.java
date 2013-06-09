@@ -67,9 +67,13 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		NearbyUser thisUser = (NearbyUser) mNearbyUsers.get(position);
 		View thisUserView=convertView;
-        if(convertView==null)
+        if( position == mNearbyUsers.size()-1)
+        	thisUserView = inflater.inflate(R.layout.nearbyuser_list_lastrow, null);
+        else        		
         	thisUserView = inflater.inflate(R.layout.nearbyuser_list_row, null);
+        
         ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_image);
+        ImageView userOfflineDot = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_offline);
         TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
         TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserFromText);
         TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserToText);
@@ -88,24 +92,10 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         userSource.setText(source);
         userDestination.setText(destination);
         userTime.setText(formattedTravelInfo);
-        
-      /*  fbProfileView.setOnClickListener(new OnClickListener() {				
-			@Override
-			public void onClick(View chatIconView) {
-				FacebookConnector fbconnect = new FacebookConnector(underLyingActivity);
-				fbconnect.openFacebookPage(thisUserFBInfo.getFbid(),thisUserFBInfo.getFBUsername());						
-			}
-		});
-        
-        userProfileView.setOnClickListener(new OnClickListener() {				
-			@Override
-			public void onClick(View chatIconView) {
-				Intent i = new Intent(underLyingActivity,OtherUserProfileActivity.class);				
-				i.putExtra("fb_info", thisUserFBInfo.getJsonObj().toString());
-				underLyingActivity.startActivity(i);						
-			}
-		});*/
-        
+        if(thisUserOtherInfo.isAvailable())
+        	userOfflineDot.setVisibility(View.INVISIBLE);
+        else
+        	userOfflineDot.setVisibility(View.VISIBLE);
 		return thisUserView;
 	}
 

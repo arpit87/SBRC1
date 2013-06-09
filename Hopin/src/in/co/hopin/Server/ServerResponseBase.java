@@ -55,7 +55,13 @@ public abstract class ServerResponseBase {
 		try {
 			jobj= new JSONObject(jobjStr);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			try {
+				//build dummy json if server doesnt return json string
+				jobj= new JSONObject("{\"header\":[]}");
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		

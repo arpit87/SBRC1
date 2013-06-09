@@ -11,7 +11,7 @@ import android.util.Log;
 public class Platform {
 	
 	private final String TAG = "in.co.hopin.Platform.Platform";
-	private static Platform instance = new Platform();
+	private static Platform instance = null;
 	private Context context;	
 	private Handler handler;
 	private boolean ENABLE_LOGGING = false;
@@ -22,6 +22,8 @@ public class Platform {
 	
 	public static Platform getInstance()
 	{
+		if(instance == null)
+			instance = new Platform();
 		return instance;
 	}
 	
@@ -41,7 +43,7 @@ public class Platform {
 		this.context= context;			
 		SBHttpClient.getInstance();
 		handler = new Handler();
-		ENABLE_LOGGING = true;
+		ENABLE_LOGGING = false;
 		CurrentNearbyUsers.getInstance().clearAllData();
 		ThisUserNew.getInstance();
 		startChatService();

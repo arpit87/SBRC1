@@ -2,6 +2,7 @@ package in.co.hopin.Server;
 
 import in.co.hopin.HelperClasses.BroadCastConstants;
 import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
 
@@ -28,9 +29,10 @@ public class GetMatchingCarPoolUsersResponse extends ServerResponseBase{
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"got json "+jobj.toString());
 		try {
-			body = jobj.getJSONObject("body");
-			
+			body = jobj.getJSONObject("body");			
 		} catch (JSONException e) {
+			ProgressHandler.dismissDialoge();
+			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server in fetching nearby carpool user.JSON:"+jobj.toString());
 			e.printStackTrace();
 			return;
