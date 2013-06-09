@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<RelativeLayout 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/listview_selector"
@@ -62,8 +66,8 @@
         android:layout_below="@id/nearbyuser_list_row_nearbyusername"
         android:layout_toRightOf="@id/nearbyuser_list_row_imageframe" 
         android:textSize="12dip"       
+        android:layout_marginTop="1dip"  
         android:textColor="@color/black_75"
-        android:layout_marginTop="1dip" 
         android:layout_marginLeft="4dip" 
         android:text="From: "/>    
         
@@ -91,5 +95,24 @@
         android:layout_marginLeft="4dip" 
         android:text="Time: "/>  
  
- 
  </RelativeLayout>
+  <View
+       android:id="@+id/nearbyuser_list_row_separator"
+       android:layout_width="match_parent"
+       android:layout_height="2dip"
+            
+       android:layout_marginTop="2dip"
+       android:background="@color/gray" >
+</View>  
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="30dip"
+      android:gravity="center"
+      android:text="Tap to chat,long click for options"
+      android:textColor="@color/dark_gray"
+      android:background="@color/white"
+      android:textStyle="bold"
+    ></TextView>
+ 
+  
+ </LinearLayout>
