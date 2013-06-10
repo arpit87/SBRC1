@@ -9,6 +9,7 @@ import in.co.hopin.HelperClasses.BlockedUser;
 import in.co.hopin.HelperClasses.ChatHistory;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
@@ -407,14 +408,17 @@ class ChatAdapter extends IChatAdapter.Stub {
 		// 2) msg type
 		// 3) user id
 		// 4) dailyinstatype
+		
 		org.jivesoftware.smack.packet.Message msgToSend = new org.jivesoftware.smack.packet.Message();
 		msgToSend.setProperty(Message.SBMSGTYPE,Message.MSG_TYPE_NEWUSER_BROADCAST);		
 		msgToSend.setProperty(Message.USERID, ThisUserNew.getInstance().getUserID());
 		msgToSend.setProperty(Message.DAILYINSTATYPE, ThisUserNew.getInstance().get_Daily_Instant_Type());		
 		msgToSend.setProperty(Message.UNIQUEID, System.currentTimeMillis());
+		
+		
 		try {
 			mSmackChat.sendMessage(msgToSend);
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "broadcast message sent to " + msgToSend.getTo());
+			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "broadcast message sent to " + msg.getTo());
 		} catch (XMPPException e) {
 			// TODO retry sending msg?
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "couldnt send broadcast");

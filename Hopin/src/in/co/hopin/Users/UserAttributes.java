@@ -70,4 +70,7 @@ public class UserAttributes {
 	public static String WOMENFLTER = "women";
 	public static String  FBFRIENDSFILTER = "facebook";
 	
+	//other user  info
+	public static String TARGETUSERID = "target_user_id";
+	
 }

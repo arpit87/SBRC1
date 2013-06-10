@@ -138,6 +138,7 @@ public class SBChatService extends Service {
         mConnectionConfiguration.setReconnectionAllowed(true);
         mConnectionConfiguration.setDebuggerEnabled(false);
         mConnectionConfiguration.setSendPresence(true);
+        mConnectionConfiguration.setRosterLoadedAtLogin(false);
         SmackConfiguration.setPacketReplyTimeout(10000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             mConnectionConfiguration.setTruststoreType("AndroidCAStore");
@@ -202,6 +203,7 @@ public class SBChatService extends Service {
         @Override
         public void onReceive(final Context context, final Intent intent) {
             String intentAction = intent.getAction();
+            
             if (intentAction.equals(SBCHAT_CONNECTION_CLOSED)) {
                 CharSequence message = intent.getCharSequenceExtra("message");
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();

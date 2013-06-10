@@ -343,7 +343,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		mapView.postInvalidate();
 	}
 	
-	public void updateNearbyUsersOnUSersChange()
+	public void updateNearbyUsersOnUsersChange()
 	{
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"updating nearby users on user change");
 		updateNearbyUsersonMap();
@@ -510,7 +510,7 @@ public void onReceive(Context context, Intent intent) {
 	if(intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED))
 	{
 		//ToastTracker.showToast("update intent received");
-		updateNearbyUsersOnUSersChange();
+		updateNearbyUsersOnUsersChange();
 	}	
 }
 

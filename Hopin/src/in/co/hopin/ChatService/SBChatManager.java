@@ -113,15 +113,13 @@ public class SBChatManager extends IChatManager.Stub {
 		    return mAllChats.get(key);
 		}
 		else
-		{
-			Chat c = mChatManager.createChat(key, null);
+		{	
+			Chat c = mChatManager.createChat(key+"@"+ServerConstants.CHATSERVERIP, null);
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Chat created for:"+key);
 			// maybe a little probleme of thread synchronization
 			// if so use an HashTable instead of a HashMap for mChats
 			return getChatAdapter(c);
 		}
-			
-	
     }   
 	
 	public void notifyAllPendingQueue()

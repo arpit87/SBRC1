@@ -37,7 +37,7 @@ public class GetMatchingCarPoolUsersRequest  extends SBHttpRequest{
 				
 		//prepare getnearby request		
 		httpQueryGetNearbyUsers = new HttpPost(URL);
-		jsonobjGetNearbyUsers = GetServerAuthenticatedJSON();;
+		jsonobjGetNearbyUsers = GetServerAuthenticatedJSON();
 		try {
 			jsonobjGetNearbyUsers.put(UserAttributes.USERID, ThisUserNew.getInstance().getUserID());
 		} catch (JSONException e) {

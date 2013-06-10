@@ -45,8 +45,7 @@ public class Platform {
 		handler = new Handler();
 		ENABLE_LOGGING = false;
 		CurrentNearbyUsers.getInstance().clearAllData();
-		ThisUserNew.getInstance();
-		startChatService();
+		ThisUserNew.getInstance();		
 	}
 	
 	 public void startChatService(){

@@ -34,6 +34,7 @@ public static final int MSG_TYPE_ACKFOR_DELIVERED = 600;
 public static final int MSG_TYPE_ACKFOR_BLOCKED = 700;
 
 public static final String USERID = "user_id";
+public static final String FBID = "fb_id";
 public static final String UNIQUEID = "unique_id";
 public static final String SBMSGTYPE = "sb_msg_type";
 public static final String TIME = "time";

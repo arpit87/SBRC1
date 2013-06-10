@@ -2,6 +2,7 @@ package in.co.hopin.Activities;
 
 import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.Logger;
 import static org.acra.ReportField.*;
 
 import org.acra.ACRA;
@@ -34,14 +35,14 @@ public class StrangerBuddy extends Application{
 	{		
 		super.onCreate();
 		ACRA.init(this);
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"App start");
+		Logger.i(TAG,"App start");
 		context = getApplicationContext();
 		platform=Platform.getInstance();
 		platform.initialize(this);
-		
+		platform.getInstance().startChatService();		
 		//we check on userid which we wipe out on fb logout. User may login as another user
 		//for which we will provide different userid		
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Platform initialized");
+		Logger.i(TAG,"Platform initialized");
 		
 	}
 

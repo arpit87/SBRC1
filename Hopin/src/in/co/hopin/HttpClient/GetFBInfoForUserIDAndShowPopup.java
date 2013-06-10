@@ -6,6 +6,7 @@ import in.co.hopin.Server.GetFBInfoResponseAndShowPopup;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,10 +26,11 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
+	
+	private static final String TAG = "in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup";
 
     public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/getInfo/";
-	HttpPost httpQuery;	
-	UrlEncodedFormEntity formEntity;
+	HttpPost httpQuery;		
 	HttpClient httpclient = new DefaultHttpClient();	
 	GetFBInfoResponseAndShowPopup getFBInfoResponseAndShowPopup;
 	JSONObject jsonobj;
@@ -36,10 +38,10 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 	String source = "";
 	String destination = "";
     String timeOfTravel = "";
-    String userid = "";
+    String targetUserId = "";
     int daily_insta_type;
 	
-	public GetFBInfoForUserIDAndShowPopup(String userid,int daily_insta_type)
+	public GetFBInfoForUserIDAndShowPopup(String target_user_id,int daily_insta_type)
 	{		
 		super();
 		queryMethod = QueryMethod.Post;
@@ -47,10 +49,10 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 		//prepare getnearby request		
 		httpQuery = new HttpPost(URL);
 		jsonobj = GetServerAuthenticatedJSON();		
-		this.userid = userid;
+		this.targetUserId = target_user_id;
 		
 		try {				
-			jsonobj.put(UserAttributes.USERID, userid);		
+			jsonobj.put(UserAttributes.TARGETUSERID, targetUserId);		
 			jsonobj.put(UserAttributes.DAILYINSTATYPE, daily_insta_type);	
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -65,7 +67,7 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntitygetNearbyUsers.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobj.toString());	
+		Logger.d(TAG, "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntitygetNearbyUsers);
 	
 	}
