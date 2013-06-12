@@ -239,7 +239,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         if (!isMapShowing){
             isMapShowing = true;
             showMapView();
-            MenuItem menuItem = mMenu.findItem(R.id.btn_listview);
+            MenuItem menuItem = mMenu.findItem(R.id.main_menu_btn_listview);
             menuItem.setIcon(R.drawable.maptolist);
         } else {
                 
@@ -268,13 +268,13 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     	
         switch (menuItem.getItemId())
         {
-        case R.id.menu_search:
+        case R.id.main_menu_btn_search:
         	//onSearchRequested();        	 
 	    	 Intent searchInputIntent = new Intent(this,SearchInputActivityNew.class);	
 	    	 searchInputIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	   		 startActivity(searchInputIntent);
         	break;
-        case R.id.btn_listview:
+        case R.id.main_menu_btn_listview:
         	toggleMapListView(menuItem);
         	break;
        /* case R.id.fb_login_menuitem:
@@ -291,12 +291,12 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
 			FacebookConnector fbconnect = new FacebookConnector(MapListViewTabActivity.this);
         	fbconnect.logoutFromFB();
         	break;*/
-        case R.id.settings_menuitem:
+        case R.id.main_menu_settings:
         	Intent i = new Intent(this,SettingsActivity.class);
         	i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         	startActivity(i);
         	break;
-        case R.id.exit_app_menuitem:
+        case R.id.main_menu_exit:
         	//delete user request,close service
         	buildOnExitAlertDialog();
                      	
@@ -305,16 +305,23 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
    		ShowActiveReqPrompt activereq_dialog = new ShowActiveReqPrompt();
    		activereq_dialog.show(getSupportFragmentManager(), "fblogin_dialog");
    		 break;*/
-     case R.id.my_requests:
+     case R.id.main_menu_my_requests:
          Intent myRequestIntent = new Intent(this, MyRequestsActivity.class);
          myRequestIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
          startActivity(myRequestIntent);
          break;
-     case R.id.my_chats:
+     case R.id.main_menu_my_chats:
          Intent myChatsIntent = new Intent(this, MyChatsActivity.class);
          myChatsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
          startActivity(myChatsIntent);
-         break;  
+         break;         
+     case R.id.main_menu_shareapp:    	 
+    	 Intent sendIntent = new Intent();
+    	 sendIntent.setAction(Intent.ACTION_SEND);
+    	 sendIntent.putExtra(Intent.EXTRA_TEXT, "Very useful, take a look: " + '\n' + getResources().getString(R.string.http_app_link));
+    	 sendIntent.setType("text/plain");
+    	 startActivity(sendIntent);
+    	 break;         
      
         } 
         return super.onOptionsItemSelected(menuItem);
