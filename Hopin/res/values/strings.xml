@@ -71,4 +71,5 @@
     <string name="hopin_admin_girl_name">Garima</string>
     <string name="hopin_admin_girl_fbid">100005747323463</string>
 	<string name="hopin_admin_girl_welcomemessage">Hi, I am Garima,Hopin co-ordinator. Welcome to hopin, the first real time ride share platform with instant messaging. Feel free to contact for feedback or query. Happy RideSharing :)</string>
+	<string name="http_app_link">http://play.google.com/store/apps/details?id=in.co.hopin</string>
 </resources>

@@ -3,7 +3,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
    
+    
     <item android:id="@+id/listview_hopin_profile" android:title="Hopin Profile" android:showAsAction="never"></item>
-    <item android:id="@+id/listview_fb_profile" android:title="FB Profile" android:showAsAction="never"></item>   
+    <item android:id="@+id/listview_fb_profile" android:title="Go to facebook" android:showAsAction="never"></item>   
+    
       
 </menu>

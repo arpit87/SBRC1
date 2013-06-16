@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ffffffff">   
+              
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+       >
+    
+  <ImageView
+        android:id="@+id/otheruser_profilenew_thumbnail"
+        android:layout_width="70dip"
+        android:layout_height="70dip"  
+        android:layout_marginTop="15dip"     
+        android:layout_marginLeft="14dip"          
+        android:scaleType="fitXY" 
+               
+         />
+  <ImageView
+        android:id="@+id/otheruser_profilenew_backgroundframe"
+        android:layout_width="match_parent"
+        android:layout_height="100dip"
+        android:background="@drawable/profile_frame"      
+         />
+
+      <TextView
+          android:id="@+id/otheruser_profilenew_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:layout_marginTop="18dip"
+          android:layout_marginLeft="30dip"
+          android:layout_toRightOf="@id/otheruser_profilenew_thumbnail"
+          android:ellipsize="marquee"
+          android:maxLines="1"
+          android:text="Arpit Mishra"
+          android:textColor="@color/white"
+          android:textSize="28dip"
+          android:textStyle="bold" />  
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:layout_alignBottom="@id/otheruser_profilenew_name"
+          android:layout_toRightOf="@id/otheruser_profilenew_name" 
+          android:src="@drawable/maleicon"
+          android:layout_marginLeft="3dip"
+          android:visibility="visible"
+          />   
+         
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:layout_alignBottom="@id/otheruser_profilenew_name"
+          android:layout_toRightOf="@id/otheruser_profilenew_name" 
+          android:src="@drawable/femaleicon"
+          android:layout_marginLeft="3dip"
+          android:visibility="gone"
+          /> 
+      
+       <TextView
+          android:id="@+id/otheruser_profilenew_nummutualfriend"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:maxLines="1" 
+          android:layout_marginLeft="30dip"
+          android:layout_below="@id/otheruser_profilenew_name"
+          android:layout_toRightOf="@id/otheruser_profilenew_thumbnail"
+          android:text="3 mutual friends"         
+          android:textColor="@color/white"
+          android:textSize="13sp" />
+  
+    </RelativeLayout>
+     <LinearLayout android:orientation="horizontal"
+            android:gravity="center" android:measureWithLargestChild="true"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@color/very_light_gray">
+        <Button android:id="@+id/otheruser_profilenew_abountme"
+            android:layout_width="0dip"
+            android:layout_weight="1" android:layout_height="wrap_content"
+            android:text="About"
+            android:padding="5dip"
+            android:textSize="17dip"
+            android:background="@drawable/borderless_tabs">
+        </Button>
+        <View android:layout_height="15dip"
+            android:layout_width="1dip"
+            android:layout_gravity="center_vertical"
+            android:background="@color/dark_gray">
+            
+        </View>
+        <Button android:id="@+id/otheruser_profilenew_mutualfriendtab"
+             android:layout_height="wrap_content"
+             android:layout_width="0dip"
+            android:layout_weight="1"
+            android:padding="5dip"
+            android:textSize="17dip"
+            android:text="Connection"
+            android:background="@drawable/borderless_tabs">
+        </Button>
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/otheruser_profilenew_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />   
+    
+ </LinearLayout>   

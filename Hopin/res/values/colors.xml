@@ -48,6 +48,7 @@
      <color name="background_transparent_green">#de2ebc00</color>
      <color name="dark_red">#ffd40404</color>
      <color name="light_gray">#ff636363</color>
-     <color name="very_dark_gray">#ff494949</color>	
+     <color name="very_dark_gray">#ff494949</color>
+     <color name="very_light_gray">#fff0f2f0</color>	
 
 </resources>

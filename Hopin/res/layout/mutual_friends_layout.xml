@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/mutual_friends_header" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mutual Friends"        
+        android:textColor="@color/very_dark_gray"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dip"
+        android:textSize="20dip"
+        android:layout_marginTop="5dip"/>
+    
+     <ListView 
+              android:id="@+id/mutual_friends_Listview"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:textSize="24dp"
+              android:cacheColorHint="@android:color/transparent"
+              android:divider="@color/dark_gray"
+              android:dividerHeight="1dip">
+    </ListView>
+    
+      <TextView
+        android:id="@+id/mutual_friends_emptyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/white"
+        android:text="No mutual friends"
+        android:textSize="25dip"
+        android:textColor="@color/gray"
+        android:visibility="gone">
+        
+    </TextView>
+
+</LinearLayout>
