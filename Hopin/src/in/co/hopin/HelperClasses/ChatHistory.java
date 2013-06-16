@@ -9,6 +9,7 @@ import android.util.Log;
 import in.co.hopin.ChatService.Message;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerConstants;
+import in.co.hopin.Util.Logger;
 import in.co.hopin.provider.ChatHistoryProvider;
 
 import java.util.*;
@@ -29,14 +30,14 @@ public class ChatHistory {
 
     public static List<Message> getChatHistory(String userId){
         String fbid = getFBId(userId);
-        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Fetching chat history for " + fbid);
+        Logger.i(TAG, "Fetching chat history for " + fbid);
         List<Message> messages;
 
         ContentResolver cr = Platform.getInstance().getContext().getContentResolver();
         Cursor cursor = cr.query(mUriFetch, columns, "fbIdTo = ? or fbIdFrom = ?", new String[]{fbid, fbid}, columns[7]);
 
         if (cursor == null || cursor.getCount() == 0) {
-            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Empty result");
+            Logger.i(TAG, "Empty result");
             messages = Collections.emptyList();
         } else {
             messages = new LinkedList<Message>();
@@ -134,7 +135,9 @@ public class ChatHistory {
         String body = cursor.getString(2);       
         String time = cursor.getString(4);
         int status = cursor.getInt(5);
-        return new Message(to, from, body, time, Message.MSG_TYPE_CHAT, status);
+        long uniqueID = cursor.getInt(7);
+        Message newMsg = new Message(to, from, body, time, Message.MSG_TYPE_CHAT, status,uniqueID);       
+        return newMsg;
     }
 
     private static String getFBId(String userid){

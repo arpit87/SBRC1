@@ -123,13 +123,6 @@ public class SBChatService extends Service {
         unregisterReceiver(mReceiver);
         if (mConnectionAdapter.isAuthenticated() && SBConnectivity.isConnected())
             mConnectionAdapter.disconnect();
-
-        Intent connectivityMonitorIntent = new Intent(INTENT_ACTION);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                connectivityMonitorIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-
         if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Stopping the service");
     }
 

@@ -1,41 +1,47 @@
 package in.co.hopin.ChatClient;
 
-import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.app.ProgressDialog;
-import android.content.*;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.widget.*;
-import in.co.hopin.Activities.MyChatsActivity;
-import in.co.hopin.Activities.MyRequestsActivity;
-import in.co.hopin.Activities.SearchInputActivityNew;
-import in.co.hopin.Activities.SettingsActivity;
-import in.co.hopin.ChatService.*;
+import in.co.hopin.R;
+import in.co.hopin.ChatService.IChatAdapter;
+import in.co.hopin.ChatService.IChatManager;
+import in.co.hopin.ChatService.IXMPPAPIs;
+import in.co.hopin.ChatService.Message;
+import in.co.hopin.ChatService.SBChatService;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
-import in.co.hopin.HelperClasses.*;
+import in.co.hopin.HelperClasses.ActiveChat;
+import in.co.hopin.HelperClasses.AlertDialogBuilder;
+import in.co.hopin.HelperClasses.BlockedUser;
+import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -152,6 +158,7 @@ public void onResume() {
 	    if (chatAdapter != null) {
 	    	try {
 				chatAdapter.setOpen(false);
+				Logger.i(TAG, "closed chat of:"+chatAdapter.getParticipant());
 				List<Message> chatMessages = chatAdapter.getMessages();
                 if (chatMessages != null && !chatMessages.isEmpty()) {
 				    Message lastmMessage = chatMessages.get(chatMessages.size()-1);
@@ -304,6 +311,7 @@ public void onResume() {
 				if(chatAdapter != null)
 				{
 					chatAdapter.setOpen(true);
+					Logger.i(TAG, "open chat is of:"+chatAdapter.getParticipant());
 					chatAdapter.sendMessage(newMessage);
 				}
 				
@@ -350,6 +358,7 @@ public void onResume() {
 	    	chatAdapter = mChatManager.getChat(mParticipantFBID);
 	    	if (chatAdapter != null) {
 	    		chatAdapter.setOpen(true);
+	    		Logger.i(TAG, "open chat is of:"+chatAdapter.getParticipant());
 	    		chatAdapter.addMessageListener(mMessageListener);
 	    		fetchPastMsgsIfAny();
 	    	}
@@ -430,6 +439,7 @@ public void onResume() {
     				if(chatAdapter!=null)
     				{
 						chatAdapter.setOpen(true);
+						Logger.i(TAG, "open chat is of:"+chatAdapter.getParticipant());
 						fetchPastMsgsIfAny();
     				}
     			   // mChatManager.addChatCreationListener(mChatManagerListener);

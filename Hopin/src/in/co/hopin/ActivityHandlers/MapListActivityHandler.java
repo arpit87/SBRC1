@@ -18,6 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.google.android.maps.GeoPoint;
@@ -71,6 +72,8 @@ public class MapListActivityHandler  extends BroadcastReceiver{
 	private TextView mSource;
 	private TextView mUserName;
 	private TextView mtime;
+	ListView mListView = null;
+	ViewGroup mListViewFooter = null;
 	
 	
 			
@@ -520,8 +523,7 @@ public ViewGroup getThisListContainerWithListView() {
         mListImageView = (ImageView) mListViewContainer.findViewById(R.id.selfthumbnail);
         mUserName = (TextView) mListViewContainer.findViewById(R.id.my_name_listview);
         mDestination = (TextView) mListViewContainer.findViewById(R.id.my_destination_listview);
-        mSource =  (TextView) mListViewContainer.findViewById(R.id.my_source_listview);        
-       
+        mSource =  (TextView) mListViewContainer.findViewById(R.id.my_source_listview);
         mtime = (TextView) mListViewContainer.findViewById(R.id.my_time_listview); 
         //mMapViewContainer.removeView(mMapView);
     }    

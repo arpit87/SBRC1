@@ -2,6 +2,7 @@ package in.co.hopin.Server;
 
 import in.co.hopin.Activities.NewUserDialogActivity;
 import in.co.hopin.Activities.OtherUserProfileActivity;
+import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
@@ -41,14 +42,11 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 			ProgressHandler.dismissDialoge();
 			body = jobj.getJSONObject("body");
 			JSONObject nearbyUsersFbInfo =  body.getJSONObject(UserAttributes.FBINFO);			
-			Intent i = new Intent(Platform.getInstance().getContext(),OtherUserProfileActivity.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra("fb_info", nearbyUsersFbInfo.toString());
-			Platform.getInstance().getContext().startActivity(i);
-			//status = body.getString("Status");			
-			//ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
-			
-			//ToastTracker.showToast("fb save:"+status);
+			Intent hopinNewProfile = new Intent(Platform.getInstance().getContext(),OtherUserProfileActivityNew.class);
+	    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	    	hopinNewProfile.putExtra("fb_info", nearbyUsersFbInfo.toString());
+	    	Platform.getInstance().getContext().startActivity(hopinNewProfile);
+		
 		} catch (JSONException e) {			
 			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");

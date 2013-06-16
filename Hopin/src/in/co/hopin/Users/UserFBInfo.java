@@ -1,5 +1,11 @@
 package in.co.hopin.Users;
 
+import in.co.hopin.HelperClasses.JSONHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +25,8 @@ public class UserFBInfo {
     private String fbusername = "";
     private String phone = "";
     private String email = "";
+    private String mutual_friend_count="0";    
+    private List<MutualFriend> mMutualFriendList = new ArrayList<MutualFriend>();
 
     public UserFBInfo() {
         // TODO Auto-generated constructor stub
@@ -97,6 +105,15 @@ public class UserFBInfo {
 	            email = allInfo.getString(UserAttributes.EMAIL);
 	        } catch (JSONException e) {
 	        }
+	        
+	        try {
+	            mutual_friend_count = allInfo.getString(UserAttributes.MUTUALFRIENDSCOUNT);
+	        } catch (JSONException e) {
+	        }
+	        
+	        if(getNumberOfMutualFriends()>0)
+	        	mMutualFriendList = JSONHandler.getInstance().GetMutualFriendsFromJSONObject(allInfo);       
+	        
         }
     }
 	
@@ -155,11 +172,27 @@ public class UserFBInfo {
 
 
     public String getHometown() {
-        return hometown;
+    	if(hometown.equals("null"))
+    		return "Unknown";
+    	else			
+    		return hometown;
     }
     
     public String getFBUsername() {
         return fbusername;
+    }
+    
+    public int getNumberOfMutualFriends()
+    {
+    	return Integer.parseInt(mutual_friend_count);
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public List<MutualFriend> getMutualFriends() {
+        return mMutualFriendList;
     }
     
     @Override

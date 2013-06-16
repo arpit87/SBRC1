@@ -43,8 +43,8 @@ public class ChatHistoryProvider extends ContentProvider {
                     ",groupId INTEGER" +
                     ",timestamp TEXT" +
                     ",status INTEGER" +
-                    ",uniqueId LONG" +
-                    ",date LONG" +
+                    ",uniqueId INTEGER" +
+                    ",date INTEGER" +
                     ");");
             db.execSQL(builder.toString());
         }

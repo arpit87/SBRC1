@@ -10,11 +10,17 @@ import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
+import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.IQTypeFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,7 +41,7 @@ public class XMPPConnectionListenersAdapter {
 	private SBChatManager mChatManager = null;
 	private Handler handler = new Handler();
 	private final RemoteCallbackList<ISBChatConnAndMiscListener> mRemoteMiscListeners = new RemoteCallbackList<ISBChatConnAndMiscListener>();
-    private AtomicBoolean wasConnectionLost = new AtomicBoolean(false);
+    private AtomicBoolean wasConnectionLost = new AtomicBoolean(false);    
 
     public void resetOnConnection() {
         mChatManager.resetOnConnection();
@@ -72,12 +78,29 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "xmpp connection listener will connect");
 		loginAsync(mLogin, mPassword);
 		//Toast.makeText(mService, "connecting to xmpp", Toast.LENGTH_SHORT).show();
-		if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "connecting to xmpp");
+		if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "connecting to xmpp");		
+		registerPacketListenerForPingResponse();
 	
 	 }
 	 
 	 
-	 public SBChatManager getChatManager() {
+	 
+	 private void registerPacketListenerForPingResponse() {
+		 /* packet listener: listen for incoming messages of type IQ on the connection (whatever the buddy) */
+		    PacketFilter filter = new IQTypeFilter (IQ.Type.GET); // or IQ.Type.GET etc. according to what you like to filter. 
+
+		    mXMPPConnection.addPacketListener(new PacketListener() {				
+				@Override
+				public void processPacket(Packet paramPacket) {
+					Logger.i(TAG, "got ping from server");
+					IQ pingResponse = IQ.createResultIQ((IQ) paramPacket);
+					mXMPPConnection.sendPacket(pingResponse);
+				}
+			}, filter);
+		
+	}
+
+	public SBChatManager getChatManager() {
 			return mChatManager;
 		}
 	 

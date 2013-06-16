@@ -22,7 +22,6 @@ public static final int MSG_TYPE_NORMAL = 100;
 /** Chat message type. */
 public static final int MSG_TYPE_CHAT = 200;
 
-/** Group chat message type. */
 public static final int MSG_TYPE_NEWUSER_BROADCAST = 300;
 
 /** Error message type. */
@@ -32,6 +31,7 @@ public static final int MSG_TYPE_INFO = 500;
 
 public static final int MSG_TYPE_ACKFOR_DELIVERED = 600;
 public static final int MSG_TYPE_ACKFOR_BLOCKED = 700;
+public static final int MSG_TYPE_ACKFOR_SENT = 800;
 
 public static final String USERID = "user_id";
 public static final String FBID = "fb_id";
@@ -88,13 +88,14 @@ mTime = "";
 }
 
 public Message(final String to, final String from, final String body, final String time,
-               final int type, final int status){
+               final int type, final int status, final long unique_id){
     mTo = to;
     mFrom = from;
     mBody = body;    
     mTime = time;
     mType = type;
     mStatus = status;
+    mUniqueMsgIdentifier = unique_id;
 }
 /**
  * Constructor a message of type chat.

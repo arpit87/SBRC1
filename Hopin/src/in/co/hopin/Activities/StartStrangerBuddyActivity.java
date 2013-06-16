@@ -110,7 +110,9 @@ public class StartStrangerBuddyActivity extends Activity {
 		 notif.flags |= Notification.FLAG_AUTO_CANCEL;
 		 notif.setLatestEventInfo(this, participant_name, chatMessage, pintent);
 				
-		 Message welcome_message = new Message("", participant, chatMessage, StringUtils.gettodayDateInFormat("hh:mm"),Message.MSG_TYPE_CHAT, SBChatMessage.RECEIVED);
+		 Message welcome_message = new Message("", participant, chatMessage, StringUtils.gettodayDateInFormat("hh:mm")
+				 								,Message.MSG_TYPE_CHAT, SBChatMessage.RECEIVED,System.currentTimeMillis());
+		 
 		 ChatHistory.addtoChatHistory(welcome_message);
 		 
 			notif.ledARGB = 0xff0000ff; // Blue color

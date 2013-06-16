@@ -37,16 +37,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 class ChatAdapter extends IChatAdapter.Stub {
 
-    private static final long DELAY = 20 * 1000;
-    private static final long THRESHOLD_DELAY = 15 * 1000;
+	private static final long DELAY = 20 * 1000;
+	private static final long THRESHOLD_DELAY = 15 * 1000;
 	private static final int HISTORY_MAX_SIZE = 50;
-    private static final int MAX_RECVD_IDS = 10;
+	private static final int MAX_RECVD_IDS = 10;
 	private static final String TAG = "in.co.hopin.ChatService.ChatAdapter";
 	private Boolean mIsOpen = false;
 	private Chat mSmackChat;
 	private final String mParticipant;	
 	private List<Message> mMessages;
-    private final Map<Long, Message> mSentNotDeliveredMsgsMap;
+	private final Map<Long, Message> mSentNotDeliveredMsgsMap;
 	private SBChatManager mChatManager;
 	SBMsgListener mMsgListener = null;
 	//int notificationid = 0;
@@ -54,9 +54,9 @@ class ChatAdapter extends IChatAdapter.Stub {
 	private final RemoteCallbackList<IMessageListener> mRemoteListeners = new RemoteCallbackList<IMessageListener>();
 	private LinkedBlockingQueue<Message> mMsgqueue = null;
 	SenderThread mSenderThread = null;
-    private Timer timer;
-    private TreeSet<Long> receivedChatIds = new TreeSet<Long>();
-
+	private Timer timer;
+	private TreeSet<Long> receivedChatIds = new TreeSet<Long>();
+	
 	// small chat participant should be complete as to is overridden inside
 	// sendMsg by smack to participant
 	public ChatAdapter(final Chat chat, SBChatManager chatManager) {
@@ -69,16 +69,37 @@ class ChatAdapter extends IChatAdapter.Stub {
 		mMsgqueue = new LinkedBlockingQueue<Message>();
 		mSmackChat.addMessageListener(mMsgListener);
 		mChatManager = chatManager;
-        mSentNotDeliveredMsgsMap = new LinkedHashMap<Long, Message>();
-		//notificationid = mChatManager.numChats() + 1;
+	    mSentNotDeliveredMsgsMap = new LinkedHashMap<Long, Message>();
+		for(int i=mMessages.size()-1;i>=0;i--)
+		{						
+			Message thisMessage = mMessages.get(i);
+			if(thisMessage.getFrom().equals(mParticipant))
+			{
+				// here we are loading previous received msgs
+				if(receivedChatIds.size() >= MAX_RECVD_IDS)
+					continue;
+				receivedChatIds.add(thisMessage.getUniqueMsgIdentifier());				
+			}
+			else
+			{			
+				//here we are loading previous undelivered msgs in sent but not delivered
+				// even if its not sent it will be sent again	
+				Logger.i(TAG, "Loaded prev undelivered msg:"+thisMessage.getBody());
+				if(thisMessage.getStatus()!=SBChatMessage.DELIVERED) /// sending or sent
+					mSentNotDeliveredMsgsMap.put(thisMessage.getUniqueMsgIdentifier(), thisMessage);
+			}
+		}		
 		mImageURL = ThisUserConfig.getInstance().getString(
-				ThisUserConfig.FBPICURL);
-		String instaReqJson = ThisUserConfig.getInstance().getString(
-				ThisUserConfig.ACTIVE_REQ_INSTA);
-		String carpoolReqJson = ThisUserConfig.getInstance().getString(
-				ThisUserConfig.ACTIVE_REQ_CARPOOL);		
+				ThisUserConfig.FBPICURL);			
 		mSenderThread = new SenderThread();
 		mSenderThread.start();
+		
+		//start thread for previous msgs retrieved from db which were not sent too
+		if(!mSentNotDeliveredMsgsMap.isEmpty())
+		{
+			timer = new Timer();
+	        timer.schedule(new ReSenderThread(), DELAY);
+		}
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chatadapter created for:" + mParticipant);
 	}
 
@@ -114,19 +135,14 @@ class ChatAdapter extends IChatAdapter.Stub {
 		}
 
 	}
-
-	private void addMessage(Message msg) {
-		if (mMessages.size() == HISTORY_MAX_SIZE)
-			mMessages.remove(0);
-		addMessageToList(msg);
-	}
-
+	
 	@Override
 	public void setOpen(boolean value) throws RemoteException {
+		Logger.i(TAG, "chat open set to"+value+" for "+mParticipant	);
 		mIsOpen = value;
 
 	}
-
+  
 	@Override
 	public void addMessageListener(IMessageListener listener)
 			throws RemoteException {
@@ -144,53 +160,59 @@ class ChatAdapter extends IChatAdapter.Stub {
 
 	private class SenderThread extends Thread {
 
-		@Override
-		public void run() {
-			Message m = null;
-			while (true) {
-				boolean msgsent = false;
-				try {
-					if (m == null)
-						m = mMsgqueue.take();
+	@Override
+	public void run() {
+		Message m = null;
+		while (true) {
+			boolean msgsent = false;
+			try {
+				if (m == null)
+					m = mMsgqueue.take();
 
-					switch (m.getType()) {
-					case Message.MSG_TYPE_CHAT:
-						msgsent = sendChatMessage(m);
-						break;
-					case Message.MSG_TYPE_ACKFOR_DELIVERED:
-					case Message.MSG_TYPE_ACKFOR_BLOCKED:	
-						msgsent = sendAck(m);
-						break;						
-					case Message.MSG_TYPE_NEWUSER_BROADCAST:
-						msgsent = sendBroadCastMessage(m);
-						break;
+				switch (m.getType()) {
+				case Message.MSG_TYPE_CHAT:
+					msgsent = sendChatMessage(m);
+					break;
+				case Message.MSG_TYPE_ACKFOR_DELIVERED:
+				case Message.MSG_TYPE_ACKFOR_BLOCKED:	
+					msgsent = sendAck(m);
+					break;						
+				case Message.MSG_TYPE_NEWUSER_BROADCAST:
+					msgsent = sendBroadCastMessage(m);
+					break;
 
-					}
-				} catch (InterruptedException e1) {
-					if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "not able to take msg from queue");
-					e1.printStackTrace();
 				}
-				if (!msgsent)
-					try {
-						synchronized (mMsgqueue) {
-							mMsgqueue.wait();
-						}
-
-					} catch (InterruptedException e) {
-						if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG,"couldnt wait on msg queue after trying to send");
-						e.printStackTrace();
-					}
-				else
-					m = null; // if sent put m = null so it picks next msg
+			} catch (InterruptedException e1) {
+				if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "not able to take msg from queue");
+				e1.printStackTrace();
 			}
+			if (!msgsent)
+				try {
+					synchronized (mMsgqueue) {
+						mMsgqueue.wait();
+					}
+
+				} catch (InterruptedException e) {
+					if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG,"couldnt wait on msg queue after trying to send");
+					e.printStackTrace();
+				}
+			else
+				m = null; // if sent put m = null so it picks next msg
 		}
+	}
 	}
 
 	public void notifyMsgQueue() {
 		synchronized (mMsgqueue) {
 			mMsgqueue.notify();
 		}
-
+		
+		//start prev msg thread too
+		if(!mSentNotDeliveredMsgsMap.isEmpty())
+		{
+			timer = new Timer();
+            timer.schedule(new ReSenderThread(), DELAY);
+		}
 	}
 
 	private class SBMsgListener implements MessageListener {
@@ -461,11 +483,12 @@ class ChatAdapter extends IChatAdapter.Stub {
     }
 
     class ReSenderThread extends TimerTask {
-
+    	
         @Override
         public void run() {
             Logger.i(TAG, "Resender thread resumed..");
             boolean wasAnyMsgResent = false;
+           
             long now = System.currentTimeMillis();
             synchronized (mSentNotDeliveredMsgsMap) {
                 for (Map.Entry<Long, Message> entry : mSentNotDeliveredMsgsMap.entrySet()) {
@@ -474,12 +497,13 @@ class ChatAdapter extends IChatAdapter.Stub {
                         Logger.i(TAG, "Message not old enough");
                         break;
                     }
-
-                    wasAnyMsgResent = true;
+                    
                     try {
                         Logger.i(TAG, "Resending message with id :" + entry.getKey());
                         mSmackChat.sendMessage(createSmackMessage(entry.getValue()));
+                        wasAnyMsgResent = true;
                     } catch (Exception e) {
+                    	//we might have gone offline. stop thread then
                         Logger.e(TAG, "Encountered exception while resending message", e);
                     }
                 }

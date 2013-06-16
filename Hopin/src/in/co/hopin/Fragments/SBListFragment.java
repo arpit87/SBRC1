@@ -1,5 +1,6 @@
 package in.co.hopin.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import in.co.hopin.R;
+import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
 import in.co.hopin.ChatClient.ChatWindow;
@@ -53,7 +55,7 @@ public class SBListFragment extends ListFragment {
 			setListAdapter(adapter);
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"nearby users:"+nearbyUserlist.toString());
         }
-        MapListActivityHandler.getInstance().setListFrag(this);
+        MapListActivityHandler.getInstance().setListFrag(this);       
 	}
 	
 	@Override
@@ -111,15 +113,15 @@ public class SBListFragment extends ListFragment {
 	public boolean onContextItemSelected(MenuItem item) {	 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();		
 		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(info.position);
-	    switch (item.getItemId()) {
-	    case R.id.listview_hopin_profile:
-	    	ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching user profile", "Please wait..");
-	    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(userAtthisPosition.getUserFBInfo().getFbid());
-			SBHttpClient.getInstance().executeRequest(req);	
-	    	break;
+	    switch (item.getItemId()) {	  
 	    case R.id.listview_fb_profile:
 	    	CommunicationHelper.getInstance().onFBIconClickWithUser(getActivity(), userAtthisPosition.getUserFBInfo().getFbid(), userAtthisPosition.getUserFBInfo().getFBUsername());
 	    	break;
+	    case R.id.listview_hopin_profile:
+	    	Intent hopinNewProfile = new Intent(getActivity().getApplicationContext(),OtherUserProfileActivityNew.class);
+	    	hopinNewProfile.putExtra("fb_info", userAtthisPosition.getUserFBInfo().getJsonObj().toString());
+	    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	    	getActivity().startActivity(hopinNewProfile);
 	    }
 	    return false;
 	}

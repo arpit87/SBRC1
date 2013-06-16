@@ -35,7 +35,7 @@ public abstract class SBHttpRequest {
 		JSONObject jObj = new JSONObject();
 		try {
 			jObj.put(ThisAppConfig.APPUUID, ThisAppConfig.getInstance().getString(ThisAppConfig.APPUUID));
-			jObj.put(ThisUserConfig.USERID, ThisUserNew.getInstance().getUserID());
+			jObj.put(ThisUserConfig.USERID, ThisUserConfig.getInstance().getString(ThisUserConfig.USERID));
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		}		

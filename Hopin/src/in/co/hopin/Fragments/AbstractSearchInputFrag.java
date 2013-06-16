@@ -448,8 +448,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         StringBuilder jsonResults = new StringBuilder();
         try {
             StringBuilder sb = new StringBuilder(GOOGLE_PLACES_URL);
-            sb.append("?sensor=false&key=" + API_KEY);
-            sb.append("&components=country:in");
+            sb.append("?sensor=false&key=" + API_KEY);            
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());

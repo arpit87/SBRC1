@@ -57,6 +57,7 @@ public class UserAttributes {
 	public static String  GENDER = "gender";
 	public static String  PHONE = "phone";
 	public static String  EMAIL = "email";
+	public static String  MUTUALFRIENDSCOUNT = "mutual_friends_count";
 
 	//chat 
 	public static String  CHATUSERID = "user_id";
@@ -72,5 +73,9 @@ public class UserAttributes {
 	
 	//other user  info
 	public static String TARGETUSERID = "target_user_id";
+	
+	//mutual friend
+	public static String MUTUALFRIENDFBID = "id";
+	public static String MUTUALFRIENDNAME = "name";
 	
 }

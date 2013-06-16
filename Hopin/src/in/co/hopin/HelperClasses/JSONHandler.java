@@ -1,7 +1,9 @@
 package in.co.hopin.HelperClasses;
 
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Users.MutualFriend;
 import in.co.hopin.Users.NearbyUser;
+import in.co.hopin.Util.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -110,6 +112,34 @@ public class JSONHandler {
 			e.printStackTrace();
 		}
 		return nearbyUsers;
+		
+	}
+	
+	public List<MutualFriend> GetMutualFriendsFromJSONObject(JSONObject jObj)
+	{
+		
+		//for 0 users we are returning null and not zero size list
+		ArrayList<MutualFriend> mutualFriends = null;
+		try {			
+						
+			JSONArray users = jObj.getJSONArray("mutual_friends");
+						
+			if(users.length() > 0)
+				mutualFriends = new ArrayList<MutualFriend>();
+			
+			for(int i=0;i<users.length();i++)
+			{
+				JSONObject thisMutualFriend=users.getJSONObject(i);
+				Logger.d("json",thisMutualFriend.toString());
+				MutualFriend m = new MutualFriend(thisMutualFriend);
+				mutualFriends.add((m));				
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mutualFriends;
 		
 	}
 
