@@ -43,7 +43,7 @@ public class AddUserRequest extends SBHttpRequest{
 		this.tutorial_activity = tutorial_activity;
 		jsonobj=new JSONObject();
 		httpQuery =  new HttpPost(URL);
-		
+		URLStr = URL;
 		try {
 			jsonobj.put(ThisAppConfig.APPUUID, uuid);
 			jsonobj.put(UserAttributes.USERNAME, username);

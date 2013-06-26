@@ -2,6 +2,7 @@ package in.co.hopin.HttpClient;
 
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerResponseBase;
+import in.co.hopin.Util.Logger;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -41,6 +42,7 @@ public class SBHttpClient {
 			 int count = request.length;	         
 	         for(int i=0;i<count;i++)
 	         {
+	        	 Logger.d(TAG, "sending req:"+request[i].GetQueryURL());
 	        	 response =  request[i].execute();
 	        	 if(response.getStatus()!=ServerResponseBase.ResponseStatus.HttpStatus200)	        	   
 	        		 return null;

@@ -33,6 +33,12 @@ public class MyChatsActivity extends FragmentActivity{
 		 showChatListLayout();
 	 }
 	 
+	 @Override
+	    public void onResume(){
+	        super.onResume();
+	        showChatListLayout();
+	 }
+	 
 	 public void showChatListLayout()
 	    {
 	    	if (fm != null) {

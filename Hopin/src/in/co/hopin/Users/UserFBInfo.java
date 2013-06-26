@@ -25,8 +25,10 @@ public class UserFBInfo {
     private String fbusername = "";
     private String phone = "";
     private String email = "";
-    private String mutual_friend_count="0";    
-    private List<MutualFriend> mMutualFriendList = new ArrayList<MutualFriend>();
+    private String mutual_friend_count="0";  
+    private String friend_count="0"; 
+    private List<Friend> mMutualFriendList = new ArrayList<Friend>();
+    private List<Friend> mFriendList = new ArrayList<Friend>();
 
     public UserFBInfo() {
         // TODO Auto-generated constructor stub
@@ -112,7 +114,15 @@ public class UserFBInfo {
 	        }
 	        
 	        if(getNumberOfMutualFriends()>0)
-	        	mMutualFriendList = JSONHandler.getInstance().GetMutualFriendsFromJSONObject(allInfo);       
+	        	mMutualFriendList = JSONHandler.GetMutualFriendsFromJSONObject(allInfo);  
+	        
+	        try {
+	            friend_count = allInfo.getString(UserAttributes.FRIENDSCOUNT);
+	        } catch (JSONException e) {
+	        }
+	        
+	        if(getNumberOfFriends()>0)
+	        	mFriendList = JSONHandler.GetMutualFriendsFromJSONObject(allInfo);
 	        
         }
     }
@@ -167,8 +177,11 @@ public class UserFBInfo {
 
 
     public String getStudiedAt() {
-        return studiedAt;
-    }
+    	if(studiedAt.equals("null"))
+    		return "Unknown";
+    	else			
+    		return studiedAt;
+     }
 
 
     public String getHometown() {
@@ -187,11 +200,16 @@ public class UserFBInfo {
     	return Integer.parseInt(mutual_friend_count);
     }
     
+    public int getNumberOfFriends()
+    {
+    	return Integer.parseInt(friend_count);
+    }
+    
     public String getEmail() {
         return email;
     }
     
-    public List<MutualFriend> getMutualFriends() {
+    public List<Friend> getMutualFriends() {
         return mMutualFriendList;
     }
     

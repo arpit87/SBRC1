@@ -1,6 +1,6 @@
 <resources>
     <!--Replace placeholder ID with your tracking ID-->
-    <string name="ga_trackingId">UA-39698394-1</string>
+    <string name="ga_trackingId">UA-39698394-2</string>
 
     <!--Enable automatic activity tracking-->
     <bool name="ga_autoActivityTracking">true</bool>
@@ -18,7 +18,7 @@
     <string name="in.co.hopin.Activities.MyChatsActivity">MyChats</string>
     <string name="in.co.hopin.Activities.MyRequestsActivity">MyRequests</string>
     <string name="in.co.hopin.Activities.NewUserDialogActivity">NewUserDialog</string>
-    <string name="in.co.hopin.Activities.OtherUserProfileActivity">OtherUserProfile</string>
+    <string name="in.co.hopin.Activities.OtherUserProfileActivityNew">OtherUserProfile</string>
     <string name="in.co.hopin.Activities.SearchInputActivityNew">SearchUsers</string>
     <string name="in.co.hopin.Activities.SettingsActivity">Settings</string>
     <string name="in.co.hopin.Activities.StartStrangerBuddyActivity">Home</string>

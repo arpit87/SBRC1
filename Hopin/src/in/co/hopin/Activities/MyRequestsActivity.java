@@ -95,7 +95,7 @@ public class MyRequestsActivity extends Activity {
                     final JSONObject responseJsonObj = new JSONObject(carpoolReqJson);
                     MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
                     ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching carpool matches", "Please wait");
-                    SBHttpRequest getNearbyUsersRequest = new GetMatchingCarPoolUsersRequest();
+                    SBHttpRequest getNearbyUsersRequest = new DailyCarPoolRequest();
                     SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
                     finish();
                 } catch (JSONException e){
@@ -112,7 +112,7 @@ public class MyRequestsActivity extends Activity {
                     final JSONObject responseJsonObj = new JSONObject(instaReqJson);
                     MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
                     ProgressHandler.showInfiniteProgressDialoge(MapListActivityHandler.getInstance().getUnderlyingActivity(), "Fetching matches", "Please wait");
-                    SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
+                    SBHttpRequest getNearbyUsersRequest = new InstaRequest();
                     SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
                     finish();
                 } catch (JSONException e){

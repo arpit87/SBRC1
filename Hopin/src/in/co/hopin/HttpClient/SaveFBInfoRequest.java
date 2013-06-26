@@ -39,6 +39,7 @@ public class SaveFBInfoRequest extends SBHttpRequest{
 		//prepare getnearby request		
 		httpQuery = new HttpPost(URL);
 		jsonobj = GetServerAuthenticatedJSON();
+		URLStr = URL;
 		try {
 			jsonobj.put(UserAttributes.USERID, user_id);	
 			jsonobj.put(UserAttributes.FBID, fbid);

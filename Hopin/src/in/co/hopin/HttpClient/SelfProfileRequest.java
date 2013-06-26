@@ -1,16 +1,16 @@
 package in.co.hopin.HttpClient;
 
 
+import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.Server.GetFBInfoResponseAndShowPopup;
+import in.co.hopin.Server.GetOtherUserProfileResponse;
+import in.co.hopin.Server.SelfProfileResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
-import in.co.hopin.Util.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -25,35 +25,28 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
-	
-	private static final String TAG = "in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup";
+public class SelfProfileRequest extends SBHttpRequest{
 
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/getInfo/";
-	HttpPost httpQuery;		
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/getFBInfo/";
+	HttpPost httpQuery;	
+	UrlEncodedFormEntity formEntity;
 	HttpClient httpclient = new DefaultHttpClient();	
-	GetFBInfoResponseAndShowPopup getFBInfoResponseAndShowPopup;
+	SelfProfileResponse getSelfProfileAndShowProfileActivity;
 	JSONObject jsonobj;
-	String jsonStr;
-	String source = "";
-	String destination = "";
-    String timeOfTravel = "";
-    String targetUserId = "";
-    int daily_insta_type;
+	String jsonStr;	   
 	
-	public GetFBInfoForUserIDAndShowPopup(String target_user_id,int daily_insta_type)
+	public SelfProfileRequest()
 	{		
 		super();
 		queryMethod = QueryMethod.Post;
-		this.daily_insta_type = daily_insta_type;		
+				
 		//prepare getnearby request		
 		httpQuery = new HttpPost(URL);
-		jsonobj = GetServerAuthenticatedJSON();		
-		this.targetUserId = target_user_id;
-		
+		jsonobj = GetServerAuthenticatedJSON();	
+		URLStr = URL;
 		try {				
-			jsonobj.put(UserAttributes.TARGETUSERID, targetUserId);		
-			jsonobj.put(UserAttributes.DAILYINSTATYPE, daily_insta_type);	
+			String userid = ThisUserConfig.getInstance().getString(ThisUserConfig.USERID);
+			jsonobj.put(UserAttributes.USERID, userid);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,7 +60,7 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 			e.printStackTrace();
 		}
 		postEntitygetNearbyUsers.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-		Logger.d(TAG, "calling server:"+jsonobj.toString());	
+		if (Platform.getInstance().isLoggingEnabled()) Log.d("debug", "calling server:"+jsonobj.toString());	
 		httpQuery.setEntity(postEntitygetNearbyUsers);
 	
 	}
@@ -96,8 +89,8 @@ public class GetFBInfoForUserIDAndShowPopup extends SBHttpRequest{
 				e.printStackTrace();
 			} 	
 			
-		getFBInfoResponseAndShowPopup = new GetFBInfoResponseAndShowPopup(response,jsonStr,daily_insta_type);
-		return getFBInfoResponseAndShowPopup;
+			getSelfProfileAndShowProfileActivity = new SelfProfileResponse(response,jsonStr);
+			return getSelfProfileAndShowProfileActivity;
 		
 	}
 	

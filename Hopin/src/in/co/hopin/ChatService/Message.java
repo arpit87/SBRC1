@@ -3,6 +3,7 @@ package in.co.hopin.ChatService;
 
 
 import in.co.hopin.ChatClient.SBChatMessage;
+import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Util.StringUtils;
 
 import org.jivesoftware.smack.packet.XMPPError;
@@ -88,7 +89,7 @@ mTime = "";
 }
 
 public Message(final String to, final String from, final String body, final String time,
-               final int type, final int status, final long unique_id){
+               final int type, final int status, final long unique_id,final String subject ){
     mTo = to;
     mFrom = from;
     mBody = body;    
@@ -96,6 +97,7 @@ public Message(final String to, final String from, final String body, final Stri
     mType = type;
     mStatus = status;
     mUniqueMsgIdentifier = unique_id;
+    mSubject = subject ;
 }
 /**
  * Constructor a message of type chat.
@@ -111,22 +113,22 @@ this(to, MSG_TYPE_CHAT);
  */
 public Message(final org.jivesoftware.smack.packet.Message smackMsg) {
 mTo = smackMsg.getTo();
-mType = (Integer) smackMsg.getProperty(SBMSGTYPE);
-this.mFrom = smackMsg.getFrom();
-if (mType == MSG_TYPE_ERROR) {
-    XMPPError er = smackMsg.getError();
-    String msg = er.getMessage();
-    if (msg != null)
-    	mBody = msg;
-    else
-    	mBody = er.getCondition();
-} else {
+mFrom = smackMsg.getFrom();
+if(mFrom.equals(ServerConstants.CHATADMINACKFROM))
+{
+	mType = MSG_TYPE_ACKFOR_SENT;
+    mUniqueMsgIdentifier = Long.parseLong(smackMsg.getBody());
+}
+else 
+{
+	mType = (Integer) smackMsg.getProperty(SBMSGTYPE);
     mBody = smackMsg.getBody();
     mSubject = smackMsg.getSubject();
     mThread = smackMsg.getThread();    
     mUniqueMsgIdentifier = (Long) smackMsg.getProperty(UNIQUEID); //this also doubles up as time
 }
 }
+
 
 /**
  * Construct a message from a parcel.
@@ -136,7 +138,7 @@ private Message(final Parcel in) {
 mType = in.readInt();
 mTo = in.readString();
 mBody = in.readString();
-mSubject = in.readString();
+mSubject = in.readString(); //contains full name of participant
 mThread = in.readString();
 mFrom = in.readString();
 mStatus = in.readInt();

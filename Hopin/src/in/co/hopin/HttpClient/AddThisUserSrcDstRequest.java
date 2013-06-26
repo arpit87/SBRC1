@@ -40,6 +40,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
         queryMethod = QueryMethod.Post;
         jsonobjAddRequest = GetServerAuthenticatedJSON();
         httpQueryAddRequest = new HttpPost(URL);
+        URLStr = URL;
         try {
             populateEntityObject();
         } catch (JSONException e) {

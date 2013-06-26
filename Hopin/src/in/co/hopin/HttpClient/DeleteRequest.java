@@ -37,7 +37,8 @@ public class DeleteRequest extends SBHttpRequest{
 		queryMethod = QueryMethod.Get;		
         httpQuery =  new HttpPost(URL);
         this.daily_insta_type = daily_insta_type;        
-        jsonobj=new JSONObject();		
+        jsonobj=new JSONObject();	
+        URLStr = URL;
 		
 		try {
 			jsonobj.put(UserAttributes.USERID, ThisUserNew.getInstance().getUserID());

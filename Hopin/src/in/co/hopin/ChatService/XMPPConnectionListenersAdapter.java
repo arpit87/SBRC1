@@ -125,9 +125,9 @@ public void removeMiscCallBackListener(ISBChatConnAndMiscListener listener) thro
 		    		if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Isconnect is false...making new connection");
 		    	}
 		    	else
-		    		ToastTracker.showToast("Not connected to internet");
+		    		Logger.d(TAG,"Not connected to internet");
 		    } catch (Exception e) {
-			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error while connecting", e);
+			Logger.e(TAG, "Error while connecting", e);
 			mErrorMsg = e.getMessage();
 			return false;
 		    }  

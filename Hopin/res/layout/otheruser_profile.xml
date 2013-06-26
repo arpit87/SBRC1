@@ -40,6 +40,7 @@
           android:textSize="28dip"
           android:textStyle="bold" />  
       <ImageView
+          android:id="@+id/otheruser_profilenew_maleicon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" 
           android:layout_alignBottom="@id/otheruser_profilenew_name"
@@ -50,6 +51,7 @@
           />   
          
       <ImageView
+          android:id="@+id/otheruser_profilenew_femaleicon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" 
           android:layout_alignBottom="@id/otheruser_profilenew_name"
@@ -98,7 +100,7 @@
             android:layout_weight="1"
             android:padding="5dip"
             android:textSize="17dip"
-            android:text="Connection"
+            android:text="Mutual friends"
             android:background="@drawable/borderless_tabs">
         </Button>
     </LinearLayout>

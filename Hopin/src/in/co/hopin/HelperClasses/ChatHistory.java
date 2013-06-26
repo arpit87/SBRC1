@@ -25,7 +25,8 @@ public class ChatHistory {
                                                     "timestamp",
                                                     "status",
                                                     "uniqueId",
-                                                    "date"
+                                                    "date",
+                                                    "fromName"
                                                    };
 
     public static List<Message> getChatHistory(String userId){
@@ -107,6 +108,7 @@ public class ChatHistory {
             values.put(columns[5], message.getStatus());
             values.put(columns[6], message.getUniqueMsgIdentifier());
             values.put(columns[7], time);
+            values.put(columns[8], message.getSubject());
             cr.insert(mUri, values);
         } catch (RuntimeException e) {
             if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "BlockUserQueryError", e);
@@ -136,7 +138,8 @@ public class ChatHistory {
         String time = cursor.getString(4);
         int status = cursor.getInt(5);
         long uniqueID = cursor.getInt(7);
-        Message newMsg = new Message(to, from, body, time, Message.MSG_TYPE_CHAT, status,uniqueID);       
+        String subject = cursor.getString(8);
+        Message newMsg = new Message(to, from, body, time, Message.MSG_TYPE_CHAT, status, uniqueID,subject);       
         return newMsg;
     }
 

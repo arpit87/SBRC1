@@ -21,14 +21,18 @@ public abstract class SBHttpRequest {
 	}
 	
 	QueryMethod queryMethod = null;
-	String url = null;
+	public String URLStr = "";
 	HttpResponse response = null;
 	
 	// Create a response handler
     ResponseHandler<String> responseHandler = new BasicResponseHandler();
     	
-	public abstract ServerResponseBase execute();
+	public abstract ServerResponseBase execute();	
 	
+	public String GetQueryURL()
+	{
+		return URLStr;
+	}
 	//do not add this to initial add user request
 	public JSONObject GetServerAuthenticatedJSON()
 	{

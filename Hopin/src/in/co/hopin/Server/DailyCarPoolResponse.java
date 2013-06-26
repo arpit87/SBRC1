@@ -12,13 +12,13 @@ import org.json.JSONException;
 import android.content.Intent;
 import android.util.Log;
 
-public class GetMatchingCarPoolUsersResponse extends ServerResponseBase{
+public class DailyCarPoolResponse extends ServerResponseBase{
 
 
 	private static final String TAG = "in.co.hopin.Server.GetCarPoolUsersResponse";
 	
 	
-	public GetMatchingCarPoolUsersResponse(HttpResponse response,String jobjStr) {
+	public DailyCarPoolResponse(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);
 				
 	}

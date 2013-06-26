@@ -1,7 +1,7 @@
 package in.co.hopin.HelperClasses;
 
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.MutualFriend;
+import in.co.hopin.Users.Friend;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Util.Logger;
 
@@ -23,20 +23,7 @@ import android.util.Log;
 
 public class JSONHandler {
 	
-	private JSONObject jObj;	
-	private static JSONHandler instance=null;
-	
-	private JSONHandler(){}
-	
-	public static JSONHandler getInstance()
-	{
-		if(instance == null)
-			instance = new JSONHandler();
-		return instance;
-		
-	}
-	
-	public String getFBPicURLFromJSON(JSONObject jObj)
+	/*public String getFBPicURLFromJSON(JSONObject jObj)
 	{
 		String URL = null;
 		try {
@@ -49,7 +36,7 @@ public class JSONHandler {
 		e.printStackTrace();
 	}
 		return URL;
-	}
+	}*/
 	
 	/*public JSONObject GetJSONObjectFromHttp(HttpResponse response)
 	{
@@ -87,7 +74,7 @@ public class JSONHandler {
 		
 	}*/
 	
-	public List<NearbyUser> GetNearbyUsersInfoFromJSONObject(JSONObject jObj)
+	public static List<NearbyUser> GetNearbyUsersInfoFromJSONObject(JSONObject jObj)
 	{
 		
 		//for 0 users we are returning null and not zero size list
@@ -115,32 +102,60 @@ public class JSONHandler {
 		
 	}
 	
-	public List<MutualFriend> GetMutualFriendsFromJSONObject(JSONObject jObj)
+	public static List<Friend> GetMutualFriendsFromJSONObject(JSONObject jObj)
 	{
 		
 		//for 0 users we are returning null and not zero size list
-		ArrayList<MutualFriend> mutualFriends = null;
+		ArrayList<Friend> friends = null;
 		try {			
 						
 			JSONArray users = jObj.getJSONArray("mutual_friends");
 						
 			if(users.length() > 0)
-				mutualFriends = new ArrayList<MutualFriend>();
+				friends = new ArrayList<Friend>();
 			
 			for(int i=0;i<users.length();i++)
 			{
 				JSONObject thisMutualFriend=users.getJSONObject(i);
 				Logger.d("json",thisMutualFriend.toString());
-				MutualFriend m = new MutualFriend(thisMutualFriend);
-				mutualFriends.add((m));				
+				Friend m = new Friend(thisMutualFriend);
+				friends.add((m));				
 			}
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return mutualFriends;
+		return friends;
 		
-	}
+	}	
+	
+	public static List<Friend> GetFriendsFromJSONObject(JSONObject jObj)
+	{
+		
+		//for 0 users we are returning null and not zero size list
+		ArrayList<Friend> friends = null;
+		try {			
+						
+			JSONArray users = jObj.getJSONArray("friends");
+						
+			if(users.length() > 0)
+				friends = new ArrayList<Friend>();
+			
+			for(int i=0;i<users.length();i++)
+			{
+				JSONObject thisFriend=users.getJSONObject(i);
+				Logger.d("json",thisFriend.toString());
+				Friend m = new Friend(thisFriend);
+				friends.add((m));				
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return friends;
+		
+	}	
 
 }

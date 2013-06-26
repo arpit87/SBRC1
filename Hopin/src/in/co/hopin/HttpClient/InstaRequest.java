@@ -1,6 +1,16 @@
 package in.co.hopin.HttpClient;
 
-import android.util.Log;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Server.InstaResponse;
+import in.co.hopin.Server.ServerConstants;
+import in.co.hopin.Server.ServerResponseBase;
+import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Users.UserAttributes;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,35 +21,28 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Server.GetMatchingCarPoolUsersResponse;
-import in.co.hopin.Server.ServerConstants;
-import in.co.hopin.Server.ServerResponseBase;
-import in.co.hopin.Users.ThisUserNew;
-import in.co.hopin.Users.UserAttributes;
+import android.util.Log;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+public class InstaRequest extends SBHttpRequest{
 
-public class GetMatchingCarPoolUsersRequest  extends SBHttpRequest{
-
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/getCarpoolMatches/";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/getMatches/";
 	
 	HttpPost httpQueryGetNearbyUsers;	
 	JSONObject jsonobjGetNearbyUsers;
 	HttpClient httpclient = new DefaultHttpClient();
-	GetMatchingCarPoolUsersResponse getNearbyUsersResponse;
+	InstaResponse instaResponse;
 	String jsonStr;
-	public GetMatchingCarPoolUsersRequest()
-	{		
+	public InstaRequest()
+	{
+		
 		super();
 		queryMethod = QueryMethod.Post;
-				
+		URLStr = URL;		
 		//prepare getnearby request		
 		httpQueryGetNearbyUsers = new HttpPost(URL);
-		jsonobjGetNearbyUsers = GetServerAuthenticatedJSON();
+		jsonobjGetNearbyUsers = GetServerAuthenticatedJSON();;
 		try {
-			jsonobjGetNearbyUsers.put(UserAttributes.USERID, ThisUserNew.getInstance().getUserID());
+			jsonobjGetNearbyUsers.put(UserAttributes.USERID, ThisUserNew.getInstance().getUserID());			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,7 +75,7 @@ public class GetMatchingCarPoolUsersRequest  extends SBHttpRequest{
 			try {
 				if(response==null)
 					return null;
-					jsonStr = responseHandler.handleResponse(response);
+				jsonStr = responseHandler.handleResponse(response);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -81,8 +84,8 @@ public class GetMatchingCarPoolUsersRequest  extends SBHttpRequest{
 				e.printStackTrace();
 			} 		
 			
-			getNearbyUsersResponse =	new GetMatchingCarPoolUsersResponse(response,jsonStr);
-			return getNearbyUsersResponse;
+			instaResponse =	new InstaResponse(response,jsonStr);
+			return instaResponse;
 		
 	}
 	

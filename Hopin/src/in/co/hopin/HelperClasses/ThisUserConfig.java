@@ -18,8 +18,7 @@ public class ThisUserConfig extends ConfigBase{
 	public static final String FB_FIRSTNAME = "fb_firstname";
 	public static final String FB_LASTNAME = "fb_lastname";
 	public static final String FB_FULLNAME = "fb_fullname";
-	public static final String FBUID = "fb_user_uid";
-	public static final String FBPICFILENAME = "user_fb_pic.bmp";
+	public static final String FBUID = "fb_user_uid";	
 	public static final String PASSWORD = "password";
 	public static final String CHATPASSWORD = "password";
 	public static final String CHATUSERID = "chat_userid";
@@ -28,7 +27,7 @@ public class ThisUserConfig extends ConfigBase{
     public static final String ACTIVE_REQ_INSTA = "active_req_insta";
     public static final String ACTIVE_REQ_CARPOOL = "active_req_carpool";
     public static final String GENDER = "fb_gender";
-    public static final String EMAIL = "email";
+    public static final String EMAIL = "email";    
 	
 	private ThisUserConfig(){super(Constants.USER_CONF_FILE);}
 	

@@ -4,7 +4,7 @@ import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.GetMatchingNearbyUsersRequest;
+import in.co.hopin.HttpClient.InstaRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.Platform.Platform;
@@ -42,7 +42,7 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
 			MapListActivityHandler.getInstance().setSourceAndDestination(body);
             //Context context = Platform.getInstance().getContext();
             if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Fetching nearby users..");
-            SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
+            SBHttpRequest getNearbyUsersRequest = new InstaRequest();
             SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
             //Intent getNearByUsersIntent = new Intent(context, GetNearByUsersService.class);
             //context.startService(getNearByUsersIntent);

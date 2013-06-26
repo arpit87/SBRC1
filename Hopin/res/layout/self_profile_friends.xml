@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
    <!--   <TextView
-        android:id="@+id/mutual_friends_header" 
+        android:id="@+id/selfprofile_friends_header" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mutual Friends"        
@@ -16,25 +16,26 @@
         android:layout_marginTop="5dip"/> -->
     
      <ListView 
-              android:id="@+id/mutual_friends_Listview"
+              android:id="@+id/selfprofile_friends_Listview"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:textSize="24dp"
               android:cacheColorHint="@android:color/transparent"
               android:divider="@color/dark_gray"
-              android:dividerHeight="1dip">
+              android:dividerHeight="1dip"
+               android:visibility="gone">
     </ListView>
     
       <TextView
-        android:id="@+id/mutual_friends_emptyList"
+        android:id="@+id/selfprofile_friends_emptyList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:background="@color/white"
-        android:text="No mutual friends"
+        android:text="No friends use hopin"
         android:textSize="25dip"
         android:textColor="@color/gray"
-        android:visibility="gone">
+        android:visibility="visible">
         
     </TextView>
 

@@ -194,10 +194,45 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dip"
                         android:background="@color/gray"
-                        android:layout_marginTop="5dip"
+                        android:layout_marginTop="2dip"
                         android:layout_marginLeft="5dip"/>
                 
+                
                  <LinearLayout
+                        android:id="@+id/settings_profile_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:clickable="true">
+  					<TextView
+                            android:id="@+id/settings_profile_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="20dip"
+                            android:text="Profile"
+                            android:layout_marginTop="10dip"
+                            android:layout_marginLeft="5dip"/>
+
+                    <TextView
+                            android:id="@+id/settings_profiletext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray"
+                            android:textSize="15dip"
+                            android:text="See your profile"
+                            android:layout_marginLeft="5dip"
+                            android:layout_marginBottom="10dip"/>
+
+                </LinearLayout>
+                
+                   <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/gray"
+                        android:layout_marginTop="2dip"
+                        android:layout_marginLeft="5dip"/>
+                    <LinearLayout
                         android:id="@+id/settings_feedback_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -229,9 +264,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dip"
                         android:background="@color/gray"
-                        android:layout_marginTop="5dip"
+                        android:layout_marginTop="2dip"
                         android:layout_marginLeft="5dip"/>
-
+                   
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

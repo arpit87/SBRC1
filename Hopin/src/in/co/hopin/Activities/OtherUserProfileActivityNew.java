@@ -5,7 +5,7 @@ import in.co.hopin.Fragments.OtherUserMutualFriends;
 import in.co.hopin.Fragments.OtheruserAboutMeFragment;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.MutualFriend;
+import in.co.hopin.Users.Friend;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
 
@@ -120,8 +120,14 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
     
     private List<Fragment> getFragments() {
 		List<Fragment> frag_list= new ArrayList<Fragment>(); 
-		frag_list.add(new OtheruserAboutMeFragment(userFBInfo));
-		frag_list.add(new OtherUserMutualFriends(userFBInfo));
+		Fragment aboutMeFrag = new OtheruserAboutMeFragment();
+		Fragment mutualFriendsFrag = new OtherUserMutualFriends();
+		Bundle fbInfoBundle = new Bundle();
+		fbInfoBundle.putString("fb_info", userFBInfo.getJsonObj().toString());
+		aboutMeFrag.setArguments(fbInfoBundle);
+		mutualFriendsFrag.setArguments(fbInfoBundle);
+		frag_list.add(aboutMeFrag);
+		frag_list.add(mutualFriendsFrag);
 		return frag_list;
 	}
 
@@ -161,15 +167,24 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
 		TextView nameTextView;		
 		TextView mutualFriendsTextView;
 		ImageView friendImageView;
-		
+		ImageView maleIcon;
+		ImageView femaleIcon;
 		
 		friendImageView = (ImageView)findViewById(R.id.otheruser_profilenew_thumbnail);
         nameTextView = (TextView)findViewById(R.id.otheruser_profilenew_name);        
         mutualFriendsTextView = (TextView)findViewById(R.id.otheruser_profilenew_nummutualfriend);
+        maleIcon = (ImageView)findViewById(R.id.otheruser_profilenew_maleicon);
+        femaleIcon = (ImageView)findViewById(R.id.otheruser_profilenew_femaleicon);
     	
 		SBImageLoader.getInstance().displayImageElseStub(userFBInfo.getImageURL(), friendImageView, R.drawable.nearbyusericon);
 		nameTextView.setText(userFBInfo.getFullName());	
-		mutualFriendsTextView.setText(userFBInfo.getNumberOfMutualFriends()+ " mutual friends");		
+		mutualFriendsTextView.setText(userFBInfo.getNumberOfMutualFriends()+ " mutual friends");
+		if(userFBInfo.getGender().equals("female"))
+		{
+			//default is male
+			maleIcon.setVisibility(View.GONE);
+			femaleIcon.setVisibility(View.VISIBLE);
+		}
 		
 	}
 

@@ -28,7 +28,7 @@ public class SettingsActivity extends FragmentActivity{
     View blockedUsersView;
     FacebookConnector fbconnect;
     View feedbackView;
-   
+    View profileView;
 
 	 @Override
 	    protected void onCreate(Bundle savedInstanceState){
@@ -40,6 +40,7 @@ public class SettingsActivity extends FragmentActivity{
          blockedUsersView = findViewById(R.id.settings_blockedusers_layout);         
          feedbackView = findViewById(R.id.settings_feedback_layout);
          womanFilterView = findViewById(R.id.settings_womenfilter_tablerow);
+         profileView = findViewById(R.id.settings_profile_layout);
 	 }
 	 
 	 @Override
@@ -119,7 +120,15 @@ public class SettingsActivity extends FragmentActivity{
              }
          });
          
-        
+        profileView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent hopinSelfProfile = new Intent(Platform.getInstance().getContext(),SelfProfileActivity.class);
+				hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);			
+		    	Platform.getInstance().getContext().startActivity(hopinSelfProfile);				
+			}
+		});
 		 
 	 }
 	 

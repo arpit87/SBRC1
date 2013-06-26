@@ -10,7 +10,7 @@ import in.co.hopin.HelperClasses.ChatHistory;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup;
+import in.co.hopin.HttpClient.GetNewUserInfoAndShowPopupRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
@@ -46,6 +46,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 	private Chat mSmackChat;
 	private final String mParticipant;	
 	private List<Message> mMessages;
+	private final Map<Long, Message> mSentButServerAckNotReceivedMap;
 	private final Map<Long, Message> mSentNotDeliveredMsgsMap;
 	private SBChatManager mChatManager;
 	SBMsgListener mMsgListener = null;
@@ -69,8 +70,9 @@ class ChatAdapter extends IChatAdapter.Stub {
 		mMsgqueue = new LinkedBlockingQueue<Message>();
 		mSmackChat.addMessageListener(mMsgListener);
 		mChatManager = chatManager;
+		mSentButServerAckNotReceivedMap = new LinkedHashMap<Long, Message>();
 	    mSentNotDeliveredMsgsMap = new LinkedHashMap<Long, Message>();
-		for(int i=mMessages.size()-1;i>=0;i--)
+		/*for(int i=mMessages.size()-1;i>=0;i--)
 		{						
 			Message thisMessage = mMessages.get(i);
 			if(thisMessage.getFrom().equals(mParticipant))
@@ -88,18 +90,18 @@ class ChatAdapter extends IChatAdapter.Stub {
 				if(thisMessage.getStatus()!=SBChatMessage.DELIVERED) /// sending or sent
 					mSentNotDeliveredMsgsMap.put(thisMessage.getUniqueMsgIdentifier(), thisMessage);
 			}
-		}		
+		}	*/	
 		mImageURL = ThisUserConfig.getInstance().getString(
 				ThisUserConfig.FBPICURL);			
 		mSenderThread = new SenderThread();
 		mSenderThread.start();
 		
 		//start thread for previous msgs retrieved from db which were not sent too
-		if(!mSentNotDeliveredMsgsMap.isEmpty())
+		/*if(!mSentNotDeliveredMsgsMap.isEmpty())
 		{
 			timer = new Timer();
 	        timer.schedule(new ReSenderThread(), DELAY);
-		}
+		}*/
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chatadapter created for:" + mParticipant);
 	}
 
@@ -126,11 +128,11 @@ class ChatAdapter extends IChatAdapter.Stub {
 		// here we just put on queue
 		try {
 			mMsgqueue.put(msg);
-			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "added msg in queue of:" + mParticipant);
+			Logger.i(TAG, "added msg in queue of:" + mParticipant);
 			if (msg.getType() == Message.MSG_TYPE_CHAT)
 				addMessageToList(msg);
 		} catch (InterruptedException e) {
-			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "unable to put msg on queue of:" + mParticipant);
+			Logger.e(TAG, "unable to put msg on queue of:" + mParticipant);
 			e.printStackTrace();
 		}
 
@@ -208,7 +210,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 		}
 		
 		//start prev msg thread too
-		if(!mSentNotDeliveredMsgsMap.isEmpty())
+		if(!mSentButServerAckNotReceivedMap.isEmpty())
 		{
 			timer = new Timer();
             timer.schedule(new ReSenderThread(), DELAY);
@@ -248,13 +250,25 @@ class ChatAdapter extends IChatAdapter.Stub {
 						.getProperty(Message.DAILYINSTATYPE);
 				
 				//ToastTracker.showToast("got broadcast from userid:"	+ thisNearbyUserUSERID);
-				GetFBInfoForUserIDAndShowPopup req = new GetFBInfoForUserIDAndShowPopup(
+				GetNewUserInfoAndShowPopupRequest req = new GetNewUserInfoAndShowPopupRequest(
 						thisNearbyUserUSERID, daily_insta_type);
 				SBHttpClient.getInstance().executeRequest(req);
 				return;
-			}
-
-			if (msg.getType() == Message.MSG_TYPE_ACKFOR_DELIVERED ||
+			}else if(msg.getType() == Message.MSG_TYPE_ACKFOR_SENT)
+			{
+				// this is ack from server for msg reached server
+				Message origMessage = mSentButServerAckNotReceivedMap.get(msg.getUniqueMsgIdentifier());
+				updateMessageStatusInList(origMessage, SBChatMessage.SENT);				
+				synchronized (mSentButServerAckNotReceivedMap)
+				{
+					mSentButServerAckNotReceivedMap.remove(origMessage.getUniqueMsgIdentifier());
+				}				
+				synchronized (mSentNotDeliveredMsgsMap){
+					mSentNotDeliveredMsgsMap.put(msg.getUniqueMsgIdentifier(), origMessage);
+				}
+				Logger.d(TAG, "got ack from server for:"+origMessage.getBody());
+			}			
+			else if (msg.getType() == Message.MSG_TYPE_ACKFOR_DELIVERED ||
 				msg.getType() == Message.MSG_TYPE_ACKFOR_BLOCKED) 
 			{
 				// ack has same unique id as the msg
@@ -268,6 +282,19 @@ class ChatAdapter extends IChatAdapter.Stub {
                     origMsg = mSentNotDeliveredMsgsMap.get(msg
 						.getUniqueMsgIdentifier());
                 }
+                if (origMsg == null)
+                {
+                	// in case server ack was lost and we directly receive delivery report!
+                	// also we keep consistent with < RC1.5 widout server ack
+                	// once server starts ack this part can be removed
+                	synchronized (mSentButServerAckNotReceivedMap) {
+                        origMsg = mSentButServerAckNotReceivedMap.get(msg
+    						.getUniqueMsgIdentifier());
+                    }
+                	if (origMsg != null) 
+                		mSentButServerAckNotReceivedMap.remove(msg
+        						.getUniqueMsgIdentifier());
+                }
 				if (origMsg != null) {
 					origMsg.setTimeStamp((String)message.getProperty(Message.TIME));
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "got ack for msg: " + origMsg.getBody());
@@ -279,7 +306,7 @@ class ChatAdapter extends IChatAdapter.Stub {
                         mSentNotDeliveredMsgsMap.remove(msg.getUniqueMsgIdentifier());
                     }
 				} else {
-					if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"got ack but not msg uniqid: "	+ msg.getUniqueMsgIdentifier());
+					Logger.d(TAG,"got ack but not msg uniqid: "	+ msg.getUniqueMsgIdentifier());
 				}
 				if (mIsOpen) {
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chat is open,sending ack to window ");
@@ -287,9 +314,8 @@ class ChatAdapter extends IChatAdapter.Stub {
 				}
 				return;
 			}
-
-			// this is chat coming from outside,send ack to this msg
-			if (msg.getType() == Message.MSG_TYPE_CHAT) {
+			else if (msg.getType() == Message.MSG_TYPE_CHAT) {
+				// this is chat coming from outside,send ack to this msg
                 Logger.i(TAG, "Got chat with msg id: " + msg.getUniqueMsgIdentifier() + " and body: " + msg.getBody());
 				try {
 					Message ackmsg = null;					
@@ -389,10 +415,10 @@ class ChatAdapter extends IChatAdapter.Stub {
 		try {			
 			mSmackChat.sendMessage(msgToSend);
             Logger.i(TAG, "chat message sent to " + msg.getTo());
-			updateMessageStatusInList(msg, SBChatMessage.SENT);			
-            synchronized (mSentNotDeliveredMsgsMap) {
-                boolean wasEmpty = mSentNotDeliveredMsgsMap.isEmpty();
-                mSentNotDeliveredMsgsMap.put(msg.getUniqueMsgIdentifier(), msg);
+			//updateMessageStatusInList(msg, SBChatMessage.SENT);			
+            synchronized (mSentButServerAckNotReceivedMap) {
+                boolean wasEmpty = mSentButServerAckNotReceivedMap.isEmpty();
+                mSentButServerAckNotReceivedMap.put(msg.getUniqueMsgIdentifier(), msg);  
                 if (wasEmpty) {
                     timer = new Timer();
                     timer.schedule(new ReSenderThread(), DELAY);
@@ -414,13 +440,13 @@ class ChatAdapter extends IChatAdapter.Stub {
 		// message in current chat window with this unique identifier. But later
 		// when it fetches all
 		// msgs it ll get status as sent/failed
-		try {
+		/*try {
 			if (isOpen())
 				callListeners(msg);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return true;
 	}
 
@@ -490,8 +516,8 @@ class ChatAdapter extends IChatAdapter.Stub {
             boolean wasAnyMsgResent = false;
            
             long now = System.currentTimeMillis();
-            synchronized (mSentNotDeliveredMsgsMap) {
-                for (Map.Entry<Long, Message> entry : mSentNotDeliveredMsgsMap.entrySet()) {
+            synchronized (mSentButServerAckNotReceivedMap) {
+                for (Map.Entry<Long, Message> entry : mSentButServerAckNotReceivedMap.entrySet()) {
                     Logger.i(TAG, "Retrieved message with Id :" + entry.getKey());
                     if (entry.getKey() > (now - THRESHOLD_DELAY)) {
                         Logger.i(TAG, "Message not old enough");

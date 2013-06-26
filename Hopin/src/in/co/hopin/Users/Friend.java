@@ -3,22 +3,29 @@ package in.co.hopin.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MutualFriend {
+public class Friend {
 	
 	private String fb_id = "";
 	private String name = "";
 	JSONObject allInfo = null;
+	private String installed_hopin = "";	
 	
-	public MutualFriend(JSONObject jsonObject) {
+	public Friend(JSONObject jsonObject) {
         allInfo = jsonObject;
         try {
-        	fb_id = allInfo.getString(UserAttributes.MUTUALFRIENDFBID);
+        	fb_id = allInfo.getString(UserAttributes.FRIENDFBID);
         } catch (JSONException e) {
         	return;
         }
         
         try {
-        	name = allInfo.getString(UserAttributes.MUTUALFRIENDNAME);
+        	name = allInfo.getString(UserAttributes.FRIENDNAME);
+        } catch (JSONException e) {
+        	return;
+        }
+        
+        try {
+        	installed_hopin = allInfo.getString(UserAttributes.INSTALLEDHOPIN);
         } catch (JSONException e) {
         	return;
         }
@@ -36,7 +43,13 @@ public class MutualFriend {
 		return picurl;
 	}
 	
-	
+	public boolean hasInstalledHopin()
+	{
+		if(installed_hopin.equals("1"))
+			return true;
+		else 
+			return false;		
+	}
 	
 
 }

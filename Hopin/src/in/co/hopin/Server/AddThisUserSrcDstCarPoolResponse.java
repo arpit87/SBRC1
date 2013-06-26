@@ -4,7 +4,7 @@ import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.GetMatchingCarPoolUsersRequest;
+import in.co.hopin.HttpClient.DailyCarPoolRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.Platform.Platform;
@@ -39,7 +39,7 @@ public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
             body.put(UserAttributes.DAILYINSTATYPE, 0);
             ThisUserConfig.getInstance().putString(ThisUserConfig.ACTIVE_REQ_CARPOOL, body.toString());
             MapListActivityHandler.getInstance().setSourceAndDestination(body);
-			SBHttpRequest getNearbyUsersRequest = new GetMatchingCarPoolUsersRequest();
+			SBHttpRequest getNearbyUsersRequest = new DailyCarPoolRequest();
 	        SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
 			
 		} catch (JSONException e) {

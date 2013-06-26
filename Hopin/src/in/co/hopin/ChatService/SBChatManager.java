@@ -7,6 +7,8 @@ import in.co.hopin.ChatClient.IChatManagerListener;
 import in.co.hopin.ChatClient.IMessageListener;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerConstants;
+import in.co.hopin.Util.Logger;
+
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.util.StringUtils;
 
@@ -109,13 +111,13 @@ public class SBChatManager extends IChatManager.Stub {
     public synchronized ChatAdapter getChat(String participant) {
 		String key = participant;
 		if (mAllChats.containsKey(key)) {
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Chat returned for:"+key);
+			Logger.i(TAG,"Chat returned for:"+key);
 		    return mAllChats.get(key);
 		}
 		else
 		{	
 			Chat c = mChatManager.createChat(key+"@"+ServerConstants.CHATSERVERIP, null);
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"Chat created for:"+key);
+			Logger.i(TAG,"Chat created for:"+key);
 			// maybe a little probleme of thread synchronization
 			// if so use an HashTable instead of a HashMap for mChats
 			return getChatAdapter(c);

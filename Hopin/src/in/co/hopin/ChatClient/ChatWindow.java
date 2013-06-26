@@ -1,6 +1,7 @@
 package in.co.hopin.ChatClient;
 
 import in.co.hopin.R;
+import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.ChatService.IChatAdapter;
 import in.co.hopin.ChatService.IChatManager;
 import in.co.hopin.ChatService.IXMPPAPIs;
@@ -18,6 +19,8 @@ import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerConstants;
+import in.co.hopin.Users.CurrentNearbyUsers;
+import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 
@@ -113,11 +116,8 @@ public class ChatWindow extends SherlockFragmentActivity{
 		    }
 		});	
 		
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);    
-        mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
-    	mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
-    	mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
-    	mThisUserChatFullName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);   
+        
 }
 	    
 	    
@@ -139,6 +139,10 @@ public void onResume() {
 	mMessagesListAdapter.setParticipantFBURL(mParticipantImageURL);	
 	//mContactNameTextView.setText(mReceiver);
 	//getParticipantInfoFromFBID(mParticipantFBID);
+	mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
+	mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
+	mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+	mThisUserChatFullName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
 	if (!mBinded) 
 		bindToService();
 	else
@@ -227,10 +231,22 @@ public void onResume() {
 		        menuItem.setTitle("UnBlock");
 			}
         	break;  
-        case R.id.chat_menu_hopin_profile:	
-        	ProgressHandler.showInfiniteProgressDialoge(ChatWindow.this, "Fetching user profile", "Please wait..");
-	    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(mParticipantFBID);
-			SBHttpClient.getInstance().executeRequest(req);	
+        case R.id.chat_menu_hopin_profile:
+        	
+        	NearbyUser n = CurrentNearbyUsers.getInstance().getNearbyUserWithFBID(mParticipantFBID);        	
+        	if(n!=null)
+        	{
+	        	Intent hopinNewProfile = new Intent(getApplicationContext(),OtherUserProfileActivityNew.class);
+		    	hopinNewProfile.putExtra("fb_info", n.getUserFBInfo().getJsonObj().toString());
+		    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		    	startActivity(hopinNewProfile);
+        	}
+        	else
+        	{	        	
+	        	ProgressHandler.showInfiniteProgressDialoge(ChatWindow.this, "Fetching user profile", "Please wait..");
+		    	GetOtherUserProfileAndShowPopup req = new GetOtherUserProfileAndShowPopup(mParticipantFBID);
+				SBHttpClient.getInstance().executeRequest(req);	
+        	}
 			break;
         case R.id.chat_menu_fb_profile:		
         	CommunicationHelper.getInstance().onFBIconClickWithUser(this, mParticipantFBID, mParticipantName);
@@ -374,11 +390,11 @@ public void onResume() {
 		mMessagesListAdapter.clearList();		
 		if (chatAdapter != null) {
 			List<Message> chatMessages = chatAdapter.getMessages();
-		
+		Logger.i(TAG, "tryin to fetch past msgs");
 		if (chatMessages.size() > 0) {
 			List<SBChatMessage> msgList = convertMessagesList(chatMessages);
 			mMessagesListAdapter.addAllToList(msgList);
-			if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"list adapter size in fetch past"	+ mMessagesListAdapter.getCount());
+			Logger.d(TAG,"list adapter size in fetch past"	+ mMessagesListAdapter.getCount());
 			mMessagesListAdapter.notifyDataSetChanged();
 			mMessagesListView.setSelection(mMessagesListView.getCount() - 1);
 		}
@@ -434,7 +450,7 @@ public void onResume() {
 				try {
 					mChatManager = xmppApis.getChatManager();
     			if (mChatManager != null) {
-    				if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Chat manager got");
+    				Logger.d(TAG, "Chat manager got");
     				chatAdapter = mChatManager.createChat(mParticipantFBID, mMessageListener);
     				if(chatAdapter!=null)
     				{

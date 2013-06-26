@@ -2,7 +2,7 @@ package in.co.hopin.Adapter;
 
 import in.co.hopin.R;
 import in.co.hopin.HelperClasses.SBImageLoader;
-import in.co.hopin.Users.MutualFriend;
+import in.co.hopin.Users.Friend;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ public class MutualFriendAdapter extends BaseAdapter{
 	List mMutualFriends;
 	Activity underLyingActivity;
 	private static LayoutInflater inflater=null;
-	public MutualFriendAdapter(Activity activity,List<MutualFriend> mutualFriends)
+	public MutualFriendAdapter(Activity activity,List<Friend> friends)
 	{
 		underLyingActivity = activity;
-		mMutualFriends = mutualFriends;
+		mMutualFriends = friends;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -48,7 +48,7 @@ public class MutualFriendAdapter extends BaseAdapter{
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		MutualFriend thisMutualFriend = (MutualFriend) mMutualFriends.get(position);
+		Friend thisMutualFriend = (Friend) mMutualFriends.get(position);
 		View thisUserView=convertView;
         if( position%2 == 0)        
         	thisUserView = inflater.inflate(R.layout.mutual_friend_row_left, null);

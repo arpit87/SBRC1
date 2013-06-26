@@ -16,7 +16,7 @@ import android.content.Intent;
 import android.util.Log;
 
 
-public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
+public class GetNewUserInfoAndShowPopup extends ServerResponseBase{
 
 	String status;
 	
@@ -26,7 +26,7 @@ public class GetFBInfoResponseAndShowPopup extends ServerResponseBase{
 	
 	
 	private static final String TAG = "in.co.hopin.Server.GetFBInfoResponseAndShowPopup";
-	public GetFBInfoResponseAndShowPopup(HttpResponse response,String jobjStr,int daily_insta_type) {
+	public GetNewUserInfoAndShowPopup(HttpResponse response,String jobjStr,int daily_insta_type) {
 		super(response,jobjStr);		
 		this.daily_insta_type = daily_insta_type;
 	}

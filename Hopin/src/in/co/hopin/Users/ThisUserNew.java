@@ -34,7 +34,8 @@ public class ThisUserNew {
 	private static ThisUserNew instance = null;
 	private LinkedList<HistoryAdapter.HistoryItem> historyItemList = new LinkedList<HistoryAdapter.HistoryItem>();
 	private String userID;
-	private String formattedTraveDetails;	
+	private String formattedTraveDetails;
+	UserFBInfo userFBInfo = null;
 				
     public void reset(){
         currentGeoPoint = null;
@@ -217,7 +218,15 @@ public class ThisUserNew {
 		return formattedTraveDetails;
 	}
     
-    public static void clearAllData()
+  	public UserFBInfo getUserFBInfo() {
+		return userFBInfo;
+	}
+
+	public void setUserFBInfo(UserFBInfo userFBInfo) {
+		this.userFBInfo = userFBInfo;
+	}
+
+	public static void clearAllData()
     {
     	instance = new ThisUserNew();
     }	

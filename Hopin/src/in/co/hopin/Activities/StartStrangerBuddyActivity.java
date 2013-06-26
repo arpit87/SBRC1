@@ -24,6 +24,7 @@ import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
+import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
@@ -84,22 +85,23 @@ public class StartStrangerBuddyActivity extends Activity {
 		Platform.getInstance().getHandler().postDelayed(r, 2000);
 		
 		Runnable welcomeMessage = new Runnable() {
-	          public void run() {	        		  
-	        	  String admin_fbid = getResources().getString(R.string.hopin_admin_girl_fbid);
+	          public void run() {	   
+	        	  Context c = Platform.getInstance().getContext();
+	        	  String admin_fbid = c.getResources().getString(R.string.hopin_admin_girl_fbid);
 	        	  int admin_fbid_hash = admin_fbid.hashCode();
-	        	  String admin_name = getResources().getString(R.string.hopin_admin_girl_name);
-	        	  String admin_welcome_message = getResources().getString(R.string.hopin_admin_girl_welcomemessage);
+	        	  String admin_name = c.getResources().getString(R.string.hopin_admin_girl_name);
+	        	  String admin_welcome_message = c.getResources().getString(R.string.hopin_admin_girl_welcomemessage);	        	  
 	        	  sendWelcomeNotification(admin_fbid_hash, admin_fbid, admin_name, admin_welcome_message);
 	          }};
 	    Platform.getInstance().getHandler().postDelayed(welcomeMessage, 1*60*1000);      
 	}
     
-    public void sendWelcomeNotification(int id,String participant,String participant_name,String chatMessage) {
+    public void sendWelcomeNotification(int id,String fb_id,String participant_name,String chatMessage) {
 
     	 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		 Intent chatIntent = new Intent(this,ChatWindow.class);
 		 	chatIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		   chatIntent.putExtra(ChatWindow.PARTICIPANT, participant);
+		   chatIntent.putExtra(ChatWindow.PARTICIPANT, fb_id);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		 
 		  	
 		   if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Sending notification") ;
@@ -110,10 +112,11 @@ public class StartStrangerBuddyActivity extends Activity {
 		 notif.flags |= Notification.FLAG_AUTO_CANCEL;
 		 notif.setLatestEventInfo(this, participant_name, chatMessage, pintent);
 				
-		 Message welcome_message = new Message("", participant, chatMessage, StringUtils.gettodayDateInFormat("hh:mm")
-				 								,Message.MSG_TYPE_CHAT, SBChatMessage.RECEIVED,System.currentTimeMillis());
+		 Message welcome_message = new Message("", ServerConstants.AppendServerIPToFBID(fb_id), chatMessage, StringUtils.gettodayDateInFormat("hh:mm")
+				 								,Message.MSG_TYPE_CHAT, SBChatMessage.RECEIVED,System.currentTimeMillis(),participant_name);
 		 
 		 ChatHistory.addtoChatHistory(welcome_message);
+		 ActiveChat.addChat(fb_id, participant_name, chatMessage);
 		 
 			notif.ledARGB = 0xff0000ff; // Blue color
 			notif.ledOnMS = 1000;

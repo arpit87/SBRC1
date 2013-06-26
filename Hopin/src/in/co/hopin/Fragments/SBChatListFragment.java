@@ -27,6 +27,7 @@ public class SBChatListFragment extends ListFragment {
 	private static final String TAG = "in.co.hopin.Fragments.SBChatListFragment";
 	private ViewGroup mListViewContainer;
 	private List<ActiveChat> chatUserlist = null;
+	ChatListAdapter mAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedState) {
@@ -36,23 +37,22 @@ public class SBChatListFragment extends ListFragment {
         chatUserlist = ActiveChat.getActiveChats();  
         if(!chatUserlist.isEmpty())
         {
-			ChatListAdapter adapter = new ChatListAdapter(getActivity(), chatUserlist);
-			setListAdapter(adapter);
+			mAdapter = new ChatListAdapter(getActivity(), chatUserlist);
+			setListAdapter(mAdapter);
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"chatlist users:"+chatUserlist.toString());
         }
 	}
-
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview chatlistview");
+		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview chatlistview");		
 		mListViewContainer = (ViewGroup) inflater.inflate(R.layout.chatfragment_listview, null);
 		TextView mEmptyListTextView = (TextView)mListViewContainer.findViewById(R.id.chatlist_fragment_emptyList);
 		if(chatUserlist.isEmpty())
 		{
 			mEmptyListTextView.setVisibility(View.VISIBLE);
-		}
+		} 
 		return mListViewContainer;
 	}
 	

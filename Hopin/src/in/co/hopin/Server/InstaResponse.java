@@ -13,13 +13,13 @@ import android.content.Intent;
 import android.util.Log;
 
 
-public class GetMatchingNearbyUsersResponse extends ServerResponseBase{
+public class InstaResponse extends ServerResponseBase{
 
 
 	private static final String TAG = "in.co.hopin.Server.GetUsersResponse";
 	
 	
-	public GetMatchingNearbyUsersResponse(HttpResponse response,String jobjStr) {
+	public InstaResponse(HttpResponse response,String jobjStr) {
 		super(response,jobjStr);
 				
 	}

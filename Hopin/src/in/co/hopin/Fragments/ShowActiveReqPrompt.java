@@ -5,8 +5,8 @@ import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.GetMatchingCarPoolUsersRequest;
-import in.co.hopin.HttpClient.GetMatchingNearbyUsersRequest;
+import in.co.hopin.HttpClient.DailyCarPoolRequest;
+import in.co.hopin.HttpClient.InstaRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.Users.UserAttributes;
@@ -94,7 +94,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 							try {
 								MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
 								ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching carpool matches", "Please wait");
-								SBHttpRequest getNearbyUsersRequest = new GetMatchingCarPoolUsersRequest();
+								SBHttpRequest getNearbyUsersRequest = new DailyCarPoolRequest();
 						        SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
 						        dismiss(); 
 							} catch (JSONException e) {
@@ -147,7 +147,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 							try {
 								MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
 								ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching  matches", "Please wait");
-								SBHttpRequest getNearbyUsersRequest = new GetMatchingNearbyUsersRequest();
+								SBHttpRequest getNearbyUsersRequest = new InstaRequest();
 						        SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
 						        dismiss(); 
 							} catch (JSONException e) {
