@@ -10,7 +10,7 @@ public class ServerConstants {
 	public static String REQUESTSERVICE="/RequestService";
 	public static String CHATSERVICE= "/ChatService";
 	public static String CHATSERVERIP= "54.243.171.212";
-	public static String CHATADMINACKFROM= "admin@hopin.co.in";
+	public static String CHATADMINACKFROM= "hopin_server_ack";
 	
 	public static String AppendServerIPToFBID(String fbid)
 	{

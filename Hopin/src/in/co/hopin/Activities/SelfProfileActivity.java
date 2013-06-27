@@ -132,7 +132,7 @@ public class SelfProfileActivity extends FragmentActivity{
 
 	@Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+        if (mPager==null || mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
@@ -194,8 +194,6 @@ public class SelfProfileActivity extends FragmentActivity{
     	public Fragment getItem(int position) {     	
     	return this.fragments.get(position);    	
     	}
-    
-    	 
     
     	@Override    
     	public int getCount() {    

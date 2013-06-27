@@ -1,15 +1,21 @@
 package in.co.hopin.MapHelpers;
 
+import in.co.hopin.Activities.SelfProfileActivity;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.HelperClasses.Store;
 import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
@@ -24,40 +30,16 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 	protected static LayoutInflater mInflater;
 	View viewOnMarker = null; 
 	ImageView picView = null;
-	GeoPoint mGeoPoint = null;
+	SBGeoPoint mGeoPoint = null;
 	String mImageURL= null;	
 	boolean isVisible = false;
 	String fbPicURL = null;
 	
-	public ThisUserOverlayItem(GeoPoint geoPoint, String imageURL, String arg2,SBMapView mapView) {
+	public ThisUserOverlayItem(SBGeoPoint geoPoint, String imageURL, String arg2,SBMapView mapView) {
 		super(geoPoint, imageURL, arg2);	
 		this.mGeoPoint = geoPoint;		
 		this.mMapView = mapView;
 		this.mImageURL = imageURL;
-		/*Bitmap bmp = Store.getInstance().getBitmapFromFile(ThisUserConfig.FBPICFILENAME);
-		if(bmp != null )
-		{
-			//if fb checked in then fetch image else show icon
-			mInflater = (LayoutInflater) Platform.getInstance().getContext().getSystemService(Platform.getInstance().getContext().LAYOUT_INFLATER_SERVICE);
-			thisUserViewWithFrame = mInflater.inflate(R.layout.map_frame_layout, null);
-			userPic = (ImageView)thisUserViewWithFrame.findViewById(R.id.userpic);
-			userPic.setImageBitmap(bmp);	
-		}
-		else
-		{	
-			userPic.setImageDrawable( Platform.getInstance().getContext().getResources().getDrawable(R.drawable.userpicicon));
-			
-		}
-		
-		thisUserViewWithFrame.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-		thisUserViewWithFrame.layout(0, 0, thisUserViewWithFrame.getMeasuredWidth(), thisUserViewWithFrame.getMeasuredHeight()); 
-		thisUserViewWithFrame.buildDrawingCache(true);
-		Bitmap b = Bitmap.createBitmap(thisUserViewWithFrame.getDrawingCache());
-		thisUserViewWithFrame.setDrawingCacheEnabled(false);
-		icon = (Drawable) new BitmapDrawable(Platform.getInstance().getContext().getResources(), bmp);
-		
-		icon.setBounds(0, 0, icon.getIntrinsicHeight(), icon.getIntrinsicWidth());
-		this.mMarker = icon;*/
 		createAndDisplayView();
 	}
 	
@@ -88,6 +70,7 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 			}
 			mMapView.addSelfView(viewOnMarker,params);
 			viewOnMarker.setVisibility(View.VISIBLE);
+			viewOnMarker.setOnTouchListener(new ThisUserOnTouchListener());
 			isVisible = true;
 		}
 		else
@@ -132,6 +115,19 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 			createAndDisplayView();
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to show null thisUserMapView");
 		}
+	}
+	
+	public class ThisUserOnTouchListener implements OnTouchListener
+	{		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {			
+			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
+			Intent hopinSelfProfile = new Intent(Platform.getInstance().getContext(),SelfProfileActivity.class);
+			hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);			
+	    	Platform.getInstance().getContext().startActivity(hopinSelfProfile);
+			return true;
+		}
+		
 	}
 	
 

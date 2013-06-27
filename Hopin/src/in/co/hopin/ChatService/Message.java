@@ -114,16 +114,16 @@ this(to, MSG_TYPE_CHAT);
 public Message(final org.jivesoftware.smack.packet.Message smackMsg) {
 mTo = smackMsg.getTo();
 mFrom = smackMsg.getFrom();
-if(mFrom.equals(ServerConstants.CHATADMINACKFROM))
+mBody = smackMsg.getBody();
+mSubject = smackMsg.getSubject();
+if(mSubject.equals(ServerConstants.CHATADMINACKFROM))
 {
 	mType = MSG_TYPE_ACKFOR_SENT;
     mUniqueMsgIdentifier = Long.parseLong(smackMsg.getBody());
 }
 else 
 {
-	mType = (Integer) smackMsg.getProperty(SBMSGTYPE);
-    mBody = smackMsg.getBody();
-    mSubject = smackMsg.getSubject();
+	mType = (Integer) smackMsg.getProperty(SBMSGTYPE);    
     mThread = smackMsg.getThread();    
     mUniqueMsgIdentifier = (Long) smackMsg.getProperty(UNIQUEID); //this also doubles up as time
 }

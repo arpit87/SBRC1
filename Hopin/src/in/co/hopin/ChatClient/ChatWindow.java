@@ -546,16 +546,15 @@ private class SBOnChatMessageListener extends IMessageListener.Stub {
                     //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
                     //he fetches all the msgs which have been updated in adapter.
                     mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.BLOCKED);
-                } else if (msg.getType() == Message.MSG_TYPE_CHAT) {
-                    //here we can get two type of chat msg
-                    //1) self msg after status change to sent/sending failed
-                    //2) incoming msg from other user
-
-                    //handle 1)
-                    if (msg.getStatus() == SBChatMessage.SENT || msg.getStatus() == SBChatMessage.SENDING_FAILED) {
-                        mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), msg.getStatus());
-                    } else if (msg.getStatus() == SBChatMessage.RECEIVED) {
-                        if (msg.getBody() != null) {
+                } else if (msg.getType() == Message.MSG_TYPE_ACKFOR_SENT) {
+                    //here we should receive acks of only open chats
+                    //non open chats ack update msgs in list of theie respective chatAdapter and user when next opens them
+                    //he fetches all the msgs which have been updated in adapter.
+                    mMessagesListAdapter.updateMessageStatusWithUniqueID(msg.getUniqueMsgIdentifier(), SBChatMessage.SENT);
+                }  else if (msg.getType() == Message.MSG_TYPE_CHAT) {
+                    //here we can get one type of chat msg                    
+                    //1) incoming msg from other user
+                     if (msg.getBody() != null) {
                             //incomiing added in chatadapter
                             //ActiveChat.addChat(mParticipantFBID, mThisUserChatFullName, msg.getBody());
                             SBChatMessage lastMessage = null;
@@ -573,7 +572,7 @@ private class SBOnChatMessageListener extends IMessageListener.Stub {
                             }
 
                         }
-                    }
+                    
                 }
 
                 Logger.i(TAG, "Notifying adapter.");
