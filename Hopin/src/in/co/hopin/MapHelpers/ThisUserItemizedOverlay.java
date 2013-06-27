@@ -4,6 +4,7 @@ import in.co.hopin.CustomViewsAndListeners.SBMapView;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.Logger;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class ThisUserItemizedOverlay extends BaseItemizedOverlay{
 	
 	protected boolean onTap(int i)
 	{
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"toggling this user view");
+		Logger.i(TAG,"toggling this user view");
 		selfOverlayItem.ToggleView();
 		return true;
 		

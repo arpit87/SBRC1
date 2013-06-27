@@ -84,7 +84,12 @@ public class SBChatListViewAdapter extends BaseAdapter {
 	
 	public void addAllToList(List<SBChatMessage> listMessages)
 	{
-		mListMessages.addAll(listMessages);		
+		mListMessages.addAll(listMessages);	
+		for (SBChatMessage msg : listMessages)
+		{
+			if(msg.getStatus() == SBChatMessage.SENDING)
+				mHashMapSentNotDeliveredMsgs.put(msg.getUniqueIdentifier(), msg);
+		}
 	}
 
 	/**
