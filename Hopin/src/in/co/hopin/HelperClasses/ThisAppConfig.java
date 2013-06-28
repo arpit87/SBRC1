@@ -12,6 +12,9 @@ public class ThisAppConfig extends ConfigBase{
 	public static final String CHATPOPUP = "chat_popup";
 	public static final String WOMANFILTER = "woman_filter";
 	public static final String FBFRIENDONLYFILTER = "fb_friendonly_filter";
+    public static final String PROPERTY_REG_ID = "registration_id";
+    public static final String PROPERTY_APP_VERSION = "appVersion";
+    public static final String PROPERTY_ON_SERVER_EXPIRATION_TIME ="onServerExpirationTimeMs";
 	
 	
 	

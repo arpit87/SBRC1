@@ -9,6 +9,10 @@
           android:targetSdkVersion="11"
            />
      
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	  <uses-permission android:name="android.permission.INTERNET"/>
 	  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    
@@ -17,6 +21,9 @@
 	<uses-permission android:name="android.permission.READ_LOGS"/>
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
      
+    <permission android:name="in.co.hopin.permission.C2D_MESSAGE"
+                android:protectionLevel="signature" />
+    <uses-permission android:name="in.co.hopin.permission.C2D_MESSAGE" />
    <application
         android:icon="@drawable/launchernew"
         android:label="@string/app_name"
@@ -35,6 +42,12 @@
 			</intent-filter>
 		</service>
       
+        <service android:name="in.co.hopin.gcm.GCMService"
+                    android:label="GCM Service">
+            <intent-filter>
+                <action android:name="in.co.hopin.gcm.GCMService"></action>
+            </intent-filter>
+        </service>
        
         <activity
             android:name="in.co.hopin.Activities.StartStrangerBuddyActivity" 
@@ -161,7 +174,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
+        <receiver
+                android:name="in.co.hopin.gcm.GCMBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
          
     </application>
     

@@ -40,6 +40,8 @@ public class AddUserResponse extends ServerResponseBase{
 			body = jobj.getJSONObject("body");
 			user_id = body.getString(UserAttributes.USERID);
 			ThisUserConfig.getInstance().putString(ThisUserConfig.USERID, user_id);
+            // starts the gcm service once the userid is available
+            Platform.getInstance().startGCMService();
 			ThisUserNew.getInstance().setUserID(user_id);	
 			//ToastTracker.showToast("Got user_id:"+user_id);
 			ProgressHandler.dismissDialoge();

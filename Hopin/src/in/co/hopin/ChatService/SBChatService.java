@@ -72,7 +72,7 @@ public class SBChatService extends Service {
         //Toast.makeText(this, "started service", Toast.LENGTH_SHORT).show();
         registerReceiver(mReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         registerReceiver(mReceiver, new IntentFilter(SBLOGIN_TO_CHAT));
-        registerReceiver(mReceiver, new IntentFilter(BroadCastConstants.NEARBY_USER_UPDATED));
+        //registerReceiver(mReceiver, new IntentFilter(BroadCastConstants.NEARBY_USER_UPDATED));
         mPort = DEFAULT_XMPP_PORT;
 
         initializeConfigration();
@@ -220,7 +220,7 @@ public class SBChatService extends Service {
                 String login = intent.getStringExtra("username");
                 String password = intent.getStringExtra("password");
                 mConnectionAdapter.loginAsync(login, password);
-            } else if (intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED)) {
+            } /*else if (intentAction.equals(BroadCastConstants.NEARBY_USER_UPDATED)) {
                 if (Platform.getInstance().isLoggingEnabled())
                     Log.i(TAG, "update intent in chat rece ,might broadcast");
                 //send broad chat msg to all fb loggeged in nearby users
@@ -249,7 +249,7 @@ public class SBChatService extends Service {
                             }
                     }
 
-            }
+            }*/
         }
     }
 

@@ -1,12 +1,13 @@
 package in.co.hopin.Platform;
 
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.Users.CurrentNearbyUsers;
-import in.co.hopin.Users.ThisUserNew;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.Users.CurrentNearbyUsers;
+import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.Logger;
 
 public class Platform {
 	
@@ -63,6 +64,12 @@ public class Platform {
 	          
 	          if (Platform.getInstance().isLoggingEnabled()) Log.d( TAG, "Service stopped" );	         
 	             
+     }
+    
+    public void startGCMService() {
+        Intent intent = new Intent("in.co.hopin.gcm.GCMService");
+        Logger.d(TAG, "Starting GCM service");
+        context.startService(intent);
      }
 
 }

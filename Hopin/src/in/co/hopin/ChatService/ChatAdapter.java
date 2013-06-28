@@ -228,7 +228,9 @@ class ChatAdapter extends IChatAdapter.Stub {
             }
 			// if broadcast message from new user then do getMatch req
 			if (msg.getType() == Message.MSG_TYPE_NEWUSER_BROADCAST) {
-				// caution..call back listener to chatwindow might not be
+                //do nothing, broadcast through chat deprecated
+
+				/*// caution..call back listener to chatwindow might not be
 				// registered yet for this chat
 				// listener get registered only when chat window opens				
 				
@@ -247,7 +249,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 				GetNewUserInfoAndShowPopupRequest req = new GetNewUserInfoAndShowPopupRequest(
 						thisNearbyUserUSERID, daily_insta_type);
 				SBHttpClient.getInstance().executeRequest(req);
-				return;
+				return;*/
 			}else if(msg.getType() == Message.MSG_TYPE_ACKFOR_SENT)
 			{
 				// this is ack from server for msg reached server
