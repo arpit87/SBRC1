@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import in.co.hopin.Activities.StartStrangerBuddyActivity;
 import in.co.hopin.HelperClasses.ThisAppConfig;
-import in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup;
+import in.co.hopin.HttpClient.GetNewUserInfoAndShowPopupRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.R;
 import in.co.hopin.Util.Logger;
@@ -63,7 +63,7 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
             String userId = jsonObject.getString("user_id");
             int dailyInstaType = jsonObject.getInt("insta");
 
-            GetFBInfoForUserIDAndShowPopup req = new GetFBInfoForUserIDAndShowPopup(userId, dailyInstaType);
+            GetNewUserInfoAndShowPopupRequest req = new GetNewUserInfoAndShowPopupRequest(userId, dailyInstaType);
             SBHttpClient.getInstance().executeRequest(req);
         } catch (JSONException e) {
             Logger.e(TAG, "Unable to parse new user gcm message", e);
