@@ -49,7 +49,7 @@ public class HistoryContentProvider extends ContentProvider {
                     ",takeOffer INTEGER" +                    
                     ",reqDate TEXT" +
                     ",radioButtonId INTEGER" +
-                    ",date INTEGER" +
+                    ",date LONG" +
                     ");");
             db.execSQL(builder.toString());
         }

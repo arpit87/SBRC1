@@ -17,7 +17,7 @@ public class ChatHistoryProvider extends ContentProvider {
     private Uri mUri;
     private UriMatcher mUriMatcher;
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String mDatabaseName = "chathistory.db";
     private static final String mTableName = "chathistory";
     private static final int URI_MATCH_DB_FETCH_ONLY = 1;
@@ -42,8 +42,8 @@ public class ChatHistoryProvider extends ContentProvider {
                     ",groupId INTEGER" +
                     ",timestamp TEXT" +
                     ",status INTEGER" +
-                    ",uniqueId INTEGER" +
-                    ",date INTEGER" +
+                    ",uniqueId LONG" +
+                    ",date LONG" +
                     ",fromName TEXT" +
                     ");");
             db.execSQL(builder.toString());
@@ -53,7 +53,7 @@ public class ChatHistoryProvider extends ContentProvider {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Logger.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ".");
             if (oldVersion == 1 && newVersion == 2) {
-                db.execSQL("ALTER TABLE chathistory ADD COLUMN toName TEXT;");
+                db.execSQL("ALTER TABLE chathistory ADD COLUMN fromName TEXT;");
             } else {
                 //Write your own implementation
             }

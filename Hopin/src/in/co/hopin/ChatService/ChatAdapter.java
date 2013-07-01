@@ -56,7 +56,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 	private LinkedBlockingQueue<Message> mMsgqueue = null;
 	SenderThread mSenderThread = null;
 	private Timer timer;
-	private TreeSet<Long> receivedChatIds = new TreeSet<Long>();
+	private TreeSet<Long> receivedChatIds = new TreeSet<Long>();	
 	
 	// small chat participant should be complete as to is overridden inside
 	// sendMsg by smack to participant
@@ -82,13 +82,15 @@ class ChatAdapter extends IChatAdapter.Stub {
 					continue;
 				receivedChatIds.add(thisMessage.getUniqueMsgIdentifier());				
 			}
-			else
+			else if(thisMessage.getStatus()==SBChatMessage.SENDING)
 			{			
-				//here we are loading previous undelivered msgs in sent but not delivered
-				// even if its not sent it will be sent again	
-				Logger.i(TAG, "Loaded prev undelivered msg:"+thisMessage.getBody());
-				if(thisMessage.getStatus()==SBChatMessage.SENDING) /// sending or sent
-					sendChatMessage(thisMessage);
+				//here we are sending pre unsent msgs,it loads in queue too
+				Logger.i(TAG, "Loaded prev unsent msg:"+thisMessage.getBody());				
+				sendChatMessage(thisMessage);
+			}else if(thisMessage.getStatus()==SBChatMessage.SENT)
+			{
+				Logger.i(TAG, "Loaded prev sent but not delivered msg:"+thisMessage.getBody()+",u_id:"+thisMessage.getUniqueMsgIdentifier());
+				mSentNotDeliveredMsgsMap.put(thisMessage.getUniqueMsgIdentifier(), thisMessage);
 			}
 		}		
 		mImageURL = ThisUserConfig.getInstance().getString(
@@ -96,7 +98,7 @@ class ChatAdapter extends IChatAdapter.Stub {
 		mSenderThread = new SenderThread();
 		mSenderThread.start();
 		
-		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chatadapter created for:" + mParticipant);
+		Logger.i(TAG, "chatadapter created for:" + mParticipant);
 	}
 
     public void resetChatOnConnection(final Chat chat) {
@@ -296,7 +298,7 @@ class ChatAdapter extends IChatAdapter.Stub {
                         mSentNotDeliveredMsgsMap.remove(msg.getUniqueMsgIdentifier());
                     }
 				} else {
-					Logger.d(TAG,"got ack but not msg uniqid: "	+ msg.getUniqueMsgIdentifier());
+					Logger.d(TAG,"got ack but not msg uniqid: "	+ msg.getUniqueMsgIdentifier()+",sent not del size:"+mSentNotDeliveredMsgsMap.size());
 				}
 				if (mIsOpen) {
 					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "chat is open,sending ack to window ");
@@ -452,7 +454,8 @@ class ChatAdapter extends IChatAdapter.Stub {
 		msgToSend.setProperty(Message.USERID, ThisUserNew.getInstance().getUserID());
 		msgToSend.setProperty(Message.DAILYINSTATYPE, ThisUserNew.getInstance().get_Daily_Instant_Type());		
 		msgToSend.setProperty(Message.UNIQUEID, System.currentTimeMillis());
-		
+		msgToSend.setSubject("");
+		msgToSend.setBody("");
 		
 		try {
 			mSmackChat.sendMessage(msgToSend);

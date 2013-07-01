@@ -137,7 +137,7 @@ public class ChatHistory {
         String body = cursor.getString(2);       
         String time = cursor.getString(4);
         int status = cursor.getInt(5);
-        long uniqueID = cursor.getInt(7);
+        long uniqueID = cursor.getLong(6);
         String subject = cursor.getString(8);
         Message newMsg = new Message(to, from, body, time, Message.MSG_TYPE_CHAT, status, uniqueID,subject);       
         return newMsg;

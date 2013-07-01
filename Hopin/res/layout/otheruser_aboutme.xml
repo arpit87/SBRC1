@@ -24,7 +24,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_rectangle_background_verylightgray"
+        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip">
     <ImageView
@@ -63,7 +63,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_rectangle_background_verylightgray"
+        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip">
     <ImageView
@@ -103,7 +103,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_rectangle_background_verylightgray"
+        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip">
     <ImageView

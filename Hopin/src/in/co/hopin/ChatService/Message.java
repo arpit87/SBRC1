@@ -116,7 +116,7 @@ mTo = smackMsg.getTo();
 mFrom = smackMsg.getFrom();
 mBody = smackMsg.getBody();
 mSubject = smackMsg.getSubject();
-if(mSubject.equals(ServerConstants.CHATADMINACKFROM))
+if(mSubject!= null && mSubject.equals(ServerConstants.CHATADMINACKFROM))
 {
 	mType = MSG_TYPE_ACKFOR_SENT;
     mUniqueMsgIdentifier = Long.parseLong(smackMsg.getBody());
