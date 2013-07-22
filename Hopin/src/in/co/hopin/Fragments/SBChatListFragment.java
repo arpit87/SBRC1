@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import in.co.hopin.R;
 
+import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.ChatListAdapter;
 import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
@@ -61,7 +62,7 @@ public class SBChatListFragment extends ListFragment {
 		ActiveChat clickedUser = chatUserlist.get(position);
 		String fbid = clickedUser.getUserId();
 		String name = clickedUser.getName();
-		CommunicationHelper.getInstance().onChatClickWithUser(fbid,name);
+		CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)getActivity(),fbid,name);
 		
     }
 	

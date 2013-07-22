@@ -3,6 +3,7 @@ package in.co.hopin.Activities;
 import com.google.analytics.tracking.android.EasyTracker;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
+import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Platform.Platform;
@@ -17,7 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
-public class SettingsActivity extends FragmentActivity{
+public class SettingsActivity extends FBLoggableFragmentActivity{
 	
 	private static final String TAG = "in.co.hopin.Activities.SettingsActivity";
 	CheckBox showNewUserPopup;
@@ -29,6 +30,7 @@ public class SettingsActivity extends FragmentActivity{
     FacebookConnector fbconnect;
     View feedbackView;
     View profileView;
+    private boolean fbloginPromptIsShowing = false;
 
 	 @Override
 	    protected void onCreate(Bundle savedInstanceState){
@@ -63,9 +65,7 @@ public class SettingsActivity extends FragmentActivity{
  				{
  					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"woman filter clicked,checked:"+isChecked);
  					womenFilter.setChecked(false);
- 					fbconnect = new FacebookConnector(SettingsActivity.this);
-  					FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
-					fblogin_dialog.show(SettingsActivity.this.getSupportFragmentManager(), "fblogin_dialog"); 					
+ 					CommunicationHelper.getInstance().FBLoginpromptPopup_show(SettingsActivity.this, true);
  				}
  				else
  				{
@@ -90,9 +90,7 @@ public class SettingsActivity extends FragmentActivity{
   				{
   					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"fb chk clicked,checked:"+isChecked);
   					fbfriendsOnlyFilter.setChecked(false);
-  					fbconnect = new FacebookConnector(SettingsActivity.this);
-  					FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
-  					fblogin_dialog.show(SettingsActivity.this.getSupportFragmentManager(), "fblogin_dialog");  					
+  					CommunicationHelper.getInstance().FBLoginpromptPopup_show(SettingsActivity.this, true);
   				}
   				else
   				{  					
@@ -125,8 +123,8 @@ public class SettingsActivity extends FragmentActivity{
 			@Override
 			public void onClick(View v) {
 				Intent hopinSelfProfile = new Intent(Platform.getInstance().getContext(),SelfProfileActivity.class);
-				hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);			
-		    	Platform.getInstance().getContext().startActivity(hopinSelfProfile);				
+				hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);			
+		    	startActivity(hopinSelfProfile);				
 			}
 		});
 		 
@@ -150,7 +148,7 @@ public class SettingsActivity extends FragmentActivity{
 	 @Override
 	    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        super.onActivityResult(requestCode, resultCode, data);
-	        fbconnect.authorizeCallback(requestCode, resultCode, data);
+	        CommunicationHelper.getInstance().authorizeCallback(this, requestCode, resultCode, data);
 	    }
 
 
@@ -165,4 +163,12 @@ public class SettingsActivity extends FragmentActivity{
         super.onStop();
         EasyTracker.getInstance().activityStop(this);
     }
+
+	public boolean isFbloginPromptIsShowing() {
+		return fbloginPromptIsShowing;
+	}
+
+	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
+		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
+	}
 }

@@ -44,7 +44,7 @@ public class Platform {
 		this.context= context;			
 		SBHttpClient.getInstance();
 		handler = new Handler();
-		ENABLE_LOGGING = true;
+		ENABLE_LOGGING = false;
 		CurrentNearbyUsers.getInstance().clearAllData();
 		ThisUserNew.getInstance();		
 	}

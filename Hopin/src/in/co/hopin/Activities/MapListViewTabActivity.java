@@ -9,6 +9,7 @@ import in.co.hopin.Fragments.SBMapFragment;
 import in.co.hopin.Fragments.ShowActiveReqPrompt;
 import in.co.hopin.HelperClasses.BlockedUser;
 import in.co.hopin.HelperClasses.BroadCastConstants;
+import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
@@ -46,7 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MapListViewTabActivity extends SherlockFragmentActivity  {
+public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
 	//public View mMapViewContainer;
 	
 	private static final String TAG = "in.co.hopin.Activities.MapListViewTabActivity";
@@ -60,9 +61,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
 	private ToggleButton offerRideButton = null;
 	
 	
-	private boolean currentIsOfferMode;
+	private boolean currentIsOfferMode;	
 	
-	private FacebookConnector fbconnect;
 	FragmentManager fm = getSupportFragmentManager();
 	private boolean isMapShowing = true;
    
@@ -71,11 +71,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     private ImageView mFbLogin;
     private Menu mMenu;
     ActionBar ab;
-	
-	public FacebookConnector getFbConnector()
-	{
-		return fbconnect;
-	}
+    private boolean fbloginPromptIsShowing = false;
+	//private FacebookConnector fbconnect;
 	
 	
 
@@ -86,7 +83,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         super.onCreate(null);
        // requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
        // requestWindowFeature((int) Window.FEATURE_ACTION_BAR & ~Window.FEATURE_ACTION_BAR_OVERLAY);
-        setContentView(R.layout.maplistview);    
+        setContentView(R.layout.maplistview);   
         
         ab = getSupportActionBar();
         ab.setBackgroundDrawable(getResources().getDrawable(R.drawable.transparent_black));   
@@ -99,7 +96,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         showMapView();
        
         this.registerReceiver(mapListActivityHandler,new IntentFilter(BroadCastConstants.NEARBY_USER_UPDATED));    
-        fbconnect = new FacebookConnector(this);
+       
         
         //show prompt if any of req active
         
@@ -252,7 +249,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fbconnect.authorizeCallback(requestCode, resultCode, data);
+        CommunicationHelper.getInstance().authorizeCallback(this,requestCode, resultCode, data);
     }
 
     @Override
@@ -286,7 +283,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
         	FBLoginDialogFragment fblogin_dialog = new FBLoginDialogFragment();
 			fblogin_dialog.show(getSupportFragmentManager(), "fblogin_dialog");
 			break;
-        case R.id.fb_logout_menuitem:
+        case R.id.main_menu_logout:
         	//logout from chat server?
 			FacebookConnector fbconnect = new FacebookConnector(MapListViewTabActivity.this);
         	fbconnect.logoutFromFB();
@@ -414,6 +411,14 @@ public class MapListViewTabActivity extends SherlockFragmentActivity  {
     	}
     	return mMapViewContainer;
     }
+
+	public boolean isFbloginPromptIsShowing() {
+		return fbloginPromptIsShowing;
+	}
+
+	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
+		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
+	}
 
       
 }

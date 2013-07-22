@@ -4,6 +4,7 @@ import in.co.hopin.Activities.Tutorial;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ToastTracker;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -49,9 +50,10 @@ public class FBLoginDialogFragment extends DialogFragment{
 		fbLoginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Trying logging", "Please wait");
+				//ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Trying logging", "Please wait");				
+				ToastTracker.showToast("Logging...please wait..");
+				fbconnect.loginToFB();		
 				dismiss();
-				fbconnect.loginToFB();				
 			}
 		});
         

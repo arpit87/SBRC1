@@ -19,6 +19,7 @@ import in.co.hopin.Adapter.HistoryAdapter;
 import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.ChatClient.SBChatMessage;
 import in.co.hopin.ChatService.Message;
+import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.HelperClasses.*;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.LocationHelpers.SBLocationManager;
@@ -26,6 +27,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
 
@@ -42,7 +44,7 @@ public class StartStrangerBuddyActivity extends Activity {
 	Intent showSBMapViewActivity;
 	Timer timer;
 	AtomicBoolean mapActivityStarted = new AtomicBoolean(false);	
-	private Context platformContext;
+	private Context platformContext;	
 
     private static Uri mHistoryUri = Uri.parse("content://" + HistoryContentProvider.AUTHORITY + "/db_fetch_only");
     private static String[] columns = new String[]{
@@ -82,18 +84,22 @@ public class StartStrangerBuddyActivity extends Activity {
 	        	  startActivity(show_tutorial);
 	        	  finish();
 	          }};
-		Platform.getInstance().getHandler().postDelayed(r, 2000);
-		
+		Platform.getInstance().getHandler().postDelayed(r, 2000);	
+		//chk if welcome msg not already sent
+		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.WELCOMENOTESENT))
+		{
+		ThisUserConfig.getInstance().putBool(ThisUserConfig.WELCOMENOTESENT, true);	
 		Runnable welcomeMessage = new Runnable() {
 	          public void run() {	   
 	        	  Context c = Platform.getInstance().getContext();
-	        	  String admin_fbid = c.getResources().getString(R.string.hopin_admin_girl_fbid);
-	        	  int admin_fbid_hash = admin_fbid.hashCode();
-	        	  String admin_name = c.getResources().getString(R.string.hopin_admin_girl_name);
-	        	  String admin_welcome_message = c.getResources().getString(R.string.hopin_admin_girl_welcomemessage);	        	  
+	        	  String admin_fbid = getResources().getString(R.string.hopin_admin_girl_fbid);
+	      		String admin_name = getResources().getString(R.string.hopin_admin_girl_name);
+	      		String admin_welcome_message = getResources().getString(R.string.hopin_admin_girl_welcomemessage);	        	  
+	        	  int admin_fbid_hash = admin_fbid.hashCode();	        	  
 	        	  sendWelcomeNotification(admin_fbid_hash, admin_fbid, admin_name, admin_welcome_message);
 	          }};
-	    Platform.getInstance().getHandler().postDelayed(welcomeMessage, 1*60*1000);      
+	    Platform.getInstance().getHandler().postDelayed(welcomeMessage, 1*60*1000);    
+		}
 	}
     
     public void sendWelcomeNotification(int id,String fb_id,String participant_name,String chatMessage) {
@@ -104,7 +110,7 @@ public class StartStrangerBuddyActivity extends Activity {
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT, fb_id);
 		   chatIntent.putExtra(ChatWindow.PARTICIPANT_NAME, participant_name);		 
 		  	
-		   if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Sending notification") ;
+		 Logger.i(TAG, "Sending notification") ;
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
@@ -125,7 +131,8 @@ public class StartStrangerBuddyActivity extends Activity {
 			notif.sound = sound_uri;
       
 			notificationManager.notify(id, notif);
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "notification sent") ;
+			Logger.i(TAG, "notification sent") ;			
+			
 		    }
 
    
@@ -182,7 +189,7 @@ public class StartStrangerBuddyActivity extends Activity {
         else        	
         {
 	
-	        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"started network listening ");
+	        Logger.i(TAG,"started network listening ");
 	        SBLocationManager.getInstance().StartListeningtoNetwork();
             loadHistoryFromDB();
 	        platformContext = Platform.getInstance().getContext();
@@ -200,10 +207,22 @@ public class StartStrangerBuddyActivity extends Activity {
 	                finish();
 	            }};
 	
-	
+	       // Logger.i(TAG, "FB session valid:"+FacebookConnector.isSessionValid());  
+	       // Logger.i(TAG, "FB token:"+ThisUserConfig.getInstance().getString(ThisUserConfig.FBACCESSTOKEN));
+	       // Logger.i(TAG, "FB token expires:"+ThisUserConfig.getInstance().getLong(ThisUserConfig.FBACCESSEXPIRES));
 	        if(ThisUserConfig.getInstance().getString(ThisUserConfig.USERID) == "")
 	        {
 	            firstRun();
+	        }
+	        else if (ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN) && !FacebookConnector.isSessionValid())
+	        {	
+	        	// if user had atleast once logged in then we want to enter here on expiry of session
+	        	Logger.d(TAG, "FB session is not valid");
+	        	ThisUserConfig.getInstance().putBool(ThisUserConfig.FBRELOGINREQUIRED,true);
+	        	Intent fbReloginIntent = new Intent(Platform.getInstance().getContext(),ReloginActivity.class);
+	        	fbReloginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	 			Platform.getInstance().getContext().startActivity(fbReloginIntent);
+	 			finish();
 	        }
 	        else
 	        {

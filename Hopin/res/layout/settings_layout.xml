@@ -163,10 +163,11 @@
 
                 <LinearLayout
                         android:id="@+id/settings_blockedusers_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:background="@drawable/borderless_button">
 
                     <TextView
                             android:id="@+id/settings_blockedusers_header"
@@ -176,7 +177,8 @@
                             android:textSize="20dip"
                             android:text="Blocked"
                             android:layout_marginTop="10dip"
-                            android:layout_marginLeft="5dip"/>
+                            android:layout_marginLeft="5dip"
+                            />
 
                     <TextView
                             android:id="@+id/settings_blockedusers"
@@ -200,10 +202,11 @@
                 
                  <LinearLayout
                         android:id="@+id/settings_profile_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:background="@drawable/borderless_button">
   					<TextView
                             android:id="@+id/settings_profile_header"
                             android:layout_width="wrap_content"
@@ -234,10 +237,11 @@
                         android:layout_marginLeft="5dip"/>
                     <LinearLayout
                         android:id="@+id/settings_feedback_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:clickable="true">
+                        android:clickable="true"
+                        android:background="@drawable/borderless_button">
   					<TextView
                             android:id="@+id/settings_feedback_header"
                             android:layout_width="wrap_content"

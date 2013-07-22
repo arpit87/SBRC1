@@ -1,7 +1,9 @@
 package in.co.hopin.Activities;
 
 import in.co.hopin.Fragments.SBChatListFragment;
+import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.R;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -9,10 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class MyChatsActivity extends FragmentActivity{
+public class MyChatsActivity extends FBLoggableFragmentActivity{
 	
 	FragmentManager fm = this.getSupportFragmentManager();	
-   
+	private boolean fbloginPromptIsShowing = false;
 	  @Override
 	    public void onStart(){
 	        super.onStart();
@@ -47,5 +49,19 @@ public class MyChatsActivity extends FragmentActivity{
 	            fragTrans.commit();	           
 	        }
 	    }
+
+	public boolean isFbloginPromptIsShowing() {
+		return fbloginPromptIsShowing;
+	}
+
+	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
+		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
+	}
+	
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        CommunicationHelper.getInstance().authorizeCallback(this,requestCode, resultCode, data);
+    }
 
 }

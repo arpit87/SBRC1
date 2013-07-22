@@ -61,11 +61,7 @@ public class MapListActivityHandler  extends BroadcastReceiver{
 	AlertDialog alertDialog ;	
 	private boolean mapInitialized = false;
 	private SBMapFragment mapFrag;
-	private SBListFragment listFrag;
-	private boolean fbloginPromptIsShowing = false;
-	PopupWindow fbPopupWindow = null;
-	View fbloginlayout = null;
-	ViewGroup popUpView = null;
+	private SBListFragment listFrag;	
 	ViewGroup mListViewContainer;	
 	ImageView mListImageView;
 	private TextView mDestination;
@@ -332,7 +328,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		boolean isfbloggedin = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN);
 		if(!isfbloggedin)
 		{
-			fbloginpromptpopup_show(true);
+			CommunicationHelper.getInstance().FBLoginpromptPopup_show(underlyingActivity,true);
 		}	
 		
 		ProgressHandler.dismissDialoge();
@@ -370,66 +366,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
         }
     }
 
-    public void fbloginpromptpopup_show(boolean show)
-	{
-		
-		if(show )
-		{
-			if(!fbloginPromptIsShowing)
-			{
-				if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"showing fblogin prompt");	
-				popUpView = (ViewGroup) underlyingActivity.getLayoutInflater().inflate(R.layout.fbloginpromptpopup, null); 
-				fbPopupWindow = new PopupWindow(popUpView,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,false); //Creation of popup
-				fbPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);   
-				fbPopupWindow.showAtLocation(popUpView, Gravity.BOTTOM, 0, 0);    // Displaying popup
-		        fbloginPromptIsShowing = true;		
-		        fbPopupWindow.setTouchable(true);
-		        fbPopupWindow.setFocusable(false);
-		        //fbPopupWindow.setOutsideTouchable(true);
-		        fbloginlayout = popUpView.findViewById(R.id.fbloginpromptloginlayout);
-		        fbloginlayout.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-                        MapListActivityHandler.getInstance().closeExpandedViews();
-						FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(underlyingActivity.getFbConnector());
-						fblogin_dialog.show(underlyingActivity.getSupportFragmentManager(), "fblogin_dialog");
-						fbPopupWindow.dismiss();
-						fbloginPromptIsShowing = false;
-						if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"fblogin prompt clicked");
-					}
-				});
-		        ImageView buttonClosefbprompt = (ImageView) popUpView.findViewById(R.id.fbloginpromptclose);		        
-		        buttonClosefbprompt.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						fbPopupWindow.dismiss();
-						fbloginPromptIsShowing = false;
-					}
-				});
-			}
-			else
-			{
-				//will flicker prompt here if already showing
-				TextView fblogintext = (TextView) popUpView.findViewById(R.id.fbloginprompttext);
-				Animation anim = new AlphaAnimation(0.0f, 1.0f);
-		        anim.setDuration(50); //You can manage the time of the blink with this parameter
-		        anim.setStartOffset(20);
-		        anim.setRepeatMode(Animation.REVERSE);
-		        anim.setRepeatCount(6);
-		        fblogintext.startAnimation(anim);				
-			}
-			//popUpView.setBackgroundResource(R.drawable.transparent_black);
-		}
-		if(!show)
-		{
-			if(fbloginPromptIsShowing && fbPopupWindow!=null)
-				fbPopupWindow.dismiss();
-			fbloginPromptIsShowing = false;
-		}
-	}
-	
+   
 	public void updateThisUserMapOverlay()
 	{		
 		//be careful here..do we have location yet?

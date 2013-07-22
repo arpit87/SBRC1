@@ -251,7 +251,7 @@
             android:id="@+id/show_active_req_prompt_chat"
             android:textSize="15dip"             
             android:layout_alignParentRight="true"            
-             android:background="@drawable/chat_icon_selector"                                    
+             android:background="@drawable/chat_icon_green_selector"                                    
              android:layout_width="40dip"
              android:layout_height="35dip"            
              android:paddingRight="10dip"

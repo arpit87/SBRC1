@@ -129,7 +129,7 @@ public class SBChatService extends Service {
     private void initializeConfigration() {
         mConnectionConfiguration = new ConnectionConfiguration(mHost, mPort);
         mConnectionConfiguration.setReconnectionAllowed(true);
-        mConnectionConfiguration.setDebuggerEnabled(true);
+        mConnectionConfiguration.setDebuggerEnabled(false);
         mConnectionConfiguration.setSendPresence(true);
         mConnectionConfiguration.setRosterLoadedAtLogin(false);
         SmackConfiguration.setPacketReplyTimeout(10000);
@@ -260,7 +260,17 @@ public class SBChatService extends Service {
             //ToastTracker.showToast("ConnectivityMonitor task resumed");
             if (mPingManager == null) {
                 if (ServiceDiscoveryManager.getInstanceFor(mXMPPConnection) != null) {
+                	try{
                     mPingManager = PingManager.getInstanceFor(mXMPPConnection);
+                	}
+                	catch(IllegalStateException e)
+                	{
+                		Logger.d(TAG, "Server not reachable.");
+                        //ToastTracker.showToast("Server not reachable.");
+                        mConnectionAdapter.setWasConnectionLost(true);
+                        login();
+                        return;
+                	}
                 } else {
                     //Logger.d(TAG, "No service discovery manager found");
                     return;

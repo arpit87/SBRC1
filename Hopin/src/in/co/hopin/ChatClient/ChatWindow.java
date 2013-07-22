@@ -1,6 +1,7 @@
 package in.co.hopin.ChatClient;
 
 import in.co.hopin.R;
+import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.ChatService.IChatAdapter;
 import in.co.hopin.ChatService.IChatManager;
@@ -53,7 +54,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 
-public class ChatWindow extends SherlockFragmentActivity{
+public class ChatWindow extends FBLoggableFragmentActivity{
 	
 	private static String TAG = "in.co.hopin.ChatClient.ChatWindow";
 	public static String PARTICIPANT = "participant";
@@ -65,7 +66,7 @@ public class ChatWindow extends SherlockFragmentActivity{
     private ListView mMessagesListView;
     private EditText mInputField;
     private Button mSendButton; 
-   
+    
     private Menu mMenu;
     private IChatAdapter chatAdapter;
     private IChatManager mChatManager;   
@@ -81,12 +82,12 @@ public class ChatWindow extends SherlockFragmentActivity{
     private String mThiUserChatUserName = "";
     private String mThisUserChatPassword = "";
     private String mThisUserChatFullName =  "";
-	private ProgressDialog progressDialog;
-	private FacebookConnector fbconnect; // required if user not logged in	
+	private ProgressDialog progressDialog;		
     private NotificationManager notificationManager;
     private boolean mFBLoggedIn = false;
     ActionBar ab;
 
+    private boolean fbloginPromptIsShowing = false;
     
 		    
 	    @Override
@@ -270,7 +271,7 @@ public void onResume() {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        fbconnect.authorizeCallback(requestCode, resultCode, data);
+        CommunicationHelper.getInstance().authorizeCallback(this,requestCode, resultCode, data);
     }
 	    
 	    private void releaseService() {
@@ -297,13 +298,10 @@ public void onResume() {
 			//check the status again..this is imp as by now it could have logged in
 			mFBLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER);
 			mThiUserChatUserName = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATUSERID);
-			mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);
+			mThisUserChatPassword = ThisUserConfig.getInstance().getString(ThisUserConfig.CHATPASSWORD);			
 			
-			
-			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"chat sent click but not fb logged in");			
-			fbconnect = new FacebookConnector(ChatWindow.this);
-			FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(fbconnect);
-			fblogin_dialog.show(ChatWindow.this.getSupportFragmentManager(), "fblogin_dialog");  					
+			Logger.i(TAG,"chat sent click but not fb logged in");			
+			CommunicationHelper.getInstance().FBLoginDialog_show(ChatWindow.this); 					
 		}
 		else if(!"".equals(inputContent))
 		{
@@ -347,27 +345,7 @@ public void onResume() {
 	    	mMessagesListAdapter.setMessage(mMessagesListAdapter.getCount() - 1, lastMessage);
 	    	mMessagesListAdapter.notifyDataSetChanged();
 	    }
-	  	private void loginWithProgress() 
-	    {	    	
-	    	try {
-				if(!"".equals(mThiUserChatUserName) && !"".equals(mThisUserChatPassword))
-				{
-					//progressDialog = Progressdialog.show(ChatWindow.this, "Logging in", "Please wait..", true);
-			    	if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG,"logging in chat window  with username,pass:" + mThiUserChatUserName + ","+mThisUserChatPassword);
-					xmppApis.loginAsync(mThiUserChatUserName, mThisUserChatPassword);
-				}
-				else
-				{									
-					//AlertDialogBuilder.showOKDialog(this,"FB login required", "You need to login one time to FB to chat with user");	
-					fbconnect.loginToFB();
-				}
-			} catch (RemoteException e) {
-				progressDialog.dismiss();				
-				AlertDialogBuilder.showOKDialog(this,"Error", "Problem logging,try later");
-				//ToastTracker.showToast("Error loggin,try later");
-				e.printStackTrace();
-			}
-	    }
+	  	
 	    //in already open chatWindow this function switches chats
 	    private void changeCurrentChat() throws RemoteException {
 	    	
@@ -463,7 +441,8 @@ public void onResume() {
     			}
     			else
     			{	if (Platform.getInstance().isLoggingEnabled()) Log.d(TAG, "Chat manager not got,will try login");
-    				loginWithProgress();
+    				CommunicationHelper.getInstance().FBLoginpromptPopup_show(ChatWindow.this, true);  	
+    				//loginWithProgress();
     			}
     		    } catch (RemoteException e) {
     			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, e.getMessage());
@@ -637,6 +616,17 @@ private class SBChatServiceConnAndMiscListener extends ISBChatConnAndMiscListene
 		
 	}
 	
+}
+
+public boolean isFbloginPromptIsShowing() {
+	return fbloginPromptIsShowing;
+}
+
+
+
+
+public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
+	this.fbloginPromptIsShowing = fbloginPromptIsShowing;
 }
 
 

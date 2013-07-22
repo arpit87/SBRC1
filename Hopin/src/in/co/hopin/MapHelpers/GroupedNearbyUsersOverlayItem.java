@@ -1,6 +1,8 @@
 package in.co.hopin.MapHelpers;
 
 
+import in.co.hopin.R;
+import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.GridViewImageAdapter;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
@@ -8,24 +10,19 @@ import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
-import in.co.hopin.MapHelpers.NearbyUserOverlayItem.NearbyUserOnTouchListener;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.NearbyUserGroup;
 import in.co.hopin.Users.UserFBInfo;
 import in.co.hopin.Util.StringUtils;
-
-import java.util.List;
-
-import in.co.hopin.R;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -36,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
 public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
@@ -60,13 +56,15 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 	private ImageView picViewExpanded = null ;		
 	private TextView expandedBalloonHeader = null;
 	private ImageView chatIcon = null;
-	private ImageView smsIcon = null;
+	//private ImageView smsIcon = null;
+	private ImageView hopinIcon = null;
 	private ImageView facebookIcon = null ;
 	private ImageView buttonClose = null;
 	
 	 
     private int chatIconImgSrc;
-    private int smsIconImgSrc;
+    //private int smsIconImgSrc;
+    private int hopinIconImgSrc;
     private int facebookIconImgSrc;
 
 	public GroupedNearbyUsersOverlayItem(NearbyUserGroup user_group ,SBMapView mapView) {	
@@ -177,7 +175,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
             //boolean isOtherUserPhoneAvailable = n.getUserFBInfo().isPhoneAvailable();
             boolean isThisUserFbLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN);
 
-            if (!(isOtherUserFbInfoAvailable && isThisUserFbLoggedIn)){
+            if (!(isOtherUserFbInfoAvailable)){
                 if (chatIconImgSrc != R.drawable.chat_icon_blue_disabled) {
                     chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
                     chatIcon.invalidate();
@@ -189,17 +187,29 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
                     facebookIcon.invalidate();
                     facebookIconImgSrc = R.drawable.fb_icon_disabled;
                 }
+                
+                if (hopinIconImgSrc != R.drawable.launchernewmedium_disabled){
+                	hopinIcon.setImageResource(R.drawable.launchernewmedium_disabled);
+                	hopinIcon.invalidate();
+                	hopinIconImgSrc = R.drawable.launchernewmedium_disabled;
+                }
             } else {
-                if (chatIconImgSrc != R.drawable.chat_icon_blue){
-                    chatIcon.setImageResource(R.drawable.chat_icon_blue);
+                if (chatIconImgSrc != R.drawable.chat_icon_blue_selector){
+                    chatIcon.setImageResource(R.drawable.chat_icon_blue_selector);
                     chatIcon.invalidate();
-                    chatIconImgSrc = R.drawable.chat_icon_blue;
+                    chatIconImgSrc = R.drawable.chat_icon_blue_selector;
                 }
                 
-                if (facebookIconImgSrc != R.drawable.fb_icon){
-                    facebookIcon.setImageResource(R.drawable.fb_icon);
+                if (facebookIconImgSrc != R.drawable.fb_icon_selector){
+                    facebookIcon.setImageResource(R.drawable.fb_icon_selector);
                     facebookIcon.invalidate();
-                    facebookIconImgSrc = R.drawable.fb_icon;
+                    facebookIconImgSrc = R.drawable.fb_icon_selector;
+                }
+                
+                if (hopinIconImgSrc != R.drawable.launchernewmedium){
+                	hopinIcon.setImageResource(R.drawable.launchernewmedium);
+                	hopinIcon.invalidate();
+                	hopinIconImgSrc = R.drawable.launchernewmedium;
                 }
             }
 
@@ -217,10 +227,16 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
                 }
             }*/
             
-            smsIcon.setOnClickListener(new OnClickListener() {				
+            /*smsIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
 					CommunicationHelper.getInstance().onSmsClickWithUser(n.getUserOtherInfo().getUserID(),n.getUserFBInfo().isPhoneAvailable());
+				}
+				});*/
+            	hopinIcon.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View buttonClose) {
+					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FBLoggableFragmentActivity)context, n.getUserFBInfo());
 				}
 				});
 			//SBImageLoader.getInstance().displayImageElseStub(mImageURL, picView, R.drawable.userpicicon);
@@ -239,14 +255,14 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			chatIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onChatClickWithUser(n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFullName());						
+					CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFullName());						
 				}
 			});
 			
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onFBIconClickWithUser((Activity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
+					CommunicationHelper.getInstance().onFBIconClickWithUser((FBLoggableFragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
 				}
 			});
            
@@ -277,7 +293,8 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		 picViewExpanded = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_pic);		
 		 expandedBalloonHeader = (TextView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_balloon_header);
 		 chatIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.chat_icon_view);
-		 smsIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.sms_icon);
+		 //smsIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.sms_icon);
+		 hopinIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.hopin_icon);
 		 facebookIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.fb_icon_view);
 		 buttonClose = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.button_close_balloon_expandedview);
 		
@@ -287,28 +304,31 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		else
 			expandedBalloonHeader.setText(n.getUserOtherInfo().getUserName());
 		
-		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+		/*if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
 		{
 			chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
 			chatIcon.invalidate();
-			smsIcon.setImageResource(R.drawable.sms_icon_disabled);
-			smsIcon.invalidate();
+			hopinIcon.setImageResource(R.drawable.launchernewmedium_disabled);
+			hopinIcon.invalidate();
 			facebookIcon.setImageResource(R.drawable.fb_icon_disabled);
 			facebookIcon.invalidate();			
 
             chatIconImgSrc = R.drawable.chat_icon_blue_disabled;
-            smsIconImgSrc = R.drawable.sms_icon_disabled;
+            hopinIconImgSrc = R.drawable.launchernewmedium_disabled;
             facebookIconImgSrc = R.drawable.fb_icon_disabled;
 
         }
-		else if(!n.getUserFBInfo().FBInfoAvailable())
+		else*/ if(!n.getUserFBInfo().FBInfoAvailable())
 		{
 			chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
 			chatIcon.invalidate();				
 			facebookIcon.setImageResource(R.drawable.fb_icon_disabled);
 			facebookIcon.invalidate();
+			hopinIcon.setImageResource(R.drawable.launchernewmedium_disabled);
+			hopinIcon.invalidate();
             chatIconImgSrc = R.drawable.chat_icon_blue_disabled;              
             facebookIconImgSrc = R.drawable.fb_icon_disabled;
+            hopinIconImgSrc = R.drawable.launchernewmedium_disabled;
 		}
 		
 		/*if(!n.getUserFBInfo().isPhoneAvailable())
@@ -327,10 +347,17 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			}
 			});
 		
-		smsIcon.setOnClickListener(new OnClickListener() {				
+		/*smsIcon.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View buttonClose) {
 				CommunicationHelper.getInstance().onSmsClickWithUser(n.getUserOtherInfo().getUserID(),n.getUserFBInfo().isPhoneAvailable());
+			}
+			});*/
+		
+		hopinIcon.setOnClickListener(new OnClickListener() {				
+			@Override
+			public void onClick(View buttonClose) {
+				CommunicationHelper.getInstance().onHopinProfileClickWithUser((FBLoggableFragmentActivity)context, n.getUserFBInfo());
 			}
 			});
 		//SBImageLoader.getInstance().displayImageElseStub(mImageURL, picView, R.drawable.userpicicon);
@@ -344,14 +371,14 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		chatIcon.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View chatIconView) {
-				CommunicationHelper.getInstance().onChatClickWithUser(n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFullName());						
+				CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFullName());						
 			}
 		});
 		
 		facebookIcon.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View chatIconView) {
-				CommunicationHelper.getInstance().onFBIconClickWithUser((Activity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
+				CommunicationHelper.getInstance().onFBIconClickWithUser((FBLoggableFragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
 			}
 		});
        
@@ -446,21 +473,37 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		gender_str = userFBInfo.getGender();
 		
 		if(name_str!="")
-			fb_name.setText(name_str);
+			fb_name.setText(name_str);		
 		
-		if(worksat_str!="")
-			works_at.setText("Works at "+worksat_str);
+		if(worksat_str!="null")
+			works_at.setText(getSpannedText("Works at ", worksat_str));
+		else
+			works_at.setVisibility(View.GONE);
 		
-		if(studiedat_str!="")
-			studied_at.setText("Studied at " +studiedat_str);
+		if(studiedat_str!="null")
+			studied_at.setText(getSpannedText("Studied at " ,studiedat_str));
+		else
+			studied_at.setVisibility(View.GONE);
 		
-		if(hometown_str!="")
-			hometown.setText("HomeTown " + hometown_str);
+		if(hometown_str!="null")
+			hometown.setText(getSpannedText("HomeTown " , hometown_str));
+		else
+			hometown.setVisibility(View.GONE);
 		
-		if(gender_str!="")
-			gender.setText("Gender "+gender_str);
+		if(gender_str!="null")
+			gender.setText(getSpannedText("Gender ",gender_str));
+		else
+			gender.setVisibility(View.GONE);
 		
 		
+	}
+	
+	private Spannable getSpannedText(String label, String text)
+	{
+		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+		Spannable label_span = new SpannableString(label + " "+text);		
+		label_span.setSpan(bold, 0,label.length() , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return label_span;
 	}
 	
 	public void toggleSmallView()

@@ -8,6 +8,7 @@ public class ThisUserConfig extends ConfigBase{
 	
 	
 	public static final String FBLOGGEDIN = "fbloggedin";
+	public static final String FBRELOGINREQUIRED = "fbreloggedin";
 	public static final String FBINFOSENTTOSERVER = "fbinfosent";
 	public static final String FBACCESSTOKEN = "fb_access_token";
 	public static final String FBACCESSEXPIRES = "fb_excess_expires";
@@ -28,6 +29,7 @@ public class ThisUserConfig extends ConfigBase{
     public static final String ACTIVE_REQ_CARPOOL = "active_req_carpool";
     public static final String GENDER = "fb_gender";
     public static final String EMAIL = "email";    
+    public static final String WELCOMENOTESENT = "welcomemsgsent"; 
 	
 	private ThisUserConfig(){super(Constants.USER_CONF_FILE);}
 	

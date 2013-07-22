@@ -1,5 +1,7 @@
 package in.co.hopin.MapHelpers;
 
+import in.co.hopin.R;
+import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
 import in.co.hopin.HelperClasses.CommunicationHelper;
@@ -8,12 +10,12 @@ import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
-import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserFBInfo;
 import in.co.hopin.Util.StringUtils;
-import in.co.hopin.R;
-import android.app.Activity;
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
 public class NearbyUserOverlayItem extends BaseOverlayItem{
@@ -41,7 +42,8 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	private ImageView picViewSmall = null;
 	private ImageView picViewExpanded = null;
 	private ImageView chatIcon = null;
-	private ImageView smsIcon = null;
+	//private ImageView smsIcon = null;
+	private ImageView hopinIcon = null;
 	private ImageView facebookIcon = null;
 	private ImageView buttonClose = null;
 	private SBGeoPoint mGeoPoint = null;
@@ -57,7 +59,8 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	private ScrollView fbInfoScrollView = null;
     
     private int chatIconImgSrc;
-    private int smsIconImgSrc;
+  //private int smsIconImgSrc;
+    private int hopinIconImgSrc;
     private int facebookIconImgSrc;
 		
 	public NearbyUserOverlayItem(NearbyUser user ,SBMapView mapView) {
@@ -150,26 +153,33 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 		fb_name.setText(name_str);		
 		
 		if(worksat_str!="null")
-			works_at.setText("Works at "+worksat_str);
+			works_at.setText(getSpannedText("Works at ", worksat_str));
 		else
 			works_at.setVisibility(View.GONE);
 		
 		if(studiedat_str!="null")
-			studied_at.setText("Studied at " +studiedat_str);
+			studied_at.setText(getSpannedText("Studied at " ,studiedat_str));
 		else
 			studied_at.setVisibility(View.GONE);
 		
 		if(hometown_str!="null")
-			hometown.setText("HomeTown " + hometown_str);
+			hometown.setText(getSpannedText("HomeTown " , hometown_str));
 		else
 			hometown.setVisibility(View.GONE);
 		
 		if(gender_str!="null")
-			gender.setText("Gender "+gender_str);
+			gender.setText(getSpannedText("Gender ",gender_str));
 		else
 			gender.setVisibility(View.GONE);
 		
-		
+	}
+	
+	private Spannable getSpannedText(String label, String text)
+	{
+		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+		Spannable label_span = new SpannableString(label + " "+text);		
+		label_span.setSpan(bold, 0,label.length() , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return label_span;
 	}
 	
 	protected void createAndDisplayExpandedView()
@@ -189,42 +199,35 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			picViewExpanded = (ImageView)viewOnMarkerExpanded.findViewById(R.id.expanded_pic);		
 			expandedBalloonHeader = (TextView)viewOnMarkerExpanded.findViewById(R.id.expanded_balloon_header);
 			chatIcon = (ImageView)viewOnMarkerExpanded.findViewById(R.id.chat_icon_view);
-			smsIcon = (ImageView)viewOnMarkerExpanded.findViewById(R.id.sms_icon);
+			//smsIcon = (ImageView)viewOnMarkerExpanded.findViewById(R.id.sms_icon);
+			hopinIcon = (ImageView)viewOnMarkerExpanded.findViewById(R.id.hopin_icon);
 			facebookIcon = (ImageView)viewOnMarkerExpanded.findViewById(R.id.fb_icon_view);
 			buttonClose = (ImageView)viewOnMarkerExpanded.findViewById(R.id.button_close_balloon_expandedview);
 			
-            chatIconImgSrc = R.drawable.chat_icon_blue;
-            smsIconImgSrc = R.drawable.sms_icon;
-            facebookIconImgSrc = R.drawable.fb_icon;
+            chatIconImgSrc = R.drawable.chat_icon_blue_selector;
+            //smsIconImgSrc = R.drawable.sms_icon;
+            hopinIconImgSrc = R.drawable.launchernewmedium;
+            facebookIconImgSrc = R.drawable.fb_icon_selector;
 
 			if(!StringUtils.isBlank(mUserFBName))
 				expandedBalloonHeader.setText(mUserFBName);
 			else
 				expandedBalloonHeader.setText(mUserName);
 			
-			if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+			if(/*!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN) ||*/ !mUserFBInfo.FBInfoAvailable())
 			{
 				chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
 				chatIcon.invalidate();
-				smsIcon.setImageResource(R.drawable.sms_icon_disabled);
-				smsIcon.invalidate();
+				hopinIcon.setImageResource(R.drawable.launchernewmedium_disabled);
+				hopinIcon.invalidate();
 				facebookIcon.setImageResource(R.drawable.fb_icon_disabled);
 				facebookIcon.invalidate();
 
                 chatIconImgSrc = R.drawable.chat_icon_blue_disabled;
-                smsIconImgSrc = R.drawable.sms_icon_disabled;
+                hopinIconImgSrc = R.drawable.launchernewmedium_disabled;
                 facebookIconImgSrc = R.drawable.fb_icon_disabled;
             }
-			else if(!mUserFBInfo.FBInfoAvailable())
-			{
-				chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
-				chatIcon.invalidate();				
-				facebookIcon.setImageResource(R.drawable.fb_icon_disabled);
-				facebookIcon.invalidate();
-
-                chatIconImgSrc = R.drawable.chat_icon_blue_disabled;
-                facebookIconImgSrc = R.drawable.fb_icon_disabled;
-			}
+			
 			
 			/*if(!mNearbyUser.getUserFBInfo().isPhoneAvailable())
 			{				
@@ -240,10 +243,16 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 				}
 				});
 			
-			smsIcon.setOnClickListener(new OnClickListener() {				
+			/*smsIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
 					CommunicationHelper.getInstance().onSmsClickWithUser(mUserID,mNearbyUser.getUserFBInfo().isPhoneAvailable());
+				}
+				});*/
+			hopinIcon.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View buttonClose) {
+					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FBLoggableFragmentActivity)context, mNearbyUser.getUserFBInfo());
 				}
 				});
 			//SBImageLoader.getInstance().displayImageElseStub(mImageURL, picView, R.drawable.userpicicon);
@@ -257,14 +266,14 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			chatIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onChatClickWithUser(mNearbyUser.getUserFBInfo().getFbid(),mNearbyUser.getUserFBInfo().getFullName());						
+					CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)context,mNearbyUser.getUserFBInfo().getFbid(),mNearbyUser.getUserFBInfo().getFullName());						
 				}
 			});
 			
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onFBIconClickWithUser((Activity)context,mUserFBID,mUserFBName);						
+					CommunicationHelper.getInstance().onFBIconClickWithUser((FBLoggableFragmentActivity)context,mUserFBID,mUserFBName);						
 				}
 			});		
 						
@@ -347,7 +356,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
             //boolean isOtherUserPhoneAvailable = mNearbyUser.getUserFBInfo().isPhoneAvailable();
             boolean isThisUserFbLoggedIn = ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN);
 
-            if (!(isOtherUserFbInfoAvailable && isThisUserFbLoggedIn)){
+            if (!(isOtherUserFbInfoAvailable/* && isThisUserFbLoggedIn*/)){
                 if (chatIconImgSrc != R.drawable.chat_icon_blue_disabled) {
                     chatIcon.setImageResource(R.drawable.chat_icon_blue_disabled);
                     chatIcon.invalidate();
@@ -360,16 +369,16 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
                     facebookIconImgSrc = R.drawable.fb_icon_disabled;
                 }
             } else {
-                if (chatIconImgSrc != R.drawable.chat_icon_blue){
-                    chatIcon.setImageResource(R.drawable.chat_icon_blue);
+                if (chatIconImgSrc != R.drawable.chat_icon_blue_selector){
+                    chatIcon.setImageResource(R.drawable.chat_icon_blue_selector);
                     chatIcon.invalidate();
-                    chatIconImgSrc = R.drawable.chat_icon_blue;
+                    chatIconImgSrc = R.drawable.chat_icon_blue_selector;
                 }
                 
-                if (facebookIconImgSrc != R.drawable.fb_icon){
-                    facebookIcon.setImageResource(R.drawable.fb_icon);
+                if (facebookIconImgSrc != R.drawable.fb_icon_selector){
+                    facebookIcon.setImageResource(R.drawable.fb_icon_selector);
                     facebookIcon.invalidate();
-                    facebookIconImgSrc = R.drawable.fb_icon;
+                    facebookIconImgSrc = R.drawable.fb_icon_selector;
                 }
             }
 

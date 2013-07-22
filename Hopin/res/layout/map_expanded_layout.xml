@@ -87,6 +87,7 @@
             android:layout_toRightOf="@id/expanded_pic"
             android:padding="4.0dip" 
             android:visibility="gone"
+            android:fadeScrollbars="false"
             >
 			
             <LinearLayout
@@ -182,16 +183,16 @@
             android:layout_margin="5.0dip"
             android:layout_marginLeft="14dp"                       
             android:scaleType="fitXY"
-            android:background="@drawable/chat_icon_blue" />
+            android:background="@drawable/chat_icon_blue_selector" />
         
         <ImageView
-            android:id="@+id/sms_icon"
-            android:layout_width="35.0dip"
-            android:layout_height="28dp"
+            android:id="@+id/hopin_icon"
+            android:layout_width="30.0dip"
+            android:layout_height="30dp"
             android:layout_margin="5.0dip"
             android:layout_marginLeft="14dp"                       
             android:scaleType="fitXY"
-            android:src="@drawable/sms_icon" />
+            android:src="@drawable/launchernewmedium" />
               
         
         <ImageView
@@ -200,9 +201,9 @@
             android:layout_height="28dp"           
             android:layout_marginRight="5dip"
             android:layout_marginLeft="5dp" 
-            android:layout_marginBottom="1dip"                      
+                                
             android:scaleType="fitXY"
-            android:src="@drawable/fb_icon" />
+            android:src="@drawable/fb_icon_selector" />
         
      <!--    <ImageView
             android:id="@+id/profile_icon_view"

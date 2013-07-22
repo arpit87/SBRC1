@@ -1,8 +1,11 @@
 package in.co.hopin.Activities;
 
 import in.co.hopin.R;
+import in.co.hopin.FacebookHelpers.FacebookConnector;
+import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.Fragments.SelfAboutMeFrag;
 import in.co.hopin.Fragments.SelfFriends;
+import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.HelperClasses.ThisUserConfig;
@@ -10,12 +13,14 @@ import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SelfProfileRequest;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,14 +31,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class SelfProfileActivity extends FragmentActivity{
+public class SelfProfileActivity extends FBLoggableFragmentActivity{
 	
+	private static String TAG = "in.co.hopin.Activities.SelfProfileActivity";
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -41,25 +49,27 @@ public class SelfProfileActivity extends FragmentActivity{
     private Button button2;
 	private String fbinfoJsonStr = "";	
 	private UserFBInfo userFBInfo = null;
-	private JSONObject fbInfoJSON;	
+	private JSONObject fbInfoJSON;
+	private boolean fbloginPromptIsShowing = false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.self_profile); 
-        setInfoOnWindow();
+        setInfoOnWindow();        
     }
     
     @Override
     public void onResume()
     {
-    	super.onResume();
+    	super.onResume();    	
     	
-    	if(ThisUserNew.getInstance().getUserFBInfo()==null)
-    	{//need to fetch data from out server
-    		ProgressHandler.showInfiniteProgressDialoge(this, "Fetching your profile data", "Please wait..");
-    		SelfProfileRequest req = new SelfProfileRequest();
-			SBHttpClient.getInstance().executeRequest(req);
+    	 if(ThisUserNew.getInstance().getUserFBInfo()==null && ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))    		
+    	{
+	    		//need to fetch data from out server
+	    		ProgressHandler.showInfiniteProgressDialoge(this, "Fetching your profile data", "Please wait..");
+	    		SelfProfileRequest req = new SelfProfileRequest();
+				SBHttpClient.getInstance().executeRequest(req);
     	}
     	else
     	{
@@ -117,6 +127,7 @@ public class SelfProfileActivity extends FragmentActivity{
 	        
 	        aboutSelected(); // initially select "about" view
 	        mPager.setCurrentItem(0);
+	       
     	}
     	
     }
@@ -130,6 +141,12 @@ public class SelfProfileActivity extends FragmentActivity{
 		return frag_list;
 	}
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        CommunicationHelper.getInstance().authorizeCallback(this,requestCode, resultCode, data);
+    }
+    
 	@Override
     public void onBackPressed() {
         if (mPager==null || mPager.getCurrentItem() == 0) {
@@ -163,9 +180,33 @@ public class SelfProfileActivity extends FragmentActivity{
 	private void setInfoOnWindow()
 	{
 		ImageView userPic;  
+		TextView userNameView;
+		ImageView maleIcon,femaleIcon; 
 		userPic = (ImageView) findViewById(R.id.self_profile_thumbnail);
-		String imageURL = ThisUserConfig.getInstance().getString(ThisUserConfig.FBPICURL); 
-		SBImageLoader.getInstance().displayImageElseStub(imageURL, userPic, R.drawable.nearbyusericon);
+		userNameView = (TextView) findViewById(R.id.self_profile_name);
+		maleIcon = (ImageView) findViewById(R.id.self_profile_maleicon);	
+		femaleIcon = (ImageView) findViewById(R.id.self_profile_femaleicon);
+		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+		{
+			String userName = ThisUserConfig.getInstance().getString(ThisUserConfig.USERNAME);
+			userNameView.setText(userName);
+			maleIcon.setVisibility(View.GONE);
+			userPic.setImageDrawable(getResources().getDrawable(R.drawable.userpicicon));
+		}		
+		else
+		{
+			String imageURL = ThisUserConfig.getInstance().getString(ThisUserConfig.FBPICURL); 
+			SBImageLoader.getInstance().displayImageElseStub(imageURL, userPic, R.drawable.nearbyusericon);
+			String userName = ThisUserConfig.getInstance().getString(ThisUserConfig.FB_FULLNAME);
+			userNameView.setText(userName);
+			if("female".equalsIgnoreCase(ThisUserConfig.getInstance().getString(ThisUserConfig.GENDER)))
+			{
+				maleIcon.setVisibility(View.GONE);
+				femaleIcon.setVisibility(View.VISIBLE);
+			}
+			
+		}
+			
 				
 	}
 
@@ -191,8 +232,13 @@ public class SelfProfileActivity extends FragmentActivity{
     	}
     	
     	@Override    
-    	public Fragment getItem(int position) {     	
-    	return this.fragments.get(position);    	
+    	public Fragment getItem(int position) {
+		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+		{			
+			CommunicationHelper.getInstance().FBLoginpromptPopup_show(SelfProfileActivity.this, true) ;
+		}
+    	return this.fragments.get(position);   
+    	
     	}
     
     	@Override    
@@ -201,4 +247,12 @@ public class SelfProfileActivity extends FragmentActivity{
     	}
     
     	}
+
+	public boolean isFbloginPromptIsShowing() {
+		return fbloginPromptIsShowing;
+	}
+
+	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
+		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
+	}
 }

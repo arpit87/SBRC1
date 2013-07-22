@@ -22,7 +22,7 @@
             android:layout_width="28.0dip"
             android:layout_height="30dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/fb_icon"
+            android:src="@drawable/fb_icon_selector"
             
             
             android:layout_marginLeft="5dip"/>

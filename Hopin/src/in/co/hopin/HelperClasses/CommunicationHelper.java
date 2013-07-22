@@ -1,23 +1,33 @@
 package in.co.hopin.HelperClasses;
 
+import in.co.hopin.R;
+import in.co.hopin.Activities.FBLoggableFragmentActivity;
+import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
 import in.co.hopin.Fragments.FBLoginDialogFragment;
-import in.co.hopin.Fragments.SmsDialogFragment;
 import in.co.hopin.HttpClient.ChatServiceCreateUser;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.HttpClient.SaveFBInfoRequest;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.NearbyUser;
-
-import com.google.android.maps.MapActivity;
-
-import android.app.Activity;
+import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.Logger;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 /****
  * 
@@ -30,15 +40,19 @@ public class CommunicationHelper {
 	
 	private static String TAG = "in.co.hopin.ActivityHandler.ChatHandler";
 	static CommunicationHelper instance = new CommunicationHelper();
-	Context context = Platform.getInstance().getContext();
-	
+	Context context = Platform.getInstance().getContext();	
+ 	View fbloginlayout = null;
+	ViewGroup popUpView = null;
+	PopupWindow fbPopupWindow = null;	
+	//private FacebookConnector fbconnect;
 		
 	public static CommunicationHelper getInstance()
 	{
 		return instance;
 	}
 	
-	public void onChatClickWithUser(String fbid,String full_name)
+	
+	public void onChatClickWithUser(FBLoggableFragmentActivity underLyingActivity,String fbid,String full_name)
 	{
 		//chat username and id are set only after successful addition to chat server
 		//if these missing =?not yet added on chat server
@@ -51,7 +65,7 @@ public class CommunicationHelper {
 			if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
 			{
 				//make popup 
-				MapListActivityHandler.getInstance().fbloginpromptpopup_show(true);
+				FBLoginpromptPopup_show(underLyingActivity,true);
 			}
 			else 
 			{
@@ -88,39 +102,113 @@ public class CommunicationHelper {
 	
 	}
 	
-	public void onSmsClickWithUser(String userID, boolean isPhoneAvailable)
+	public void onHopinProfileClickWithUser(FBLoggableFragmentActivity underLyingActivity,UserFBInfo fbInfo)
 	{
-		ToastTracker.showToast("Sorry, we are not supporting sms yet, wait for next version ");
-		/*if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
+		
+		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
 		{
 			//make popup 
-			MapListActivityHandler.getInstance().fbloginpromptpopup_show(true);
+			FBLoginpromptPopup_show(underLyingActivity,true);
 		}
-		else if(userID!="" && isPhoneAvailable)
-		{
-			
-			SmsDialogFragment sms_dialog = new SmsDialogFragment(userID);
-			sms_dialog.show(MapListActivityHandler.getInstance().getUnderlyingActivity().getSupportFragmentManager(), "sms_dialog");						
+		else if(fbInfo.FBInfoAvailable())
+		{			
+			Intent hopinNewProfile = new Intent(underLyingActivity,OtherUserProfileActivityNew.class);
+	    	hopinNewProfile.putExtra("fb_info", fbInfo.getJsonObj().toString());
+	    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	    	underLyingActivity.startActivity(hopinNewProfile);
 		}
 		else
-			ToastTracker.showToast("Sorry, user has not provided phone number ");*/
+			ToastTracker.showToast("Sorry, user is not logged in");
 	}
 	
-	public void onFBIconClickWithUser(Activity underLyingActivity, String userFBID, String userFBName)
+	public void onFBIconClickWithUser(FBLoggableFragmentActivity underlyingActivity, String userFBID, String userFBName)
 	{
 		if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBLOGGEDIN))
 		{
 			//make popup 
-			MapListActivityHandler.getInstance().fbloginpromptpopup_show(true);
+			FBLoginpromptPopup_show(underlyingActivity,true);
 		}
 		else if(userFBID!="" || userFBName !="")
 		{
-			FacebookConnector fbconnect = new FacebookConnector(underLyingActivity);
-			fbconnect.openFacebookPage(userFBID,userFBName);
+			FacebookConnector.getInstance(underlyingActivity).openFacebookPage(userFBID,userFBName);
 		}
 		else
 			ToastTracker.showToast("Not available, user not FB logged in");
 	}
+	
+	public void FBLoginDialog_show(final FBLoggableFragmentActivity underlyingActivity)
+	{
+		MapListActivityHandler.getInstance().closeExpandedViews();
+		FBLoginDialogFragment fblogin_dialog = FBLoginDialogFragment.newInstance(FacebookConnector.getInstance(underlyingActivity));
+		fblogin_dialog.show(underlyingActivity.getSupportFragmentManager(), "fblogin_dialog");		
+	}
+	
+	 public void FBLoginpromptPopup_show(final FBLoggableFragmentActivity underlyingActivity, final boolean show)
+		{
+		 underlyingActivity.runOnUiThread(new Runnable() {
+			   @Override
+			   public void run() {
+			if(show)
+			{				
+				if(!underlyingActivity.isFbloginPromptIsShowing())
+				{
+					underlyingActivity.setFbloginPromptIsShowing(true);
+					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"showing fblogin prompt");	
+					popUpView = (ViewGroup) underlyingActivity.getLayoutInflater().inflate(R.layout.fbloginpromptpopup, null); 
+					fbPopupWindow = new PopupWindow(popUpView,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,false); //Creation of popup
+					fbPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);   
+					fbPopupWindow.showAtLocation(popUpView, Gravity.BOTTOM, 0, 0);    // Displaying popup							
+			        fbPopupWindow.setTouchable(true);
+			        fbPopupWindow.setFocusable(false);
+			        //fbPopupWindow.setOutsideTouchable(true);
+			        fbloginlayout = popUpView.findViewById(R.id.fbloginpromptloginlayout);
+			        fbloginlayout.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							FBLoginDialog_show(underlyingActivity);
+							fbPopupWindow.dismiss();
+							underlyingActivity.setFbloginPromptIsShowing(false);	
+							Logger.i(TAG,"fblogin prompt clicked");
+						}
+					});
+			        ImageView buttonClosefbprompt = (ImageView) popUpView.findViewById(R.id.fbloginpromptclose);		        
+			        buttonClosefbprompt.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							fbPopupWindow.dismiss();
+							underlyingActivity.setFbloginPromptIsShowing(false);	
+						}
+					});
+				}
+				else
+				{
+					//will flicker prompt here if already showing
+					TextView fblogintext = (TextView) popUpView.findViewById(R.id.fbloginprompttext);
+					Animation anim = new AlphaAnimation(0.0f, 1.0f);
+			        anim.setDuration(50); //You can manage the time of the blink with this parameter
+			        anim.setStartOffset(20);
+			        anim.setRepeatMode(Animation.REVERSE);
+			        anim.setRepeatCount(6);
+			        fblogintext.startAnimation(anim);				
+				}
+				//popUpView.setBackgroundResource(R.drawable.transparent_black);
+			}
+			if(!show)
+			{
+				if(underlyingActivity.isFbloginPromptIsShowing() && fbPopupWindow!=null)
+					fbPopupWindow.dismiss();
+				underlyingActivity.setFbloginPromptIsShowing(false);	
+			}
+				}});
+		}
+
+	public void authorizeCallback(FBLoggableFragmentActivity underlaying_activity,int requestCode, int resultCode, Intent data) {
+		FacebookConnector.getInstance(underlaying_activity).authorizeCallback(requestCode, resultCode, data);
+		
+	}
+		
 	
 
 }

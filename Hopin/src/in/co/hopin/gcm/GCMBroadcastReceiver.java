@@ -1,5 +1,16 @@
 package in.co.hopin.gcm;
 
+import in.co.hopin.R;
+import in.co.hopin.Activities.StartStrangerBuddyActivity;
+import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.HttpClient.GetNewUserInfoAndShowPopupRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.Util.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,15 +20,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import in.co.hopin.Activities.StartStrangerBuddyActivity;
-import in.co.hopin.HelperClasses.ThisAppConfig;
-import in.co.hopin.HttpClient.GetNewUserInfoAndShowPopupRequest;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.R;
-import in.co.hopin.Util.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class GCMBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "in.co.hopin.gcm.GCMBroadcastReceiver";
@@ -45,6 +49,7 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
 
     private void processMessage(String message) {
         try {
+        	Logger.i(TAG, "Got GCM message:"+ message);
             JSONObject jsonObject = new JSONObject(message);
             if (jsonObject.getInt(TYPE) == 1) {
                 showUserPopup(jsonObject);
@@ -62,9 +67,11 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
         try {
             String userId = jsonObject.getString("user_id");
             int dailyInstaType = jsonObject.getInt("insta");
-
-            GetNewUserInfoAndShowPopupRequest req = new GetNewUserInfoAndShowPopupRequest(userId, dailyInstaType);
-            SBHttpClient.getInstance().executeRequest(req);
+            if(!userId.equals(ThisUserConfig.getInstance().getString(ThisUserConfig.USERID)))
+            {
+	            GetNewUserInfoAndShowPopupRequest req = new GetNewUserInfoAndShowPopupRequest(userId, dailyInstaType);
+	            SBHttpClient.getInstance().executeRequest(req);
+            }
         } catch (JSONException e) {
             Logger.e(TAG, "Unable to parse new user gcm message", e);
         }

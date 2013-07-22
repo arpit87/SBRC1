@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/white">
+    android:background="@color/white">    
 <LinearLayout 
+    android:id="@+id/self_profile_aboutme_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    > 
-  
-      <TextView
+    >   
+    <!--  <TextView
         android:layout_marginTop="15dip"
         android:id="@+id/self_aboutme_nametext" 
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
         android:textSize="25dip"
         android:textColor="@color/black"       
-        />    
+        />     --> 
         
          <TextView
         android:layout_marginTop="15dip"

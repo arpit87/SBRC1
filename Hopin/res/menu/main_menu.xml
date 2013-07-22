@@ -19,6 +19,7 @@
      <item android:id="@+id/main_menu_my_chats" android:title="Chats" android:showAsAction="never"></item>
    <item android:id="@+id/main_menu_settings" android:title="Settings" android:showAsAction="never"></item>
    <item android:id="@+id/main_menu_shareapp" android:title="Tell a friend" android:showAsAction="never"></item>
+  <!--   <item android:id="@+id/main_menu_logout" android:title="Logout" android:showAsAction="never"></item>-->
     <item android:id="@+id/main_menu_exit" android:title="Exit" android:showAsAction="never" ></item>
       
 </menu>
