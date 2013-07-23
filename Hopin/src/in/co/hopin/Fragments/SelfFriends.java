@@ -1,10 +1,7 @@
 package in.co.hopin.Fragments;
 
 import in.co.hopin.R;
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
-import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.Util.Logger;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

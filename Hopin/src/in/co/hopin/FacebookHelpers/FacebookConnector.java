@@ -1,12 +1,33 @@
 package in.co.hopin.FacebookHelpers;
 
+import in.co.hopin.Activities.MapListViewTabActivity;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.HttpClient.AddUserRequest;
+import in.co.hopin.HttpClient.ChatServiceCreateUser;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.HttpClient.SaveFBInfoRequest;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.Logger;
+import in.co.hopin.Util.StringUtils;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.AsyncFacebookRunner.RequestListener;
@@ -16,37 +37,19 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.google.analytics.tracking.android.EasyTracker;
 
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
-import in.co.hopin.Activities.MapListViewTabActivity;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.ThisAppConfig;
-import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.*;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Util.Logger;
-import in.co.hopin.Util.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 public class FacebookConnector {
 	
 	private static final String TAG = "in.co.hopin.FacebookHelpers.FacebookConnector";
 	
 	public static String [] FB_PERMISSIONS = {"user_about_me","user_education_history","user_hometown","user_work_history","email"};
-	public static String FB_APP_ID = "107927182711315";	
-	//public static String FB_APP_ID = "486912421326659"; //debug one
+	//public static String FB_APP_ID = "107927182711315";	
+	public static String FB_APP_ID = "486912421326659"; //debug one
 	
 	private static FacebookConnector fbconnect = null;
 	public static Facebook facebook = new Facebook(FB_APP_ID);
 	public static AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
     private String [] permissions ;
-    FBLoggableFragmentActivity underlyingActivity = null;
+    Activity underlyingActivity = null;
     
     
     private FacebookConnector()
@@ -54,12 +57,12 @@ public class FacebookConnector {
     	permissions = FB_PERMISSIONS;
     }
     
-    private void setActivity(FBLoggableFragmentActivity underlying_activity)
+    private void setActivity(Activity underlying_activity)
     {
     	underlyingActivity =  underlying_activity; 
     }
     
-    public static FacebookConnector getInstance(FBLoggableFragmentActivity underlying_activity)
+    public static FacebookConnector getInstance(Activity underlying_activity)
     {    	 	
         EasyTracker.getInstance().setContext(Platform.getInstance().getContext());
     	if(fbconnect == null)
@@ -284,7 +287,7 @@ public class FacebookConnector {
                 		Platform.getInstance().getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                            	ProgressHandler.dismissDialoge();
+                            	ProgressHandler.dismissDialoge();                            	
                             	Intent showSBMapViewActivity = new Intent(Platform.getInstance().getContext(), MapListViewTabActivity.class);
                     	        showSBMapViewActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     	        Platform.getInstance().getContext().startActivity(showSBMapViewActivity);                    	                          	        

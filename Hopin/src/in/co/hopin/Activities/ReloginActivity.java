@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class ReloginActivity extends FBLoggableFragmentActivity {
+public class ReloginActivity extends Activity {
 	
 	FacebookConnector fbconnect;
 	
@@ -58,17 +58,5 @@ public class ReloginActivity extends FBLoggableFragmentActivity {
         super.onStop();
         EasyTracker.getInstance().activityStop(this);
     }
-
-	@Override
-	public boolean isFbloginPromptIsShowing() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

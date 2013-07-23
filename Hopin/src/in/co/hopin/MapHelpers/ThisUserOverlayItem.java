@@ -123,7 +123,7 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 		public boolean onTouch(View v, MotionEvent event) {			
 			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
 			Intent hopinSelfProfile = new Intent(MapListActivityHandler.getInstance().getUnderlyingActivity(),SelfProfileActivity.class);
-			hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);			
+			hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);			
 			MapListActivityHandler.getInstance().getUnderlyingActivity().startActivity(hopinSelfProfile);
 			return true;
 		}

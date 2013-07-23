@@ -18,7 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
-public class SettingsActivity extends FBLoggableFragmentActivity{
+public class SettingsActivity extends FragmentActivity{
 	
 	private static final String TAG = "in.co.hopin.Activities.SettingsActivity";
 	CheckBox showNewUserPopup;
@@ -129,6 +129,12 @@ public class SettingsActivity extends FBLoggableFragmentActivity{
 		});
 		 
 	 }
+	 
+	 @Override
+		public void onPause(){
+	    	super.onPause();    	
+	        CommunicationHelper.getInstance().FBLoginpromptPopup_show(this, false);    	
+	    }
 	 
 	 private void fillSettingsActivity()
 	 {

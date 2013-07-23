@@ -1,16 +1,8 @@
 package in.co.hopin.Fragments;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import in.co.hopin.R;
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
-import in.co.hopin.Activities.SelfProfileActivity;
-import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Users.ThisUserNew;
-import in.co.hopin.Users.UserFBInfo;
-import in.co.hopin.Util.Logger;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

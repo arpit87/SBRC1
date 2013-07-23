@@ -1,7 +1,6 @@
 package in.co.hopin.MapHelpers;
 
 import in.co.hopin.R;
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
 import in.co.hopin.HelperClasses.CommunicationHelper;
@@ -13,6 +12,7 @@ import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
 import in.co.hopin.Util.StringUtils;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -252,7 +252,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			hopinIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
-					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FBLoggableFragmentActivity)context, mNearbyUser.getUserFBInfo());
+					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FragmentActivity)context, mNearbyUser.getUserFBInfo());
 				}
 				});
 			//SBImageLoader.getInstance().displayImageElseStub(mImageURL, picView, R.drawable.userpicicon);
@@ -266,14 +266,14 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			chatIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)context,mNearbyUser.getUserFBInfo().getFbid(),mNearbyUser.getUserFBInfo().getFullName());						
+					CommunicationHelper.getInstance().onChatClickWithUser((FragmentActivity)context,mNearbyUser.getUserFBInfo().getFbid(),mNearbyUser.getUserFBInfo().getFullName());						
 				}
 			});
 			
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
-					CommunicationHelper.getInstance().onFBIconClickWithUser((FBLoggableFragmentActivity)context,mUserFBID,mUserFBName);						
+					CommunicationHelper.getInstance().onFBIconClickWithUser((FragmentActivity)context,mUserFBID,mUserFBName);						
 				}
 			});		
 						

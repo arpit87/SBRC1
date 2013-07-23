@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class NewUserDialogActivity extends FBLoggableFragmentActivity{
+public class NewUserDialogActivity extends FragmentActivity{
 	
 	String source = "";
 	String destination = "";		
@@ -69,6 +69,12 @@ public class NewUserDialogActivity extends FBLoggableFragmentActivity{
 		}      
     	
 	}
+	
+	@Override
+	public void onPause(){
+    	super.onPause();    	
+        CommunicationHelper.getInstance().FBLoginpromptPopup_show(this, false);    	
+    }
 
 	private void setFBInfoOnExpandedPopup()
 	{		

@@ -21,7 +21,7 @@ import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.R;
 import in.co.hopin.Util.StringUtils;
 
-public class Tutorial extends FBLoggableFragmentActivity{
+public class Tutorial extends FragmentActivity{
 	ImageView map1View;
 	ImageView map2View;
 	TextView tapFrameTextView;
@@ -136,17 +136,5 @@ public class Tutorial extends FBLoggableFragmentActivity{
         super.onStop();
         EasyTracker.getInstance().activityStop(this);
     }
-
-	@Override
-	public boolean isFbloginPromptIsShowing() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

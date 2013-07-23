@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class MyChatsActivity extends FBLoggableFragmentActivity{
+public class MyChatsActivity extends FragmentActivity {
 	
 	FragmentManager fm = this.getSupportFragmentManager();	
 	private boolean fbloginPromptIsShowing = false;
@@ -50,18 +50,16 @@ public class MyChatsActivity extends FBLoggableFragmentActivity{
 	        }
 	    }
 
-	public boolean isFbloginPromptIsShowing() {
-		return fbloginPromptIsShowing;
-	}
-
-	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
-		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
-	}
-	
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         CommunicationHelper.getInstance().authorizeCallback(this,requestCode, resultCode, data);
+    }
+	
+	@Override
+	public void onPause(){
+    	super.onPause();    	
+        CommunicationHelper.getInstance().FBLoginpromptPopup_show(this, false);    	
     }
 
 }

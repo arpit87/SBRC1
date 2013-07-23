@@ -1,17 +1,13 @@
 package in.co.hopin.ChatClient;
 
 import in.co.hopin.R;
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
 import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.ChatService.IChatAdapter;
 import in.co.hopin.ChatService.IChatManager;
 import in.co.hopin.ChatService.IXMPPAPIs;
 import in.co.hopin.ChatService.Message;
 import in.co.hopin.ChatService.SBChatService;
-import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.HelperClasses.ActiveChat;
-import in.co.hopin.HelperClasses.AlertDialogBuilder;
 import in.co.hopin.HelperClasses.BlockedUser;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ProgressHandler;
@@ -54,7 +50,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 
-public class ChatWindow extends FBLoggableFragmentActivity{
+public class ChatWindow extends SherlockFragmentActivity{
 	
 	private static String TAG = "in.co.hopin.ChatClient.ChatWindow";
 	public static String PARTICIPANT = "participant";

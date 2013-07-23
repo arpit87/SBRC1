@@ -1,5 +1,13 @@
 package in.co.hopin.Fragments;
 
+import in.co.hopin.R;
+import in.co.hopin.Adapter.ChatListAdapter;
+import in.co.hopin.HelperClasses.ActiveChat;
+import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.Platform.Platform;
+
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -8,20 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import in.co.hopin.R;
-
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.Adapter.ChatListAdapter;
-import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
-import in.co.hopin.HelperClasses.ActiveChat;
-import in.co.hopin.HelperClasses.CommunicationHelper;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.CurrentNearbyUsers;
-import in.co.hopin.Users.NearbyUser;
-
-import java.util.List;
 
 public class SBChatListFragment extends ListFragment {
 	
@@ -62,7 +56,7 @@ public class SBChatListFragment extends ListFragment {
 		ActiveChat clickedUser = chatUserlist.get(position);
 		String fbid = clickedUser.getUserId();
 		String name = clickedUser.getName();
-		CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)getActivity(),fbid,name);
+		CommunicationHelper.getInstance().onChatClickWithUser(getActivity(),fbid,name);
 		
     }
 	

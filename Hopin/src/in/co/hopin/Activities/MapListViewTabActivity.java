@@ -47,7 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
+public class MapListViewTabActivity extends SherlockFragmentActivity {
 	//public View mMapViewContainer;
 	
 	private static final String TAG = "in.co.hopin.Activities.MapListViewTabActivity";
@@ -71,7 +71,7 @@ public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
     private ImageView mFbLogin;
     private Menu mMenu;
     ActionBar ab;
-    private boolean fbloginPromptIsShowing = false;
+    
 	//private FacebookConnector fbconnect;
 	
 	
@@ -203,6 +203,7 @@ public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
     	//MapListActivityHandler.getInstance().setUpdateMap(false);
     	SBLocationManager.getInstance().StopListeningtoGPS();    	
         SBLocationManager.getInstance().StopListeningtoNetwork();
+        CommunicationHelper.getInstance().FBLoginpromptPopup_show(this, false);
     	//mymapview.getOverlays().clear();
     	//mymapview.postInvalidate();
     }
@@ -225,12 +226,9 @@ public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
  			i.putExtra("showprompt", true);
  			Platform.getInstance().getContext().startActivity(i);
      		
-     	}
-    	
+     	}    	
     }
-	
- 
-		
+    
 	@Override
 	public void onBackPressed() {
         if (!isMapShowing){
@@ -411,14 +409,5 @@ public class MapListViewTabActivity extends FBLoggableFragmentActivity  {
     	}
     	return mMapViewContainer;
     }
-
-	public boolean isFbloginPromptIsShowing() {
-		return fbloginPromptIsShowing;
-	}
-
-	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
-		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
-	}
-
       
 }

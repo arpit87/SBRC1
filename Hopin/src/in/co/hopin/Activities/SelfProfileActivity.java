@@ -11,6 +11,7 @@ import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SelfProfileRequest;
+import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserFBInfo;
 import in.co.hopin.Util.Logger;
@@ -39,7 +40,7 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class SelfProfileActivity extends FBLoggableFragmentActivity{
+public class SelfProfileActivity extends FragmentActivity {
 	
 	private static String TAG = "in.co.hopin.Activities.SelfProfileActivity";
     private static final int NUM_PAGES = 2;
@@ -221,6 +222,12 @@ public class SelfProfileActivity extends FBLoggableFragmentActivity{
         super.onStop();
         EasyTracker.getInstance().activityStop(this);
     }
+    
+    @Override
+	public void onPause(){
+    	super.onPause();    	
+        CommunicationHelper.getInstance().FBLoginpromptPopup_show(this, false);    	
+    }
 
     class MyPageAdapter extends FragmentPagerAdapter {
     	
@@ -248,11 +255,4 @@ public class SelfProfileActivity extends FBLoggableFragmentActivity{
     
     	}
 
-	public boolean isFbloginPromptIsShowing() {
-		return fbloginPromptIsShowing;
-	}
-
-	public void setFbloginPromptIsShowing(boolean fbloginPromptIsShowing) {
-		this.fbloginPromptIsShowing = fbloginPromptIsShowing;
-	}
 }

@@ -1,5 +1,17 @@
 package in.co.hopin.Fragments;
 
+import in.co.hopin.R;
+import in.co.hopin.Activities.OtherUserProfileActivityNew;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
+import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Users.CurrentNearbyUsers;
+import in.co.hopin.Users.NearbyUser;
+
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -13,23 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import in.co.hopin.R;
-import in.co.hopin.Activities.FBLoggableFragmentActivity;
-import in.co.hopin.Activities.OtherUserProfileActivityNew;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.Adapter.NearbyUsersListViewAdapter;
-import in.co.hopin.ChatClient.ChatWindow;
-import in.co.hopin.HelperClasses.CommunicationHelper;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.GetOtherUserProfileAndShowPopup;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.CurrentNearbyUsers;
-import in.co.hopin.Users.NearbyUser;
-
-import java.util.List;
 
 public class SBListFragment extends ListFragment {
 	
@@ -85,7 +80,7 @@ public class SBListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
 		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(position);
 		if(userAtthisPosition != null)
-			CommunicationHelper.getInstance().onChatClickWithUser((FBLoggableFragmentActivity)getActivity(),userAtthisPosition.getUserFBInfo().getFbid(),userAtthisPosition.getUserFBInfo().getFullName());
+			CommunicationHelper.getInstance().onChatClickWithUser(getActivity(),userAtthisPosition.getUserFBInfo().getFbid(),userAtthisPosition.getUserFBInfo().getFullName());
 		else
 			ToastTracker.showToast("Unable to chat,user not in current list");
         //ToastTracker.showToast("Chat with user at: " + position);
@@ -116,7 +111,7 @@ public class SBListFragment extends ListFragment {
 		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(info.position);
 	    switch (item.getItemId()) {	  
 	    case R.id.listview_fb_profile:
-	    	CommunicationHelper.getInstance().onFBIconClickWithUser((FBLoggableFragmentActivity)getActivity(), userAtthisPosition.getUserFBInfo().getFbid(), userAtthisPosition.getUserFBInfo().getFBUsername());
+	    	CommunicationHelper.getInstance().onFBIconClickWithUser(getActivity(), userAtthisPosition.getUserFBInfo().getFbid(), userAtthisPosition.getUserFBInfo().getFBUsername());
 	    	break;
 	    case R.id.listview_hopin_profile:
 	    	Intent hopinNewProfile = new Intent(getActivity().getApplicationContext(),OtherUserProfileActivityNew.class);
