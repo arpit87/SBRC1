@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    >
+<LinearLayout         
     android:layout_width="260dip"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
 <RelativeLayout
         android:id="@+id/newuserarrive_popup_header_layout"      
         android:background="@drawable/transparent_black"
@@ -78,7 +84,7 @@
             android:textColor="@color/black"
             android:lines="4"         
             android:text="User information not available. This user is not FB logged in"          
-            android:visibility="visible" />    
+            android:visibility="gone" />    
        
 
         <ScrollView
@@ -88,7 +94,7 @@
             android:layout_toRightOf="@id/newuserarrive_popup_expanded_pic"
             android:padding="4.0dip" 
             android:fadeScrollbars="false"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 			
             <LinearLayout
@@ -171,8 +177,7 @@
     android:id="@+id/newuserarrive_popup_iconslayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="80dip" 
-    android:layout_below="@+id/newuserarrive_popup_expanded_bio_scroll"
+    android:layout_marginTop="80dip"   
     android:layout_toRightOf="@id/newuserarrive_popup_expanded_pic"
     android:gravity="center"    
     android:orientation="horizontal" >
@@ -229,7 +234,13 @@
             android:layout_alignBottom="@id/newuserarrive_popup_iconslayout"                   
              />
         
-    </RelativeLayout>
-   
+    </RelativeLayout>    
 
+</LinearLayout>
+  <View android:id="@+id/newuserarrive_popup_bottompaddingview"
+      android:layout_width="260dip"
+      android:layout_height="30dip" 
+      android:background="@android:color/transparent"
+      android:visibility="gone"
+      />
 </LinearLayout>

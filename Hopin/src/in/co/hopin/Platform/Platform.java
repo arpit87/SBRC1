@@ -2,8 +2,11 @@ package in.co.hopin.Platform;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
+import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.ThisUserNew;
@@ -44,10 +47,21 @@ public class Platform {
 		this.context= context;			
 		SBHttpClient.getInstance();
 		handler = new Handler();
-		ENABLE_LOGGING = false;
+		ENABLE_LOGGING = true;
 		CurrentNearbyUsers.getInstance().clearAllData();
 		ThisUserNew.getInstance();		
 	}
+	
+	public int getThisAppVersion()
+	{
+	 try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+	}	
 	
 	 public void startChatService(){
 	     

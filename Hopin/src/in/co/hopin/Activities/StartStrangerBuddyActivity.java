@@ -36,6 +36,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.xbill.DNS.Tokenizer.Token;
+
 public class StartStrangerBuddyActivity extends Activity {
 	
 	private ProgressBar mProgress;
@@ -44,7 +46,8 @@ public class StartStrangerBuddyActivity extends Activity {
 	Intent showSBMapViewActivity;
 	Timer timer;
 	AtomicBoolean mapActivityStarted = new AtomicBoolean(false);	
-	private Context platformContext;	
+	private Context platformContext;
+	boolean upGradeMsgShown = false;
 
     private static Uri mHistoryUri = Uri.parse("content://" + HistoryContentProvider.AUTHORITY + "/db_fetch_only");
     private static String[] columns = new String[]{
@@ -114,7 +117,7 @@ public class StartStrangerBuddyActivity extends Activity {
 		 PendingIntent pintent = PendingIntent.getActivity(this, id, chatIntent, PendingIntent.FLAG_ONE_SHOT);
 		 Uri sound_uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		 
-		 Notification notif = new Notification(R.drawable.launchernew,"Welcome message from "+participant_name,System.currentTimeMillis());
+		 Notification notif = new Notification(R.drawable.launchernew,"New message from "+participant_name,System.currentTimeMillis());
 		 notif.flags |= Notification.FLAG_AUTO_CANCEL;
 		 notif.setLatestEventInfo(this, participant_name, chatMessage, pintent);
 				
@@ -177,8 +180,7 @@ public class StartStrangerBuddyActivity extends Activity {
 
     public void onResume()
     {   	
-    	super.onResume();
-        if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "onresume");
+    	super.onResume();        
         if (!isLocationProviderEnabled()){
             buildAlertMessageForLocationProvider();           
         }
@@ -229,8 +231,41 @@ public class StartStrangerBuddyActivity extends Activity {
 	            ThisUserNew.getInstance().setUserID(ThisUserConfig.getInstance().getString(ThisUserConfig.USERID));
 	            timer = new Timer();
 	            timer.scheduleAtFixedRate(new GetNetworkLocationFixTask(), 500, 500);
+	            
+	            //send upgrade msg
+	            if(isVersionUpgraded() && !upGradeMsgShown)
+		        {
+		        	upGradeMsgShown = true;
+		        	Logger.d(TAG, "app upgraded, sending upgrade msg");
+		        	Runnable upgradeMessage = new Runnable() {
+		  	          public void run() {	   
+		  	        	Context c = Platform.getInstance().getContext();
+		  	        	String admin_fbid = getResources().getString(R.string.hopin_admin_girl_fbid);
+		  	      		String admin_name = getResources().getString(R.string.hopin_admin_girl_name);
+		  	      		String admin_upgrade_message = getResources().getString(R.string.hopin_admin_girl_upgrademessage);	        	  
+		  	        	  int admin_fbid_hash = admin_fbid.hashCode();	    
+		  	        	String username = ThisUserConfig.getInstance().getString(ThisUserConfig.USERNAME);
+		  	        	username = username.split(" ")[0];
+		  	        	admin_upgrade_message = "Hi "+ username+", "+admin_upgrade_message;
+		  	        	  sendWelcomeNotification(admin_fbid_hash, admin_fbid, admin_name, admin_upgrade_message);
+			  	          }};
+			  	    Platform.getInstance().getHandler().postDelayed(upgradeMessage, 1*60*1000);    
+			  		}	        
 	        }
         }
+        }
+        
+    
+    
+    private boolean isVersionUpgraded()
+    {
+    	//GCM upgrades this version so we are not doing here
+    	int registeredVersion = ThisAppConfig.getInstance().getInt(ThisAppConfig.PROPERTY_APP_VERSION);
+    	int currentAppVersion = Platform.getInstance().getThisAppVersion();
+    	if(currentAppVersion > registeredVersion)
+    		return true;
+    	else 
+    		return false; 
     }
     
     public void onPause()

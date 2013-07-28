@@ -503,15 +503,15 @@ public void updateSrcDstTimeInListView() {
 
     String destination = ThisUserNew.getInstance().getDestinationFullAddress();
     if (!StringUtils.isBlank(destination)) {
-        mDestination.setText(destination);
+        mDestination.setText(StringUtils.getSpannedText("Dst:", destination));
         String source = ThisUserNew.getInstance().getSourceFullAddress();
         if (StringUtils.isBlank(source))
             source = "My Location";
-        mSource.setText(source);
+        mSource.setText(StringUtils.getSpannedText("Src:", source));
 
         String date_time = ThisUserNew.getInstance().getDateAndTimeOfTravel();
         if (!StringUtils.isBlank(date_time)) {
-            mtime.setText("Time: " + StringUtils.formatDate("yyyy-MM-dd HH:mm", "h:mm a, EEE, MMM d", date_time));
+            mtime.setText(StringUtils.getSpannedText("  At:", StringUtils.formatDate("yyyy-MM-dd HH:mm", "h:mm a, EEE, MMM d", date_time)));
         }
     }
 }

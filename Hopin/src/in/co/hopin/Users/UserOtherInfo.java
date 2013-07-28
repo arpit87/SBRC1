@@ -56,7 +56,7 @@ public class UserOtherInfo {
 			return true;
 	}
 	
-	public boolean isAvailable()
+	public boolean isOnline()
 	{
 		if(is_available.equals("1"))
 			return true;

@@ -28,8 +28,11 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -291,7 +294,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		 mMapView.addNearbyUserView(viewOnMarkerIndividualExpanded, params);			
 		 fbInfoScrollView = (ScrollView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_bio_scroll);
 		 picViewExpanded = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_pic);		
-		 expandedBalloonHeader = (TextView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_balloon_header);
+		 expandedBalloonHeader = (TextView)viewOnMarkerIndividualExpanded.findViewById(R.id.expanded_balloon_header);		
 		 chatIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.chat_icon_view);
 		 //smsIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.sms_icon);
 		 hopinIcon = (ImageView)viewOnMarkerIndividualExpanded.findViewById(R.id.hopin_icon);
@@ -397,9 +400,11 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		if(viewOnMarkerExpanded==null)
 		{		
 			removeSmallView();			
-			viewOnMarkerExpanded = mInflater.inflate(R.layout.map_expanded_grid_layout, null);
+			viewOnMarkerExpanded = mInflater.inflate(R.layout.map_expanded_grid_layout, null);			 
 			GridView picGridView = (GridView) viewOnMarkerExpanded.findViewById(R.id.gridview);
+			
 			GridViewImageAdapter gridViewAdapter = new GridViewImageAdapter(mUserGroup.getAllFBIds());
+			picGridView.setAdapter(gridViewAdapter);
 			picGridView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -420,12 +425,30 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 					showSmallView();
 				}
 				});			
-			
+			LayoutParams gridParameters = picGridView.getLayoutParams();
 			int numUsers = gridViewAdapter.getCount();
-			if(numUsers < 3)
+			if(numUsers <= 3)
+			{
+				gridParameters.width = numUsers * 100;
 				picGridView.setNumColumns(numUsers);
-			picGridView.setAdapter(gridViewAdapter);
-            mMapView.addNearbyUserView(viewOnMarkerExpanded, params);
+				//picGridView.setLayoutParams(gridParameters);
+				
+			}
+			else
+			{
+				gridParameters.width = 4 * 100;
+				if(numUsers > 8)
+				{
+					gridParameters.height = 3 * 120;
+				}
+				picGridView.setNumColumns(4);
+				//picGridView.setLayoutParams(gridParameters);
+				
+			}
+			
+            mMapView.addNearbyUserView(viewOnMarkerExpanded, params);        
+            //LinearLayout.LayoutParams headerWithParam = new LinearLayout.LayoutParams(picGridView.getLayoutParams().width, LayoutParams.WRAP_CONTENT);
+            // expandedBalloonHeaderLayout.setLayoutParams(headerWithParam);
 			viewOnMarkerExpanded.setVisibility(View.VISIBLE);
 			isVisibleExpanded = true;
 		}

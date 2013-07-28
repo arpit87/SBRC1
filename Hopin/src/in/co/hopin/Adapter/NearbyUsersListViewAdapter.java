@@ -3,6 +3,9 @@ package in.co.hopin.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,9 +76,9 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         	thisUserView = inflater.inflate(R.layout.nearbyuser_list_row, null);
         
         ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_image);
-        ImageView userOfflineDot = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_offline);
+        
         TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
-        TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserFromText);
+        //TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserFromText);
         TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserToText);
         TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserTimeText);        
         SBImageLoader.getInstance().displayImageElseStub(thisUser.getUserFBInfo().getImageURL(), userImageView, R.drawable.userpicicon);
@@ -89,14 +92,19 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         String destination = thisUserLocInfo.getUserDstAddress();
         String formattedTravelInfo = thisUserLocInfo.getFormattedTimeDetails(ThisUserNew.getInstance().get_Daily_Instant_Type());
         userName.setText(name);
-        userSource.setText(source);
+        //userSource.setText(source);
+        //userDestination.setText(StringUtils.getSpannedText("To:", destination));
+       // userTime.setText(StringUtils.getSpannedText("At:",formattedTravelInfo));
         userDestination.setText(destination);
         userTime.setText(formattedTravelInfo);
-        if(thisUserOtherInfo.isAvailable())
-        	userOfflineDot.setVisibility(View.INVISIBLE);
-        else
-        	userOfflineDot.setVisibility(View.VISIBLE);
+        if(!thisUserOtherInfo.isOnline())        	
+        {
+        	//userName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_dot_gray, 0, 0, 0);
+        	userDestination.setCompoundDrawablesWithIntrinsicBounds(R.drawable.to_arrow_disabled, 0, 0, 0);
+        	userTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.time_clock_disabled, 0, 0, 0);
+        }
 		return thisUserView;
-	}
+	}	
+	
 
 }

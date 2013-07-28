@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 public class StringUtils {	
@@ -122,6 +125,25 @@ public class StringUtils {
     
          return paramString.substring(0, i);
      }
+    
+    public static Spannable getSpannedText(String label, String text)
+	{
+		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+		Spannable label_span = new SpannableString(label + " "+text);		
+		label_span.setSpan(bold, 0,label.length() , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return label_span;
+	}
+    
+    public static Spannable getSpannedTextUptoChar(String character, String text)
+   	{
+   		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+   		Spannable label_span = new SpannableString(text);
+   		int length = text.indexOf(character, 0);
+   		if(length<=0)
+   			length = text.length();
+   		label_span.setSpan(bold, 0,length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+   		return label_span;
+   	}
 	
 	
 }

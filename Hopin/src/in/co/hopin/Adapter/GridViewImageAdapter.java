@@ -47,6 +47,8 @@ public class GridViewImageAdapter extends BaseAdapter{
 			View thisUserView=convertView;
 	        if(thisUserView==null)
 	        	thisUserView = inflater.inflate(R.layout.grid_imageview, null);
+	        else
+	        	thisUserView.forceLayout();
 	        ImageView userPicImageView = (ImageView)thisUserView.findViewById(R.id.grid_imageview_pic);
             String imageUrl = "http://graph.facebook.com/" + fbids.get(position) + "/picture";
 	        SBImageLoader.getInstance().displayImageElseStub(imageUrl, userPicImageView, R.drawable.userpicicon);
