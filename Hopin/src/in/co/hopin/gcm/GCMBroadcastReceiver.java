@@ -36,11 +36,9 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
         ctx = context;
         String messageType = gcm.getMessageType(intent);
-        if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-            sendNotification("Send error: " + intent.getExtras().toString());
-        } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-            sendNotification("Deleted messages on server: " +
-                    intent.getExtras().toString());
+        if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType) ||
+                GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
+            //do nothing
         } else {
             processMessage(intent.getStringExtra("message"));
         }
