@@ -103,12 +103,18 @@
               android:textSize="24dp"
               android:cacheColorHint="@android:color/transparent"
               android:divider="@color/dark_gray"
-              android:dividerHeight="1dip">
+              android:dividerHeight="1dip"
+              style="@style/MatchedUserListView"
+              >
     </ListView>
 
     <TextView android:id="@id/android:empty"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#D3D3D3"/>
+              android:layout_height="match_parent"              
+              android:textAppearance="?android:attr/textAppearanceLarge"
+              android:gravity="center"
+              android:text="Tap to search"
+              android:textColor="@color/gray"
+              android:background="@drawable/map_magniglass"/>
 </LinearLayout>
 

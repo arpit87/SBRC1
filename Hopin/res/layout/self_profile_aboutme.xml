@@ -9,109 +9,125 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     >   
-    <!--  <TextView
+   
+     <TextView
         android:layout_marginTop="15dip"
-        android:id="@+id/self_aboutme_nametext" 
+        android:id="@+id/self_aboutme_worksattext" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"     
-        android:layout_marginLeft="5dip"   
-        android:textColor="@color/black_75"
-        android:layout_gravity="left" 
-        android:textStyle="bold"        
-        android:textSize="20dip"/> 
-     
-       <TextView 
-        android:id="@+id/self_aboutme_name" 
+        android:text="Works at"  
+        android:textStyle="bold"      
+        android:textColor="@color/very_dark_gray"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dip"
+        android:textSize="20dip"/>
+    <RelativeLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"        
-        android:paddingTop="10dip"   
-        android:paddingBottom="10dip" 
-        android:layout_marginLeft="5dip" 
-        android:layout_marginRight="5dip"     
-        android:text="Arpit Mishra"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
-        android:textSize="25dip"
-        android:textColor="@color/black"       
-        />     --> 
-        
-         <TextView
-        android:layout_marginTop="15dip"
-        android:id="@+id/self_aboutme_workstext" 
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip">
+    <ImageView
+        android:id="@+id/self_aboutme_worksatimage" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Works at"     
-        android:layout_marginLeft="6dip"
-        android:textColor="@color/black_75"
-        android:layout_gravity="left" 
-        android:textStyle="bold"        
-        android:textSize="20dip"/> 
-     
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/workicon">        
+    </ImageView>    
        <TextView 
         android:id="@+id/self_aboutme_worksat" 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"        
-        android:paddingTop="10dip"   
-        android:paddingBottom="10dip" 
-        android:layout_marginLeft="7dip" 
-        android:layout_marginRight="5dip"     
-        android:text="Nomura"
-        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
-        android:textSize="25dip"
-        android:textColor="@color/black"       
-        /> 
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@id/self_aboutme_worksatimage"
+        
+        
+        android:textSize="20dip"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        />      
     
-        <TextView
-        android:layout_marginTop="15dip"
+    </RelativeLayout>
+   <TextView
         android:id="@+id/self_aboutme_educationtext" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Education"     
-        android:layout_marginLeft="6dip"
-        android:textColor="@color/black_75"
-        android:layout_gravity="left" 
-        android:textStyle="bold"        
-        android:textSize="20dip"/> 
-     
+        android:text="Education"        
+        android:textColor="@color/very_dark_gray"
+        android:layout_gravity="left"
+        android:textStyle="bold" 
+        android:layout_marginLeft="10dip"
+        android:textSize="20dip"
+        android:layout_marginTop="15dip"/>
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip">
+    <ImageView
+        android:id="@+id/self_aboutme_educationimage" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/educationicon">        
+    </ImageView>    
        <TextView 
         android:id="@+id/self_aboutme_education" 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"        
-        android:paddingTop="10dip"   
-        android:paddingBottom="10dip" 
-        android:layout_marginLeft="7dip" 
-        android:layout_marginRight="5dip"     
-        android:text="IIT Kharagpur"
-        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
-        android:textSize="25dip"
-        android:textColor="@color/black"       
-        /> 
-        
-        <TextView
-        android:layout_marginTop="15dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@id/self_aboutme_educationimage"
+       
+        android:textSize="20dip"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        />
+       
+    
+    </RelativeLayout>
+    
+   <TextView
         android:id="@+id/self_aboutme_hometowntext" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HomeTown"     
-        android:layout_marginLeft="6dip"
-        android:textColor="@color/black_75"
-        android:layout_gravity="left" 
-        android:textStyle="bold"        
-        android:textSize="20dip"/> 
-     
+        android:text="HomeTown"        
+        android:textStyle="bold" 
+        android:textColor="@color/very_dark_gray"
+        android:layout_gravity="left"
+        android:layout_marginLeft="10dip"
+        android:textSize="20dip"
+        android:layout_marginTop="15dip"/>
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip">
+    <ImageView
+        android:id="@+id/self_aboutme_hometownimage" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/homeicon">        
+    </ImageView>    
        <TextView 
         android:id="@+id/self_aboutme_hometown" 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"        
-        android:paddingTop="10dip"   
-        android:paddingBottom="10dip" 
-        android:layout_marginLeft="7dip" 
-        android:layout_marginRight="5dip"     
-        android:text="Raipur"
-        android:background="@drawable/rounded_rectangle_verylightgray_with_backgroundshadow"
-        android:textSize="25dip"
-        android:textColor="@color/black"       
-        /> 
-  
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_toRightOf="@id/self_aboutme_hometownimage"
+        
+        android:textSize="20dip"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        />
+       
+    
+    </RelativeLayout> 
+
 </LinearLayout>
 </ScrollView>

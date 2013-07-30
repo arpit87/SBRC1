@@ -1,11 +1,13 @@
 package in.co.hopin.Fragments;
 
 import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.R;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +131,14 @@ public class SearchUserInstaFrag extends AbstractSearchInputFrag{
 	public int getRadioButtonID() {
 		// TODO Auto-generated method stub
 		return radio_group_time.getCheckedRadioButtonId();
-	}		
-		
-
+	}
+	
+	@Override
+    public void onDestroyView() {
+        super.onDestroyView();       
+        ViewGroup parentViewGroup = (ViewGroup) mInstaViewContainer.getParent();
+		if( null != parentViewGroup ) {
+			parentViewGroup.removeView( mInstaViewContainer );
+		}	
+    }
 }

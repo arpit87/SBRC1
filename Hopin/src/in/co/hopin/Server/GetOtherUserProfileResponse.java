@@ -1,7 +1,5 @@
 package in.co.hopin.Server;
 
-import in.co.hopin.Activities.NewUserDialogActivity;
-import in.co.hopin.Activities.OtherUserProfileActivity;
 import in.co.hopin.Activities.OtherUserProfileActivityNew;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
@@ -11,7 +9,6 @@ import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Users.UserFBInfo;
 
 import org.apache.http.HttpResponse;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

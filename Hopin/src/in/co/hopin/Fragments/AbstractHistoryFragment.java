@@ -95,6 +95,15 @@ public abstract class AbstractHistoryFragment extends ListFragment {
         builder.create().show();
     }
     
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();       
+        ViewGroup parentViewGroup = (ViewGroup) mListViewContainer.getParent();
+		if( null != parentViewGroup ) {
+			parentViewGroup.removeView( mListViewContainer );
+		}	
+    }
+    
     protected class CreateRequestFromHistory extends AsyncTask<HistoryAdapter.HistoryItem, Void, Void> {
 
         @Override

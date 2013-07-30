@@ -1,5 +1,6 @@
 package in.co.hopin.Fragments;
 
+import in.co.hopin.R;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.StringUtils;
@@ -8,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import in.co.hopin.R;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -222,6 +222,15 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 		
 	}
 	
+	@Override
+    public void onDestroyView() {
+        super.onDestroyView();       
+        ViewGroup parentViewGroup = (ViewGroup) mPlanViewContainer.getParent();
+		if( null != parentViewGroup ) {
+			parentViewGroup.removeView( mPlanViewContainer );
+		}	
+    }
+	
 	public class SBDatePickerFragment extends DialogFragment
 	implements DatePickerDialog.OnDateSetListener {
      
@@ -258,5 +267,7 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 		// TODO Auto-generated method stub
 		return radio_group_daily_onetime.getCheckedRadioButtonId();
 	}
+
+	
 
 }

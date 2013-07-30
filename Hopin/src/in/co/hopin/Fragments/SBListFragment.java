@@ -72,7 +72,7 @@ public class SBListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview listview");
-		mListViewContainer=  MapListActivityHandler.getInstance().getThisListContainerWithListView();
+		mListViewContainer=  MapListActivityHandler.getInstance().getThisListContainerWithListView();		
 		return mListViewContainer;
 	}
 	

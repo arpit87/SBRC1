@@ -50,6 +50,7 @@
      <color name="light_gray">#ff636363</color>
      <color name="very_dark_gray">#ff494949</color>
      <color name="very_light_gray">#fff0f2f0</color>
-     <color name="very_light_green">#dd56d856</color>	
+     <color name="very_light_green">#dd56d856</color>
+     <color name="off_white">#ddf7f8e3</color>	
 
 </resources>

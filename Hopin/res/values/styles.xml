@@ -103,6 +103,14 @@
     </style>
     <style name="text.cyan" parent="@style/text">
         <item name="android:textColor">@color/cyan</item>
+    </style>   
+    <style name="MatchedUserListView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@drawable/map_blur</item>
+        <item name="android:cacheColorHint">@color/off_white</item>
+        <item name="android:listSelector">@drawable/listview_selector</item>
     </style>
+
 
 </resources>
