@@ -7,6 +7,7 @@ import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -158,16 +159,17 @@ public class SettingsActivity extends FragmentActivity{
 	    }
 
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
+	 @Override
+	    public void onStart(){
+	        super.onStart();
+	        HopinTracker.sendView("Settings");
+	        //EasyTracker.getInstance().activityStart(this);
+	    }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+       // EasyTracker.getInstance().activityStop(this);
     }
 
 	public boolean isFbloginPromptIsShowing() {

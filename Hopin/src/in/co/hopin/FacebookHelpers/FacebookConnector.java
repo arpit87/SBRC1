@@ -2,7 +2,6 @@ package in.co.hopin.FacebookHelpers;
 
 import in.co.hopin.Activities.MapListViewTabActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
@@ -13,6 +12,7 @@ import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.HttpClient.SaveFBInfoRequest;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 
@@ -168,7 +168,7 @@ public class FacebookConnector {
     
     class ReLoginDialogListener implements DialogListener {
 	    public void onComplete(Bundle values) {
-	    	EasyTracker.getTracker().sendEvent("callback_event", "callback_received", "FBReLogin_callback", 1L);
+	    	HopinTracker.sendEvent("callback_event", "callback_received", "FBReLogin_callback", 1L);
 	    	String fbid = ThisUserConfig.getInstance().getString(ThisUserConfig.FBUID);
 	    	ThisUserConfig.getInstance().putString(ThisUserConfig.FBACCESSTOKEN, facebook.getAccessToken());
         	ThisUserConfig.getInstance().putLong(ThisUserConfig.FBACCESSEXPIRES, facebook.getAccessExpires());
@@ -203,7 +203,7 @@ public class FacebookConnector {
     
     class LoginDialogListener implements DialogListener {
 	    public void onComplete(Bundle values) {
-            EasyTracker.getTracker().sendEvent("callback_event", "callback_received", "FBLogin_callback", 1L);
+            HopinTracker.sendEvent("callback_event", "callback_received", "FBLogin_callback", 1L);
 	    	ThisUserConfig.getInstance().putString(ThisUserConfig.FBACCESSTOKEN, facebook.getAccessToken());
         	ThisUserConfig.getInstance().putLong(ThisUserConfig.FBACCESSEXPIRES, facebook.getAccessExpires());
         	Logger.i(TAG, "login callback rec");

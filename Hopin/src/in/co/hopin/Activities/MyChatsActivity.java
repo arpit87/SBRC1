@@ -2,6 +2,7 @@ package in.co.hopin.Activities;
 
 import in.co.hopin.Fragments.SBChatListFragment;
 import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,14 +19,14 @@ public class MyChatsActivity extends FragmentActivity {
 	  @Override
 	    public void onStart(){
 	        super.onStart();
-	        EasyTracker.getInstance().activityStart(this);
+	        HopinTracker.sendView("MyChatsList");
 	        
 	    }
 
 	    @Override
 	    public void onStop(){
 	        super.onStop();
-	        EasyTracker.getInstance().activityStop(this);
+	        //EasyTracker.getInstance().activityStop(this);
 	    }
     
 	 @Override

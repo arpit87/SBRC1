@@ -14,6 +14,7 @@ import in.co.hopin.HttpClient.SelfProfileRequest;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 
 import java.util.ArrayList;
@@ -211,16 +212,17 @@ public class SelfProfileActivity extends FragmentActivity {
 				
 	}
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
+	 @Override
+	    public void onStart(){
+	        super.onStart();
+	        HopinTracker.sendView("SelfProfile");
+	        //EasyTracker.getInstance().activityStart(this);
+	    }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+       // EasyTracker.getInstance().activityStop(this);
     }
     
     @Override

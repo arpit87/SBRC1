@@ -9,6 +9,7 @@ import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HttpClient.*;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.R;
 
@@ -186,12 +187,13 @@ public class MyRequestsActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        HopinTracker.sendView("MyActiveRequests");
+        //EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 }

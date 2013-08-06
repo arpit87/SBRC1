@@ -6,6 +6,7 @@ import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.HttpClient.FeedbackRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -87,12 +88,12 @@ public class FeedbackActivity extends Activity{
    @Override
    public void onStart(){
        super.onStart();
-       EasyTracker.getInstance().activityStart(this);
+       HopinTracker.sendView("FeedBack");
    }
 
    @Override
    public void onStop(){
        super.onStop();
-       EasyTracker.getInstance().activityStop(this);
+       //EasyTracker.getInstance().activityStop(this);
    }
 }

@@ -1,18 +1,17 @@
 package in.co.hopin.Activities;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import in.co.hopin.R;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.Util.HopinTracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class ReloginActivity extends Activity {
 	
@@ -28,7 +27,7 @@ public class ReloginActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-                EasyTracker.getTracker().sendEvent("ui_action", "button_press", "FbReLogin_button", 1L);
+                HopinTracker.sendEvent("ui_action", "button_press", "FbReLogin_button", 1L);
 				Toast.makeText(ReloginActivity.this, "Logging...please wait..", Toast.LENGTH_SHORT).show();
 				fbconnect = FacebookConnector.getInstance(ReloginActivity.this);
 				fbconnect.reloginToFB();
@@ -47,16 +46,17 @@ public class ReloginActivity extends Activity {
         fbconnect.authorizeCallback(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
+	 @Override
+	    public void onStart(){
+	        super.onStart();
+	        HopinTracker.sendView("Relogin");
+	        //EasyTracker.getInstance().activityStart(this);
+	    }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 
 }

@@ -27,6 +27,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
@@ -70,7 +71,7 @@ public class StartStrangerBuddyActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main);       
     }
     
     private void firstRun() {
@@ -273,16 +274,12 @@ public class StartStrangerBuddyActivity extends Activity {
     	super.onPause();
     }
 
+    @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
-
-    public void onStop()
-    {   	
-    	super.onStop();
-        EasyTracker.getInstance().activityStop(this);    	
-    }
+        HopinTracker.sendView("LogoScreen");
+        //EasyTracker.getInstance().activityStart(this);
+    } 
     
     private class GetNetworkLocationFixTask extends TimerTask
     { 

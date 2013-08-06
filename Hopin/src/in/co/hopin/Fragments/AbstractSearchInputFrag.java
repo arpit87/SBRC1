@@ -1,5 +1,35 @@
 package in.co.hopin.Fragments;
 
+import in.co.hopin.R;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.Adapter.HistoryAdapter;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.SBConnectivity;
+import in.co.hopin.HelperClasses.ToastTracker;
+import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
+import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
+import in.co.hopin.Util.StringUtils;
+import in.co.hopin.provider.HistoryContentProvider;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,39 +44,25 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import com.google.analytics.tracking.android.EasyTracker;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.Adapter.HistoryAdapter;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.SBConnectivity;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
-import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.HttpClient.SBHttpRequest;
-import in.co.hopin.LocationHelpers.SBGeoPoint;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.R;
-import in.co.hopin.Users.ThisUserNew;
-import in.co.hopin.Util.StringUtils;
-import in.co.hopin.provider.HistoryContentProvider;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public abstract class AbstractSearchInputFrag extends Fragment{
 	
@@ -108,7 +124,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 			
 			@Override
 			public void onClick(View arg0) {
-				EasyTracker.getTracker().sendEvent("ui_action", "button_press", "cancelFindUsers_button", 1L);
+				HopinTracker.sendEvent("ui_action", "button_press", "cancelFindUsers_button", 1L);
 				getActivity().finish();				
 			}
 		});
@@ -117,7 +133,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				EasyTracker.getTracker().sendEvent("ui_action", "button_press", "takeRide_button", 1L);
+				HopinTracker.sendEvent("ui_action", "button_press", "takeRide_button", 1L);
 				takeRide = true;
 				findUsers();			
 			}
@@ -126,7 +142,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         	
 			@Override
 			public void onClick(View v) {
-                EasyTracker.getTracker().sendEvent("ui_action", "button_press", "offerRide_button", 1L);
+                HopinTracker.sendEvent("ui_action", "button_press", "offerRide_button", 1L);
                 takeRide = false;
                 findUsers();
 			}
@@ -137,7 +153,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 	        source.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            @Override
 	            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-	            	 EasyTracker.getTracker().sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
+	            	 HopinTracker.sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
 	                 String sourceAddress =(String) adapterView.getItemAtPosition(i);
 	                 if(!StringUtils.isBlank(sourceAddress))
 	                 {
@@ -162,7 +178,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         destination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            	 EasyTracker.getTracker().sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
+            	 HopinTracker.sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
                  String destinationAddress =(String) adapterView.getItemAtPosition(i);
                  if(!StringUtils.isBlank(destinationAddress))
                  {

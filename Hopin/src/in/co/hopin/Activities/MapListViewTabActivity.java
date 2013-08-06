@@ -1,24 +1,22 @@
 package in.co.hopin.Activities;
 
+import in.co.hopin.R;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
-import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.Fragments.SBListFragment;
 import in.co.hopin.Fragments.SBMapFragment;
 import in.co.hopin.Fragments.ShowActiveReqPrompt;
-import in.co.hopin.HelperClasses.BlockedUser;
 import in.co.hopin.HelperClasses.BroadCastConstants;
 import in.co.hopin.HelperClasses.CommunicationHelper;
-import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.HelperClasses.ToastTracker;
-import in.co.hopin.HttpClient.*;
+import in.co.hopin.HttpClient.DeleteRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -34,17 +32,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
-import in.co.hopin.R;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class MapListViewTabActivity extends SherlockFragmentActivity {
@@ -114,7 +109,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        //EasyTracker.getInstance().activityStart(this);
     }
 
     private void checkIfGPSIsEnabled() {
@@ -185,7 +180,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);       
+        //EasyTracker.getInstance().activityStop(this);       
     }
     
     @Override
@@ -226,7 +221,9 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
  			i.putExtra("showprompt", true);
  			Platform.getInstance().getContext().startActivity(i);
      		
-     	}    	
+     	}   
+     	EasyTracker.getTracker().setStartSession(false);
+     	EasyTracker.getInstance().dispatch(); //remove this after test
     }
     
 	@Override
@@ -350,9 +347,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     }
     
     private void showMapView()
-    {
-        EasyTracker.getInstance().setContext(this);
-        EasyTracker.getTracker().sendView("MapView");
+    {        
+        HopinTracker.sendView("MapView");
     	if (fm != null) {
             
             FragmentTransaction ft = fm.beginTransaction();
@@ -368,7 +364,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     
     private void showListView()
     {
-        EasyTracker.getTracker().sendView("ListView");
+        HopinTracker.sendView("ListView");
         if (fm != null) {
             
             FragmentTransaction ft = fm.beginTransaction();

@@ -14,6 +14,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 
 import org.json.JSONException;
@@ -225,13 +226,14 @@ public class NewUserDialogActivity extends FragmentActivity{
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        HopinTracker.sendView("NewUserDialog");
+       // EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 	
 	@Override

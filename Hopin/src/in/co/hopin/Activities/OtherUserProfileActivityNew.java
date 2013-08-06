@@ -8,6 +8,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.Friend;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,7 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
 		return frag_list;
 	}
 
+       
 	@Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -188,16 +190,16 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
 		
 	}
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
-
+	 @Override
+	    public void onStart(){
+	        super.onStart();
+	        HopinTracker.sendView("OtherUserProfile");
+	        //EasyTracker.getInstance().activityStart(this);
+	    }
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 
     class MyPageAdapter extends FragmentPagerAdapter {

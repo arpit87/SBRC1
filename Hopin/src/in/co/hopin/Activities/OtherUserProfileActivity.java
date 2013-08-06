@@ -4,6 +4,7 @@ import in.co.hopin.R;
 import in.co.hopin.HelperClasses.SBImageLoader;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,13 +79,14 @@ public class OtherUserProfileActivity extends Activity{
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        HopinTracker.sendView("OtherUserProfile");
+        //EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 
 }

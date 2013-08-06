@@ -13,6 +13,7 @@ import in.co.hopin.Fragments.SelfAboutMeFrag;
 import in.co.hopin.Fragments.SelfFriends;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.Util.HopinTracker;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -44,19 +45,22 @@ public class SearchInputActivityNew extends FragmentActivity{
 	private ViewPager mPager;
 	private static final int NUM_PAGES = 2;
 	
+	//for GA
+	private String tabTypeStr = "Insta";
+	private String history_newsearch_str = "NewSearch";
 	
    
-	  @Override
-	    public void onStart(){
+	@Override
+	 public void onStart(){
 	        super.onStart();
-	        EasyTracker.getInstance().activityStart(this);
-	        
+	        HopinTracker.sendView(history_newsearch_str+tabTypeStr+"View");
 	    }
+	
 
 	    @Override
 	    public void onStop(){
 	        super.onStop();
-	        EasyTracker.getInstance().activityStop(this);
+	       // EasyTracker.getInstance().activityStop(this);
 	    }
     
 	 @Override
@@ -76,7 +80,9 @@ public class SearchInputActivityNew extends FragmentActivity{
 			
 			@Override
 			public void onClick(View v) {
-			    mPager.setCurrentItem(0);
+				tabTypeStr = "Insta";
+			    mPager.setCurrentItem(0);    
+			    
 			}
 		});
 		 
@@ -84,7 +90,8 @@ public class SearchInputActivityNew extends FragmentActivity{
 				
 				@Override
 				public void onClick(View v) {
-					mPager.setCurrentItem(1);
+					tabTypeStr = "Plan";
+					mPager.setCurrentItem(1);										
 				}
 			});
 		 
@@ -95,15 +102,21 @@ public class SearchInputActivityNew extends FragmentActivity{
 				mPager.removeAllViews();
 				if(isChecked)
 				{					
-					mPager.setAdapter(mPagerHistoryAdapter);					
+					mPager.setAdapter(mPagerHistoryAdapter);
+					history_newsearch_str = "History";
 					if(BtnPlanSearchView.isSelected())
-						mPager.setCurrentItem(1);
+					{
+						mPager.setCurrentItem(1);						
+					}
 					else if(BtnInstaSearchView.isSelected())
-						mPager.setCurrentItem(0);					
+					{
+						mPager.setCurrentItem(0);
+					}
 				}
 				else
 				{		
-					mPager.setAdapter(mPagerSearchAdapter);					
+					mPager.setAdapter(mPagerSearchAdapter);	
+					history_newsearch_str = "NewSearch";
 					if(BtnPlanSearchView.isSelected())
 						mPager.setCurrentItem(1);
 					else if(BtnInstaSearchView.isSelected())
@@ -121,15 +134,19 @@ public class SearchInputActivityNew extends FragmentActivity{
 		        			case 0: //about button selected
 		        				BtnInstaSearchView.setSelected(true);
 		    					BtnPlanSearchView.setSelected(false);
+		    					tabTypeStr = "Insta";
 		        			break;
 		        			case 1:
 		        				BtnInstaSearchView.setSelected(false);
 		    					BtnPlanSearchView.setSelected(true);
+		    					tabTypeStr = "Plan";
 		        			break;
 		        			default:
 		        				BtnInstaSearchView.setSelected(true);
-		    					BtnPlanSearchView.setSelected(false);  		
-		        		}	            	
+		    					BtnPlanSearchView.setSelected(false); 
+		    					tabTypeStr = "Insta";
+		        		}	
+	            		HopinTracker.sendView(history_newsearch_str+tabTypeStr+"View");
 	            }
 	
 				@Override
@@ -148,7 +165,8 @@ public class SearchInputActivityNew extends FragmentActivity{
 		 BtnInstaSearchView.setSelected(true);
 	     	
 	 }
-	
+	 
+	 
 	 private List<Fragment> getSearchFragments() {	
 	    	List<Fragment> search_frag_list = new ArrayList<Fragment>();	    	
 			Fragment searchUserPlanFrag = new SearchUserPlanFrag();

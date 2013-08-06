@@ -1,6 +1,14 @@
 package in.co.hopin.Activities;
 
-import android.app.Activity;
+import in.co.hopin.R;
+import in.co.hopin.FacebookHelpers.FacebookConnector;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.ThisUserConfig;
+import in.co.hopin.HttpClient.AddUserRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.Util.HopinTracker;
+import in.co.hopin.Util.StringUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,16 +18,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.analytics.tracking.android.EasyTracker;
-import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.ThisUserConfig;
-import in.co.hopin.HttpClient.AddUserRequest;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.HttpClient.SBHttpRequest;
-import in.co.hopin.R;
-import in.co.hopin.Util.StringUtils;
 
 public class Tutorial extends FragmentActivity{
 	ImageView map1View;
@@ -103,7 +109,7 @@ public class Tutorial extends FragmentActivity{
 			
 			@Override
 			public void onClick(View v) {
-                EasyTracker.getTracker().sendEvent("ui_action", "button_press", "FbLogin_button", 1L);
+                HopinTracker.sendEvent("ui_action", "button_press", "tutorial:click:fblogin", 1L);
 				Toast.makeText(Tutorial.this, "Logging...please wait..", Toast.LENGTH_SHORT).show();
 				fbconnect = FacebookConnector.getInstance(Tutorial.this);
 				fbconnect.loginToFB();
@@ -128,13 +134,13 @@ public class Tutorial extends FragmentActivity{
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        HopinTracker.sendView("Tutorial");
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 
 }

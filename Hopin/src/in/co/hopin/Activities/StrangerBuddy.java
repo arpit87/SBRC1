@@ -18,7 +18,7 @@ customReportContent = {APP_VERSION_NAME,
 		TOTAL_MEM_SIZE, AVAILABLE_MEM_SIZE ,CUSTOM_DATA, STACK_TRACE,
 		 DISPLAY,USER_APP_START_DATE , USER_CRASH_DATE,LOGCAT },
 logcatArguments = { "-t", "100", "-v", "long", "StrangerBuddy:I", "*:D", "*:S" },
-mode = ReportingInteractionMode.TOAST,
+mode = ReportingInteractionMode.SILENT,
 forceCloseDialogAfterToast = false, // optional, default false
 resToastText = in.co.hopin.R.string.crash_toast_text
 ) 

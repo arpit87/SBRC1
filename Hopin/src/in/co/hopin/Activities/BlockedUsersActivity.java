@@ -12,6 +12,7 @@ import in.co.hopin.R;
 
 import in.co.hopin.Adapter.BlockedUsersAdapter;
 import in.co.hopin.HelperClasses.BlockedUser;
+import in.co.hopin.Util.HopinTracker;
 
 import java.util.List;
 
@@ -71,12 +72,12 @@ public class BlockedUsersActivity extends ListActivity{
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        HopinTracker.sendView("BlockedUserListActivity");
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        //EasyTracker.getInstance().activityStop(this);
     }
 }

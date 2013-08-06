@@ -67,10 +67,12 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         
         ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_image);
         
+        ImageView chatDotOffline = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_offline);
+        
         TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
-        //TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserFromText);
-        TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserToText);
-        TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyuserTimeText);        
+        TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_source);
+        TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_destination);
+        TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_time);        
         SBImageLoader.getInstance().displayImageElseStub(thisUser.getUserFBInfo().getImageURL(), userImageView, R.drawable.userpicicon);
         final UserFBInfo thisUserFBInfo = thisUser.getUserFBInfo();
         UserLocInfo thisUserLocInfo = thisUser.getUserLocInfo();
@@ -82,16 +84,14 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         String destination = thisUserLocInfo.getUserDstAddress();
         String formattedTravelInfo = thisUserLocInfo.getFormattedTimeDetails(ThisUserNew.getInstance().get_Daily_Instant_Type());
         userName.setText(name);
-        //userSource.setText(source);
+        userSource.setText(source);
         //userDestination.setText(StringUtils.getSpannedText("To:", destination));
        // userTime.setText(StringUtils.getSpannedText("At:",formattedTravelInfo));
         userDestination.setText(destination);
         userTime.setText(formattedTravelInfo);
-        if(!thisUserOtherInfo.isOnline())        	
+        if(thisUserOtherInfo.isOnline())        	
         {
-        	//userName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.chat_dot_gray, 0, 0, 0);
-        	userDestination.setCompoundDrawablesWithIntrinsicBounds(R.drawable.to_arrow_disabled, 0, 0, 0);
-        	userTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.time_clock_disabled, 0, 0, 0);
+        	chatDotOffline.setVisibility(View.INVISIBLE);
         }
 		return thisUserView;
 	}	
