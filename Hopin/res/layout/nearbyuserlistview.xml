@@ -63,7 +63,7 @@
           android:textColor="#040404"
           android:gravity="center_vertical"
           android:textSize="13sp"
-          
+          android:drawableLeft="@drawable/source_marker"
            />
       
        <TextView
@@ -73,7 +73,7 @@
           android:ellipsize="marquee"
           android:maxLines="1" 
           android:gravity="center_vertical"
-          
+          android:drawableLeft="@drawable/destination_marker"
           android:text="@string/destination_listview"         
           android:textColor="#040404"
           android:textSize="13sp" 
@@ -87,7 +87,7 @@
           android:maxLines="2"
           android:textColor="#040404"
           android:textSize="13sp" 
-        
+          android:drawableLeft="@drawable/time_clock_enabled"
          />
        
   </LinearLayout>
@@ -104,7 +104,7 @@
               android:cacheColorHint="@android:color/transparent"
               android:divider="@color/dark_gray"
               android:dividerHeight="1dip"
-              style="@style/MatchedUserListView"
+              
               >
     </ListView>
 

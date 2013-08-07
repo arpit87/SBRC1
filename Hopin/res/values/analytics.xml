@@ -1,9 +1,11 @@
 <resources>
     <!--Replace placeholder ID with your tracking ID-->
-    <string name="ga_trackingId">UA-39698394-1</string>
+    
+    <string name="ga_trackingId">UA-38552153-1</string>
+    <!--<string name="ga_trackingId">UA-39698394-1</string> //-1 is prod, -2 debug.above one test-->
 
     <!--Enable automatic activity tracking-->
-    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_autoActivityTracking">false</bool>
 
     <!--Enable automatic exception tracking-->
     <bool name="ga_reportUncaughtExceptions">true</bool>
@@ -11,18 +13,20 @@
     <bool name="ga_dryRun">false</bool>
 
     <integer name="ga_dispatchPeriod">60</integer>
+    
+    <integer name="ga_sessionTimeout">180</integer>
 
-    <string name="in.co.hopin.Activities.HistoryActivity">History</string>
+   <!--  <string name="in.co.hopin.Activities.HistoryActivity">History</string>
     <string name="in.co.hopin.Activities.FeedbackActivity">Feedback</string>
-    <string name="in.co.hopin.Activities.MapListViewTabActivity">MapListView</string>
+    <string name="in.co.hopin.Activities.MapListViewTabActivity">MapListActivity</string> 
     <string name="in.co.hopin.Activities.MyChatsActivity">MyChats</string>
     <string name="in.co.hopin.Activities.MyRequestsActivity">MyRequests</string>
     <string name="in.co.hopin.Activities.NewUserDialogActivity">NewUserDialog</string>
     <string name="in.co.hopin.Activities.OtherUserProfileActivityNew">OtherUserProfile</string>
     <string name="in.co.hopin.Activities.SelfProfileActivity">SelfProfile</string>
-    <string name="in.co.hopin.Activities.SearchInputActivityNew">SearchUser</string>
+    <string name="in.co.hopin.Activities.SearchInputActivityNew">SearchUser</string> 
     <string name="in.co.hopin.Activities.SettingsActivity">Settings</string>
     <string name="in.co.hopin.Activities.StartStrangerBuddyActivity">Home</string>
     <string name="in.co.hopin.Activities.ReloginActivity">Relogin</string>
-    <string name="in.co.hopin.Activities.Tutorial">Tutorial</string>
+    <string name="in.co.hopin.Activities.Tutorial">Tutorial</string> --> 
 </resources>

@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
 <RelativeLayout 
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/listview_selector"
+    android:layout_height="70dip"       
     android:orientation="horizontal" >
 
-  <ImageView
+   <ImageView
         android:id="@+id/nearbyuser_list_row_imageframe"
         android:layout_width="65dp"
         android:layout_height="65dp"
@@ -24,83 +24,138 @@
         android:layout_height="60dp"             
         android:layout_margin="5dip"
         android:layout_centerVertical="true" 
-         /> 
-         
-   <!--    <ImageView
+         />  
+     <RelativeLayout
+      android:id="@+id/nearbyuser_list_row_userdetails"
+      android:layout_width="match_parent"
+      android:layout_height="70dip"
+      android:layout_toRightOf="@+id/nearbyuser_list_row_imageframe"
+      android:orientation="vertical"
+      android:layout_marginLeft="5dip"
+      android:visibility="visible"
+      android:layout_centerVertical="true"
+       >
+      
+        <ImageView
             android:id="@+id/nearbyuser_list_row_chatstatus_online"
-            android:layout_width="12.0dip"
-            android:layout_height="12dp"     
-            android:layout_toRightOf="@id/nearbyuser_list_row_imageframe"   
-            android:layout_marginTop="9dip"    
-            android:layout_marginLeft="3dip"                 
+            android:layout_width="15dip"
+            android:layout_height="15dp"            
             android:scaleType="centerInside"
-            android:src="@drawable/chat_dot_green" />
+            android:src="@drawable/chat_dot_green"
+            android:layout_marginTop="10dip" />
       
       <ImageView
             android:id="@+id/nearbyuser_list_row_chatstatus_offline"
             android:layout_width="15.0dip"
-            android:layout_height="15dp"    
-            android:layout_marginLeft="3dip" 
-            android:layout_toRightOf="@id/nearbyuser_list_row_imageframe"  
-            android:layout_marginTop="9dip"                    
+            android:layout_height="15dp"                             
             android:scaleType="centerInside"
-            android:src="@drawable/chat_dot_gray" />    --> 
-   
-  
-    <TextView
+            android:layout_marginTop="10dip"
+            android:src="@drawable/chat_dot_gray" />
+      
+         <TextView
         android:id="@+id/nearbyuser_list_row_nearbyusername"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"   
-        android:layout_toRightOf="@id/nearbyuser_list_row_imageframe"    
+        android:layout_height="wrap_content" 
         android:text="Arpit Mishra"
-        android:layout_marginLeft="3dip"
-        android:layout_marginTop="2dip"
+        android:layout_marginLeft="3dip"        
         android:textColor="#040404"
         android:typeface="sans"
-        android:textSize="20dip"
-        
-        android:textStyle="bold"/>
+        android:textSize="25dip"        
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/nearbyuser_list_row_chatstatus_offline"
+        />
     
-  <!--   <TextView
-        android:id="@+id/nearbyuser_list_row_nearbyuserFromText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyuser_list_row_nearbyusername"
-        android:layout_toRightOf="@id/nearbyuser_list_row_imageframe" 
-        android:textSize="12dip"       
-        android:textColor="@color/black_75"
-        android:layout_marginTop="1dip" 
-        android:layout_marginLeft="4dip" 
-        android:maxLines="1"
-        android:text="From: "/>  -->   
-        
+         
     <TextView
-        android:id="@+id/nearbyuser_list_row_nearbyuserToText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyuser_list_row_nearbyusername"
-        android:layout_toRightOf="@id/nearbyuser_list_row_imageframe" 
-        android:textSize="15dip"
-        android:textColor="@color/black_75"
-        android:layout_marginLeft="4dip" 
-        android:layout_marginRight="4dip"
-        android:maxLines="1"
-        android:ellipsize="marquee"
-        android:drawableLeft="@drawable/to_arrow_enabled"
-        android:text="To:"/> 
-        
-    <TextView
-        android:id="@+id/nearbyuser_list_row_nearbyuserTimeText"
+        android:id="@+id/nearbyuser_list_row_percentmatch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyuser_list_row_nearbyuserToText"
-        android:layout_toRightOf="@id/nearbyuser_list_row_imageframe"
-        android:textSize="15dip"
+        android:layout_height="12dip"               
+        android:textSize="10dip"
         android:textColor="@color/black_75"
-        android:layout_marginLeft="4dip" 
-        android:layout_marginBottom="1dip"
-        android:drawableLeft="@drawable/time_clock_enabled"
-        android:text="3:00 PM, Daily"/>  
+        android:layout_below="@id/nearbyuser_list_row_nearbyusername"  
+        android:layout_marginLeft="3dip" 
+        android:layout_marginRight="14dip" 
+        android:layout_marginTop="8dip" 
+        android:background="@drawable/tricolorgradientt"       
+        android:text=" 75% match "/>  
+ </RelativeLayout>    
+    
+    <SlidingDrawer android:id="@+id/nearbyuser_list_row_traveldetailsdrawer"
+  android:layout_width="330dip"
+  android:layout_height="70dip"
+  android:orientation="horizontal"
+  android:handle="@+id/nearbyuser_list_row_opendetilsdrawerhandle"
+  android:content="@+id/nearbyuser_list_row_traveldetails"
+  android:padding="10dip"
+  android:layout_centerVertical="true"
+  android:layout_alignParentRight="true"  
+  > 
+  
+        <ImageView android:id="@+id/nearbyuser_list_row_opendetilsdrawerhandle"          
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:src="@drawable/drawerpull"
+          android:layout_centerVertical="true"
+          android:scaleType="fitEnd"/> 
+           
+   
+   <RelativeLayout
+      android:id="@+id/nearbyuser_list_row_traveldetails"
+      android:layout_width="wrap_content"
+      android:layout_height="70dip"
+      android:layout_toRightOf="@+id/nearbyuser_list_row_imageframe"
+      android:orientation="vertical"
+      android:layout_marginLeft="5dip"      
+      android:layout_centerVertical="true"
+      android:background="@color/white"
+       >
+           
+      <TextView
+          android:id="@+id/nearbyuser_list_row_source"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:maxLines="1"
+          android:text="Powai mumbai"
+          android:textColor="#040404"
+          android:gravity="center_vertical"
+          android:textSize="13sp"
+          android:drawableLeft="@drawable/source_marker"
+          android:layout_toRightOf="@id/nearbyuser_list_row_opendetilsdrawerhandle" 
+           />
+      
+       <TextView
+          android:id="@+id/nearbyuser_list_row_destination"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"
+          android:maxLines="1" 
+          android:gravity="center_vertical"
+          android:drawableLeft="@drawable/destination_marker"
+          android:text="Andheri mumbai "         
+          android:textColor="#040404"
+          android:textSize="13sp" 
+          android:layout_toRightOf="@id/nearbyuser_list_row_opendetilsdrawerhandle" 
+          android:layout_below="@id/nearbyuser_list_row_source"
+          />
+       
+       <TextView
+          android:id="@+id/nearbyuser_list_row_time"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="marquee"          
+          android:maxLines="2"
+          android:textColor="#040404"
+          android:textSize="13sp" 
+          android:drawableLeft="@drawable/time_clock_enabled"
+          android:text="3:00 AM, Daily"
+          android:layout_toRightOf="@id/nearbyuser_list_row_opendetilsdrawerhandle"
+          android:layout_below="@id/nearbyuser_list_row_destination" 
+         />
+       
+  </RelativeLayout>
+  </SlidingDrawer>  
+ 
  </RelativeLayout>
   <View
        android:id="@+id/nearbyuser_list_row_separator"
