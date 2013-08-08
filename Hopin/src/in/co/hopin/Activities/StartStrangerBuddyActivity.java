@@ -31,16 +31,16 @@ import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 import in.co.hopin.provider.HistoryContentProvider;
+import in.co.hopin.service.OnAlarmReceiver;
 
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.xbill.DNS.Tokenizer.Token;
-
 public class StartStrangerBuddyActivity extends Activity {
-	
+	public static final int UPLOAD_FREQUENCY = 2 * 60 * 1000;
+
 	private ProgressBar mProgress;
 	private static final String TAG = "in.co.hopin.Activities.StartStrangerBuddyActivity";
 	Runnable startMapActivity;
@@ -181,7 +181,8 @@ public class StartStrangerBuddyActivity extends Activity {
 
     public void onResume()
     {   	
-    	super.onResume();        
+    	super.onResume();
+        setAlarm(Platform.getInstance().getContext());
         if (!isLocationProviderEnabled()){
             buildAlertMessageForLocationProvider();           
         }
@@ -255,8 +256,13 @@ public class StartStrangerBuddyActivity extends Activity {
 	        }
         }
         }
-        
-    
+
+    public void setAlarm(Context context){
+        Intent intent =  new Intent(context, OnAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, 0, UPLOAD_FREQUENCY , pendingIntent);
+    }
     
     private boolean isVersionUpgraded()
     {

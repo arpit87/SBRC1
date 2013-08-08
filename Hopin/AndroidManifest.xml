@@ -178,6 +178,10 @@
                android:name="in.co.hopin.provider.ActiveChatProvider"
                android:authorities="in.co.hopin.provider.ActiveChatProvider" />
 
+       <provider
+                android:name="in.co.hopin.provider.EventsLoggingProvider"
+                android:authorities="in.co.hopin.provider.EventsLoggingProvider" />
+
         <receiver android:name="in.co.hopin.LocationHelpers.LocationUpdaterFromIntent"
             android:exported="false">
              </receiver> 
@@ -196,6 +200,18 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
+
+       <receiver android:name="in.co.hopin.service.OnBootReceiver" >
+           <intent-filter>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
+           </intent-filter>
+       </receiver>
+
+       <receiver android:name="in.co.hopin.service.OnAlarmReceiver" >
+       </receiver>
+
+       <service android:name="in.co.hopin.service.UploadEventService" >
+       </service>
          
     </application>
     
