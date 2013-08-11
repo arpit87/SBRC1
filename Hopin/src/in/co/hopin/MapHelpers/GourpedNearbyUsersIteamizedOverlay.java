@@ -1,15 +1,15 @@
 package in.co.hopin.MapHelpers;
 
+import in.co.hopin.R;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
-import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.NearbyUserGroup;
+import in.co.hopin.Util.HopinTracker;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import in.co.hopin.R;
 import android.content.Context;
 
 
@@ -80,15 +80,14 @@ public class GourpedNearbyUsersIteamizedOverlay extends BaseItemizedOverlay{
 		Iterator<GroupedNearbyUsersOverlayItem> it = (Iterator<GroupedNearbyUsersOverlayItem>) groupList.iterator();
 		while(it.hasNext() )
 		{
-			it.next().showOnlySmallView();			
+			it.next().showSmallIfExpanded();			
 		}
 	}
 	
 	
 	
 	protected boolean onTap(int i)
-	{
-		//on tap check if user logged in to fb
+	{	
 		groupList.get(i).toggleSmallView();	
 		MapListActivityHandler.getInstance().centreMapTo(groupList.get(i).getGeopoint());
 		return true;

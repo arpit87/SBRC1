@@ -1,16 +1,15 @@
 package in.co.hopin.MapHelpers;
 
+import in.co.hopin.R;
 import in.co.hopin.Activities.SelfProfileActivity;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
 import in.co.hopin.HelperClasses.SBImageLoader;
-import in.co.hopin.HelperClasses.Store;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.R;
+import in.co.hopin.Util.HopinTracker;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +18,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
 public class ThisUserOverlayItem extends BaseOverlayItem{
@@ -95,6 +93,12 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
         }
 	}	
 	
+	public void removeAllView()
+	{	
+			removeView();		
+	}
+	
+	
 	public void ToggleView()
 	{
 		if(isVisible)
@@ -120,7 +124,8 @@ public class ThisUserOverlayItem extends BaseOverlayItem{
 	public class ThisUserOnTouchListener implements OnTouchListener
 	{		
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {			
+		public boolean onTouch(View v, MotionEvent event) {	
+			HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:self",1L);
 			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
 			Intent hopinSelfProfile = new Intent(MapListActivityHandler.getInstance().getUnderlyingActivity(),SelfProfileActivity.class);
 			hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);			

@@ -10,6 +10,7 @@ import in.co.hopin.HttpClient.InstaRequest;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 
 import java.text.ParseException;
@@ -91,6 +92,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 						
 						@Override
 						public void onClick(View paramView) {
+							HopinTracker.sendEvent("ShowActiveReqPrompt","ButtonClick","showactivereqprompt:dailycarpool",1L);
 							try {
 								MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
 								ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching carpool matches", "Please wait");
@@ -101,8 +103,6 @@ public class ShowActiveReqPrompt extends DialogFragment{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							
-							
 						}
 					});
 				
@@ -144,6 +144,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 						
 						@Override
 						public void onClick(View paramView) {
+							HopinTracker.sendEvent("ShowActiveReqPrompt","ButtonClick","showactivereqprompt:onetimepool",1L);
 							try {
 								MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
 								ProgressHandler.showInfiniteProgressDialoge(getActivity(), "Fetching  matches", "Please wait");
@@ -174,6 +175,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
         newRequestButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				HopinTracker.sendEvent("ShowActiveReqPrompt","ButtonClick","showactivereqprompt:newrequestbutton",1L);
 				dismiss();
 			}
 		});
@@ -183,6 +185,7 @@ public class ShowActiveReqPrompt extends DialogFragment{
 			
 			@Override
 			public void onClick(View v) {
+				HopinTracker.sendEvent("ShowActiveReqPrompt","ButtonClick","showactivereqprompt:chatbutton",1L);
 					dismiss();
 				  Intent myChatsIntent = new Intent(getActivity(), MyChatsActivity.class);
 			       myChatsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -193,6 +196,12 @@ public class ShowActiveReqPrompt extends DialogFragment{
 	       
 		return dialogView;
 	}
+	
+	  @Override
+	    public void onStart(){
+	        super.onStart();
+	        HopinTracker.sendEvent("ShowActiveReqPrompt","ScreenOpen","showactivereqprompt:open",1L);
+	    }
 	
 	
 }

@@ -167,7 +167,7 @@ public class UserLocInfo {
 	public String getFormattedTimeDetails(int daily_insta_type)
 	{			
 		if(daily_insta_type == 0)
-			formattedTimeDetails =  StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", getTimeOfTravel()) + " ,Daily";
+			formattedTimeDetails =  StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "hh:mm a", getTimeOfTravel()) + ", Daily";
 		
 		else
 			formattedTimeDetails = StringUtils.formatDate("yyyy-MM-dd HH:mm:ss", "d MMM hh:mm a", getTimeOfTravel());

@@ -10,6 +10,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
 
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import org.apache.http.HttpResponse;
 import org.json.JSONArray;
@@ -28,8 +29,8 @@ public class GetNewUserInfoAndShowPopup extends ServerResponseBase{
 	
 	
 	private static final String TAG = "in.co.hopin.Server.GetFBInfoResponseAndShowPopup";
-	public GetNewUserInfoAndShowPopup(HttpResponse response,String jobjStr,int daily_insta_type) {
-		super(response,jobjStr);		
+	public GetNewUserInfoAndShowPopup(HttpResponse response,String jobjStr,int daily_insta_type,String api) {
+		super(response,jobjStr,api);		
 		this.daily_insta_type = daily_insta_type;
 	}
 	
@@ -60,7 +61,8 @@ public class GetNewUserInfoAndShowPopup extends ServerResponseBase{
 			//ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
 			
 			//ToastTracker.showToast("fb save:"+status);
-		} catch (JSONException e) {		
+		} catch (JSONException e) {	
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			Logger.e(TAG, "Error returned by server get fb info for user and show popup");

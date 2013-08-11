@@ -10,6 +10,7 @@ import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -239,6 +240,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			buttonClose.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:close",1L);
 					showSmallIfExpanded();
 				}
 				});
@@ -252,6 +254,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			hopinIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:hopinprofile",1L);
 					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FragmentActivity)context, mNearbyUser.getUserFBInfo());
 				}
 				});
@@ -266,6 +269,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			chatIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:chat",1L);
 					CommunicationHelper.getInstance().onChatClickWithUser((FragmentActivity)context,mNearbyUser.getUserFBInfo().getFbid(),mNearbyUser.getUserFBInfo().getFullName());						
 				}
 			});
@@ -273,6 +277,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:fbprofile",1L);
 					CommunicationHelper.getInstance().onFBIconClickWithUser((FragmentActivity)context,mUserFBID,mUserFBName);						
 				}
 			});		
@@ -289,7 +294,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	{
 		if(viewOnMarkerExpanded!=null && isVisibleExpanded == true)
 		{
-			viewOnMarkerExpanded.setVisibility(View.GONE);
+			viewOnMarkerExpanded.setVisibility(View.INVISIBLE);
 			isVisibleExpanded = false;
 		}
 		else {
@@ -301,13 +306,20 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	{
 		if(viewOnMarkerSmall!=null && isVisibleSmall == true)
 		{
-			viewOnMarkerSmall.setVisibility(View.GONE);
+			viewOnMarkerSmall.setVisibility(View.INVISIBLE);
 			isVisibleSmall = false;
 		}
 		else {
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove null View");
         }
 	}	
+	
+	public void removeAllView()
+	{		
+			removeExpandedView();			
+			removeSmallView();		
+	}
+	
 	
 	public void toggleSmallView()
 	{
@@ -350,6 +362,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	
 	public void showExpandedView()
 	{
+		HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:open",1L);
 		if(viewOnMarkerExpanded!=null)
 		{
             boolean isOtherUserFbInfoAvailable = mUserFBInfo.FBInfoAvailable();
@@ -409,6 +422,7 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	{		
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
+			HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:other_user", 1L, "user = "+mUserFBID);
 			removeSmallView();
 			showExpandedView();
 			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);

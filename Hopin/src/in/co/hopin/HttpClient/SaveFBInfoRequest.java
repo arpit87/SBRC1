@@ -17,13 +17,15 @@ import in.co.hopin.Server.SaveFBInfoResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class SaveFBInfoRequest extends SBHttpRequest{
+	private static String RESTAPI="saveFBInfo";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/"+RESTAPI+"/";
 
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/saveFBInfo/";
 	HttpPost httpQuery;	
 	UrlEncodedFormEntity formEntity;
 	HttpClient httpclient = new DefaultHttpClient();	
@@ -64,29 +66,22 @@ public class SaveFBInfoRequest extends SBHttpRequest{
 	
 	
 	public ServerResponseBase execute() {
+		HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 			try {
 				response=httpclient.execute(httpQuery);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 
 			try {
 				if(response==null)
 					return null;
 				jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			} 	
 			
-		saveFBInfoResponse = new SaveFBInfoResponse(response,jsonStr);
+		saveFBInfoResponse = new SaveFBInfoResponse(response,jsonStr,RESTAPI);
 		return saveFBInfoResponse;
 		
 	}

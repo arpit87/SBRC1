@@ -21,7 +21,7 @@ public abstract class SBHttpRequest {
 	}
 	
 	QueryMethod queryMethod = null;
-	public String URLStr = "";
+	String URLStr = "";
 	HttpResponse response = null;
 	
 	// Create a response handler

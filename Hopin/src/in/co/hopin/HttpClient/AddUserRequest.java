@@ -6,6 +6,7 @@ import in.co.hopin.Server.AddUserResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,7 +26,8 @@ import android.app.Activity;
 import android.util.Log;
 
 public class AddUserRequest extends SBHttpRequest{
-	public static final String URL = ServerConstants.SERVER_ADDRESS+ServerConstants.USERSERVICE+"/addUser/";
+	private static String RESTAPI="addUser";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERSERVICE + "/"+RESTAPI+"/";
 
 	HttpPost httpQuery;
 	JSONObject jsonobj;	
@@ -66,28 +68,21 @@ public class AddUserRequest extends SBHttpRequest{
 	}
 	
 	public ServerResponseBase execute() {
+			HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 			try {
 				response=httpclient.execute(httpQuery);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 			try {
 				if(response==null)
 					return null;
 				jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			}   
 					
-			addUserResponse =	new AddUserResponse(response,jsonStr,tutorial_activity);
+			addUserResponse =	new AddUserResponse(response,jsonStr,tutorial_activity,RESTAPI);
 			return addUserResponse;
 		
 	}

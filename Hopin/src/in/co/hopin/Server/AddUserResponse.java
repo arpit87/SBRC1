@@ -11,6 +11,7 @@ import in.co.hopin.HttpClient.SaveFBInfoRequest;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -26,8 +27,8 @@ public class AddUserResponse extends ServerResponseBase{
 	Activity tutorial_activity;//needed to stop activity
 	
 	private static final String TAG = "in.co.hopin.Server.AddUserResponse";
-	public AddUserResponse(HttpResponse response,String jobjStr,Activity tutorial_activity) {
-		super(response,jobjStr);
+	public AddUserResponse(HttpResponse response,String jobjStr,Activity tutorial_activity,String api) {
+		super(response,jobjStr,api);
 		this.tutorial_activity = tutorial_activity;
 	}
 	
@@ -61,7 +62,9 @@ public class AddUserResponse extends ServerResponseBase{
 				 sendAddFBAndChatInfoToServer(fbid);
 			 }
 		} catch (JSONException e) {
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");
+			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Unable to communicate to server,try again later");
 			e.printStackTrace();
 		}

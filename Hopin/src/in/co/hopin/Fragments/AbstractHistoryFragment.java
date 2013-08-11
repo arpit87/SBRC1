@@ -1,5 +1,21 @@
 package in.co.hopin.Fragments;
 
+import in.co.hopin.R;
+import in.co.hopin.ActivityHandlers.MapListActivityHandler;
+import in.co.hopin.Adapter.HistoryAdapter;
+import in.co.hopin.HelperClasses.ProgressHandler;
+import in.co.hopin.HelperClasses.SBConnectivity;
+import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
+import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
+import in.co.hopin.HttpClient.SBHttpClient;
+import in.co.hopin.HttpClient.SBHttpRequest;
+import in.co.hopin.Platform.Platform;
+import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -11,20 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import in.co.hopin.ActivityHandlers.MapListActivityHandler;
-import in.co.hopin.Adapter.HistoryAdapter;
-import in.co.hopin.HelperClasses.ProgressHandler;
-import in.co.hopin.HelperClasses.SBConnectivity;
-import in.co.hopin.HttpClient.AddThisUserScrDstCarPoolRequest;
-import in.co.hopin.HttpClient.AddThisUserSrcDstRequest;
-import in.co.hopin.HttpClient.SBHttpClient;
-import in.co.hopin.HttpClient.SBHttpRequest;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.R;
-import in.co.hopin.Users.ThisUserNew;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractHistoryFragment extends ListFragment {
     public static final String TAG = "in.co.hopin.Fragments.AbstractHistoryFragment";
@@ -33,6 +35,7 @@ public abstract class AbstractHistoryFragment extends ListFragment {
 	View mListViewContainer;
 	TextView mEmptyListTextView;
 	List<HistoryAdapter.HistoryItem> historyList;
+	String PlanInstaStr = "";
 
     public abstract int getPlanInstantType();    
 
@@ -42,6 +45,11 @@ public abstract class AbstractHistoryFragment extends ListFragment {
         historyList = fetchHistory();
         adapter = new HistoryAdapter(getActivity(), historyList);
         setListAdapter(adapter);
+        HopinTracker.sendEvent("History","ScreenOpen","history:open",1L);
+        if(getPlanInstantType() == 0)
+        	PlanInstaStr = "Plan" ;
+        else
+        	PlanInstaStr = "Insta";
     }
 
     @Override
@@ -56,6 +64,7 @@ public abstract class AbstractHistoryFragment extends ListFragment {
             CreateRequestFromHistory asyncReq = new CreateRequestFromHistory();
             asyncReq.execute(historyItem);
             getActivity().finish();
+            HopinTracker.sendEvent("History","ListClick","history:"+PlanInstaStr+":click",1L,"position ="+Integer.toString(position));
         }
     }
 

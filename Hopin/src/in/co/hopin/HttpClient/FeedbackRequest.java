@@ -8,6 +8,7 @@ import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,7 +28,9 @@ import android.util.Log;
 
 public class FeedbackRequest extends SBHttpRequest{
 
-	public static final String URL = ServerConstants.SERVER_ADDRESS+ServerConstants.USERDETAILSSERVICE+"/saveFeedBack/";
+	private static String RESTAPI="saveFeedBack";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/"+RESTAPI+"/";
+
     HttpClient httpclient = new DefaultHttpClient();
 	HttpPost httpQuery;
 	String jsonStr;
@@ -65,32 +68,22 @@ public class FeedbackRequest extends SBHttpRequest{
 	}
 	
 	public ServerResponseBase execute() {
-	
-		
-	
+		HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);	
 			try {
 				response=httpclient.execute(httpQuery);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 			
 			try {
 				if(response==null)
 					return null;
 				jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			}   			
 			
-		return new FeedbackResponse(response,jsonStr);
+		return new FeedbackResponse(response,jsonStr,RESTAPI);
 	}
 
 }

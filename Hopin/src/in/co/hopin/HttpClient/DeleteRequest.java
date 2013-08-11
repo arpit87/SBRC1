@@ -6,6 +6,7 @@ import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,7 +26,9 @@ import android.util.Log;
 
 public class DeleteRequest extends SBHttpRequest{
 
-	public static final String URL = ServerConstants.SERVER_ADDRESS+ServerConstants.REQUESTSERVICE+"/deleteRequest/";
+	private static String RESTAPI="deleteRequest";
+	public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/"+RESTAPI+"/";
+
     HttpClient httpclient = new DefaultHttpClient();
 	HttpPost httpQuery;
 	String jsonStr;
@@ -63,32 +66,22 @@ public class DeleteRequest extends SBHttpRequest{
 	}
 	
 	public ServerResponseBase execute() {
-	
-		
-	
+		HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 			try {
 				response=httpclient.execute(httpQuery);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 			
 			try {
 				if(response==null)
 					return null;
 				jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			}   			
 			
-		return new DeleteReqResponse(response,jsonStr,daily_insta_type);
+		return new DeleteReqResponse(response,jsonStr,daily_insta_type,RESTAPI);
 	}
 
 }

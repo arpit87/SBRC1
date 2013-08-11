@@ -13,6 +13,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.NearbyUserGroup;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -105,6 +106,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 				
 				@Override
 				public boolean onTouch(View arg0, MotionEvent arg1) {
+					HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:group",1L,"group_size="+Integer.toString(mUserGroup.mUsersListInGroup.size()));
 					removeSmallView();
 					createAndDisplayExpandedView();
 					MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
@@ -121,9 +123,9 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 	
 	public void removeSmallView()
 	{
-		if(viewOnMarkerSmall!=null && isVisibleSmall == true)
+		if(viewOnMarkerSmall!=null && isVisibleSmall)
 		{
-			viewOnMarkerSmall.setVisibility(View.GONE);
+			viewOnMarkerSmall.setVisibility(View.INVISIBLE);
 			isVisibleSmall = false;
 		}
 		else {
@@ -133,9 +135,9 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 	
 	public void removeExpandedView()
 	{
-		if(viewOnMarkerExpanded!=null && isVisibleExpanded == true)
+		if(viewOnMarkerExpanded!=null && isVisibleExpanded)
 		{
-			viewOnMarkerExpanded.setVisibility(View.GONE);
+			viewOnMarkerExpanded.setVisibility(View.INVISIBLE);
 			isVisibleExpanded = false;
 		}
 		else {
@@ -145,9 +147,10 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 	
 	public void removeIndividualUserExpandedView()
 	{
-		if(viewOnMarkerIndividualExpanded!=null)
+		if(viewOnMarkerIndividualExpanded!=null && isVisibleExpandedIndividual)
 		{
-			viewOnMarkerIndividualExpanded.setVisibility(View.GONE);			
+			viewOnMarkerIndividualExpanded.setVisibility(View.INVISIBLE);
+			isVisibleExpandedIndividual = false;
 		}
 		else {
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"trying to remove expanded null View");
@@ -171,6 +174,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 
 	public void showIndividualUserExpandedView(final NearbyUser n)
 	{
+		HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:open",1L);
 		//to expand view if not yet expanded or chage info on current view
 		if(viewOnMarkerIndividualExpanded!=null)
 		{
@@ -239,6 +243,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
             	hopinIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:hopinprofile",1L);
 					CommunicationHelper.getInstance().onHopinProfileClickWithUser((FragmentActivity)context, n.getUserFBInfo());
 				}
 				});
@@ -258,6 +263,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			chatIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:chat",1L);
 					CommunicationHelper.getInstance().onChatClickWithUser((FragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFullName());						
 				}
 			});
@@ -265,11 +271,13 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View chatIconView) {
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:fbprofile",1L);
 					CommunicationHelper.getInstance().onFBIconClickWithUser((FragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
 				}
 			});
            
             viewOnMarkerIndividualExpanded.setVisibility(View.VISIBLE);
+            isVisibleExpandedIndividual = true;
 			
 		}
 		else
@@ -386,6 +394,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 		});
        
         viewOnMarkerIndividualExpanded.setVisibility(View.VISIBLE);
+        isVisibleExpandedIndividual = true;
 	}
 	
 	protected void createAndDisplayExpandedView()
@@ -409,7 +418,8 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View v,
-						int position, long id) {
+						int position, long id) {	
+					HopinTracker.sendEvent("Map","MapGroupClick","mapgroup:click:griditem",1L);
 					removeExpandedView();
 					showIndividualUserExpandedView(mUserGroup.getNearbyUserAt(position));
 					
@@ -421,6 +431,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			buttonClose.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View buttonClose) {
+					HopinTracker.sendEvent("Map","MapGroupClick","mapgroup:close",1L);
 					removeExpandedView();
 					showSmallView();
 				}
@@ -457,7 +468,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			viewOnMarkerExpanded.setVisibility(View.VISIBLE);
 			isVisibleExpanded = true;
 		}
-				
+		HopinTracker.sendEvent("Map","MapGroupOpen","mapgroup:open",1L);		
 	}
 	
 	
@@ -499,35 +510,28 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			fb_name.setText(name_str);		
 		
 		if(worksat_str!="null")
-			works_at.setText(getSpannedText("Works at ", worksat_str));
+			works_at.setText(StringUtils.getSpannedText("Works at ", worksat_str));
 		else
 			works_at.setVisibility(View.GONE);
 		
 		if(studiedat_str!="null")
-			studied_at.setText(getSpannedText("Studied at " ,studiedat_str));
+			studied_at.setText(StringUtils.getSpannedText("Studied at " ,studiedat_str));
 		else
 			studied_at.setVisibility(View.GONE);
 		
 		if(hometown_str!="null")
-			hometown.setText(getSpannedText("HomeTown " , hometown_str));
+			hometown.setText(StringUtils.getSpannedText("HomeTown " , hometown_str));
 		else
 			hometown.setVisibility(View.GONE);
 		
 		if(gender_str!="null")
-			gender.setText(getSpannedText("Gender ",gender_str));
+			gender.setText(StringUtils.getSpannedText("Gender ",gender_str));
 		else
 			gender.setVisibility(View.GONE);
 		
 		
 	}
-	
-	private Spannable getSpannedText(String label, String text)
-	{
-		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-		Spannable label_span = new SpannableString(label + " "+text);		
-		label_span.setSpan(bold, 0,label.length() , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		return label_span;
-	}
+		
 	
 	public void toggleSmallView()
 	{
@@ -535,6 +539,7 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			removeSmallView();
 		else
 			showSmallView();
+		
 	}
 	
 	public void showOnlySmallView()
@@ -545,6 +550,23 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			showSmallView();
 		}
 	}
+	
+	public void showSmallIfExpanded()
+	{
+		if(isVisibleExpanded || isVisibleExpandedIndividual){
+			removeExpandedView();
+			removeIndividualUserExpandedView();
+			showSmallView();
+		}
+	}
+	
+	public void removeAllView()
+	{		
+			removeExpandedView();
+			removeIndividualUserExpandedView();
+			removeSmallView();		
+	}
+	
 	
 	
 

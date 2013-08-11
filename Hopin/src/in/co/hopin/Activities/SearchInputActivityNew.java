@@ -12,8 +12,10 @@ import in.co.hopin.Fragments.SearchUserPlanFrag;
 import in.co.hopin.Fragments.SelfAboutMeFrag;
 import in.co.hopin.Fragments.SelfFriends;
 import in.co.hopin.HelperClasses.CommunicationHelper;
+import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Util.HopinTracker;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +29,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ToggleButton;
@@ -43,11 +46,11 @@ public class SearchInputActivityNew extends FragmentActivity{
 	private MyPageAdapter mPagerSearchAdapter;
 	private MyPageAdapter mPagerHistoryAdapter;
 	private ViewPager mPager;
-	private static final int NUM_PAGES = 2;
+	private static final int NUM_PAGES = 2;	
 	
 	//for GA
 	private String tabTypeStr = "Insta";
-	private String history_newsearch_str = "NewSearch";
+	private String history_newsearch_str = "SearchUsers";
 	
    
 	@Override
@@ -69,7 +72,7 @@ public class SearchInputActivityNew extends FragmentActivity{
 		 setContentView(R.layout.search_users_framelayout);
 		 BtnInstaSearchView = (Button)findViewById(R.id.search_user_tab_insta);
 		 BtnPlanSearchView = (Button)findViewById(R.id.search_user_tab_plan);
-		 BtnGotoPastSearch = (ToggleButton)findViewById(R.id.search_user_tab_gotohistory);
+		 BtnGotoPastSearch = (ToggleButton)findViewById(R.id.search_user_tab_gotohistory);		
 		 mPager = (ViewPager) findViewById(R.id.search_users_viewpager);		 
 		 mPagerSearchAdapter = new MyPageAdapter(getSupportFragmentManager());  
 		 mPagerSearchAdapter.setFragments(getSearchFragments());
@@ -82,7 +85,7 @@ public class SearchInputActivityNew extends FragmentActivity{
 			public void onClick(View v) {
 				tabTypeStr = "Insta";
 			    mPager.setCurrentItem(0);    
-			    
+			    HopinTracker.sendEvent("SearchUsers","TabClick","searchusers:click:tab:insta",1L);
 			}
 		});
 		 
@@ -91,14 +94,15 @@ public class SearchInputActivityNew extends FragmentActivity{
 				@Override
 				public void onClick(View v) {
 					tabTypeStr = "Plan";
-					mPager.setCurrentItem(1);										
+					mPager.setCurrentItem(1);
+					HopinTracker.sendEvent("SearchUsers","TabClick","searchusers:click:tab:plan",1L);
 				}
 			});
 		 
 		 BtnGotoPastSearch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
-			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {	
+			public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {					
 				mPager.removeAllViews();
 				if(isChecked)
 				{					
@@ -116,12 +120,13 @@ public class SearchInputActivityNew extends FragmentActivity{
 				else
 				{		
 					mPager.setAdapter(mPagerSearchAdapter);	
-					history_newsearch_str = "NewSearch";
+					history_newsearch_str = "SearchUsers";
 					if(BtnPlanSearchView.isSelected())
 						mPager.setCurrentItem(1);
 					else if(BtnInstaSearchView.isSelected())
 						mPager.setCurrentItem(0);
 				}
+				HopinTracker.sendEvent("SearchUsers","ToggleButtonClick",history_newsearch_str+":"+tabTypeStr+":click:showhistory",1L);
 				
 			}
 		});
@@ -132,11 +137,13 @@ public class SearchInputActivityNew extends FragmentActivity{
 	            		switch(position)
 		        		{
 		        			case 0: //about button selected
+		        				HopinTracker.sendEvent("SearchUsers","Swipe","searchusers:swipe:tab:insta",1L);
 		        				BtnInstaSearchView.setSelected(true);
 		    					BtnPlanSearchView.setSelected(false);
 		    					tabTypeStr = "Insta";
 		        			break;
 		        			case 1:
+		        				HopinTracker.sendEvent("SearchUsers","Swipe","searchusers:swipe:tab:plan",1L);
 		        				BtnInstaSearchView.setSelected(false);
 		    					BtnPlanSearchView.setSelected(true);
 		    					tabTypeStr = "Plan";
@@ -147,6 +154,7 @@ public class SearchInputActivityNew extends FragmentActivity{
 		    					tabTypeStr = "Insta";
 		        		}	
 	            		HopinTracker.sendView(history_newsearch_str+tabTypeStr+"View");
+	            		HopinTracker.sendEvent("SearchUsers","ScreenOpen",history_newsearch_str+":"+tabTypeStr,1L);
 	            }
 	
 				@Override
@@ -161,11 +169,17 @@ public class SearchInputActivityNew extends FragmentActivity{
 					
 				}
 	        });
-	     	 
+		  			     	 
 		 BtnInstaSearchView.setSelected(true);
-	     	
-	 }
-	 
+		 
+		if(!ThisAppConfig.getInstance().getBool(ThisAppConfig.SWIPETUTORIALSHOWN))	
+		{
+			 Intent swipeTutIntent = new Intent(this,SwipeTutorialActivity.class);	
+			 swipeTutIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	   		 startActivity(swipeTutIntent);
+		}
+			
+	 } 
 	 
 	 private List<Fragment> getSearchFragments() {	
 	    	List<Fragment> search_frag_list = new ArrayList<Fragment>();	    	

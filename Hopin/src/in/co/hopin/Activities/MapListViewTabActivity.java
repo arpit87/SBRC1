@@ -47,23 +47,16 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
 	
 	private static final String TAG = "in.co.hopin.Activities.MapListViewTabActivity";
 	
-	MapListActivityHandler mapListActivityHandler = MapListActivityHandler.getInstance();
-	private ViewGroup mMapViewContainer;	
-	private SBMapView mMapView;
+	MapListActivityHandler mapListActivityHandler = MapListActivityHandler.getInstance();	
 	
 	
-	private ImageButton selfLocationButton = null;
-	private ToggleButton offerRideButton = null;
-	
-	
-	private boolean currentIsOfferMode;	
 	
 	FragmentManager fm = getSupportFragmentManager();
 	private boolean isMapShowing = true;
    
     private SBMapFragment sbMapFragment;
     private SBListFragment sbListFragment;
-    private ImageView mFbLogin;
+   
     private Menu mMenu;
     ActionBar ab;
     
@@ -102,6 +95,8 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
         	ShowActiveReqPrompt activereq_dialog = new ShowActiveReqPrompt();
        		activereq_dialog.show(getSupportFragmentManager(), "active_req_prompt");
         }
+        
+        mapListActivityHandler.setUnderlyingActivity(this);
         //checkIfGPSIsEnabled();
         
     }
@@ -228,6 +223,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     
 	@Override
 	public void onBackPressed() {
+		HopinTracker.sendEvent("Map","ButtonClick","map:click:back",1L);
         if (!isMapShowing){
             isMapShowing = true;
             showMapView();
@@ -257,16 +253,18 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-    	
+    	HopinTracker.sendEvent("MainMenu","MenuOpen","mainmenu:open",1L);
         switch (menuItem.getItemId())
         {
         case R.id.main_menu_btn_search:
-        	//onSearchRequested();        	 
+        	//onSearchRequested();        	
+        	HopinTracker.sendEvent("Map","ButtonClick","map:click:searchusers",1L);
 	    	 Intent searchInputIntent = new Intent(this,SearchInputActivityNew.class);	
 	    	 searchInputIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	   		 startActivity(searchInputIntent);
         	break;
         case R.id.main_menu_btn_listview:
+        	HopinTracker.sendEvent("Map","ButtonClick","map:click:togglemaplist",1L);
         	toggleMapListView(menuItem);
         	break;
        /* case R.id.fb_login_menuitem:
@@ -284,11 +282,13 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
         	fbconnect.logoutFromFB();
         	break;*/
         case R.id.main_menu_settings:
+        	HopinTracker.sendEvent("MainMenu","MenuClick","mainmenu:click:settings",1L);
         	Intent i = new Intent(this,SettingsActivity.class);
         	i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         	startActivity(i);
         	break;
         case R.id.main_menu_exit:
+        	HopinTracker.sendEvent("MainMenu","MenuClick","mainmenu:click:exit",1L);
         	//delete user request,close service
         	buildOnExitAlertDialog();
                      	
@@ -298,16 +298,20 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
    		activereq_dialog.show(getSupportFragmentManager(), "fblogin_dialog");
    		 break;*/
      case R.id.main_menu_my_requests:
+    	 HopinTracker.sendEvent("MyRequest","MenuClick","mainmenu:click:myrequests",1L);
+    	 HopinTracker.sendEvent("MainMenu","MenuClick","mainmenu:click:activerequest",1L);
          Intent myRequestIntent = new Intent(this, MyRequestsActivity.class);
          myRequestIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
          startActivity(myRequestIntent);
          break;
      case R.id.main_menu_my_chats:
+    	 HopinTracker.sendEvent("MainMenu","MenuClick","mainmenu:click:chatslist",1L);
          Intent myChatsIntent = new Intent(this, MyChatsActivity.class);
          myChatsIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
          startActivity(myChatsIntent);
          break;         
-     case R.id.main_menu_shareapp:    	 
+     case R.id.main_menu_shareapp: 
+    	 HopinTracker.sendEvent("MainMenu","MenuClick","mainmenu:click:tellafriend",1L);
     	 Intent sendIntent = new Intent();
     	 sendIntent.setAction(Intent.ACTION_SEND);
     	 sendIntent.putExtra(Intent.EXTRA_TEXT, "Very useful, take a look: " + '\n' + getResources().getString(R.string.http_app_link));
@@ -339,7 +343,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     	}
     	else
     	{    		
-    		isMapShowing = false;
+    		isMapShowing = false;    		
     		showListView();
     		menuItem.setIcon(R.drawable.listtomap);
     	}
@@ -349,6 +353,7 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
     private void showMapView()
     {        
         HopinTracker.sendView("MapView");
+        HopinTracker.sendEvent("MapView","ScreenOpen","map:open",1L);
     	if (fm != null) {
             
             FragmentTransaction ft = fm.beginTransaction();
@@ -358,13 +363,14 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
             } else {
                 ft.replace(R.id.maplistviewcontent, sbMapFragment);
             }
-            ft.commit();
+            ft.commit();            
         }
     }
     
     private void showListView()
     {
         HopinTracker.sendView("ListView");
+        HopinTracker.sendEvent("ListView","ScreenOpen","listmatchingusers:open",1L);
         if (fm != null) {
             
             FragmentTransaction ft = fm.beginTransaction();
@@ -372,38 +378,10 @@ public class MapListViewTabActivity extends SherlockFragmentActivity {
                 sbListFragment = new SBListFragment();
             }
             ft.add(R.id.maplistviewcontent, sbListFragment);
-            ft.commit();
+            ft.commit();           
         }
     }
    
-	public ViewGroup getThisMapContainerWithMapView()
-    {
-    	if(mMapViewContainer == null)
-    	{
-    		mMapViewContainer = (ViewGroup) getLayoutInflater().inflate(R.layout.map,null,false);
-    		mMapView = (SBMapView) mMapViewContainer.findViewById(R.id.map_view);
-    		selfLocationButton = (ImageButton) mMapViewContainer.findViewById(R.id.my_location_button);
-    		//offerRideButton = (ToggleButton) mMapViewContainer.findViewById(R.id.offerride_button);
-    		if(currentIsOfferMode)
-    			offerRideButton.setChecked(true);
-    		mMapView.getOverlays().clear();    		
-    		MapListActivityHandler.getInstance().setMapView(mMapView);
-            MapListActivityHandler.getInstance().setUnderlyingActivity(this);
-            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize handler");
-            if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize mylocation");
-            MapListActivityHandler.getInstance().initMyLocation();
-    		//mMapViewContainer.removeView(mMapView);
-    	}
-    	else
-    	{
-    		mMapViewContainer.addView(mMapView);
-    		mMapViewContainer.addView(selfLocationButton);
-    		
-    		//mMapViewContainer.addView(offerRideButton);
-    		//if(currentIsOfferMode)
-    		//	offerRideButton.setChecked(true);
-    	}
-    	return mMapViewContainer;
-    }
+	
       
 }

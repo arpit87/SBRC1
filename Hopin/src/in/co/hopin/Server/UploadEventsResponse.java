@@ -1,6 +1,7 @@
 package in.co.hopin.Server;
 
 import in.co.hopin.HelperClasses.Event;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -12,8 +13,8 @@ public class UploadEventsResponse extends ServerResponseBase {
 
     private long lastTimeStamp;
 
-    public UploadEventsResponse(HttpResponse httpResponse, String jObjStr, long lastTimeStamp) {
-        super(httpResponse, jObjStr);
+    public UploadEventsResponse(HttpResponse httpResponse, String jObjStr, long lastTimeStamp,String api) {
+        super(httpResponse, jObjStr,api);
         this.lastTimeStamp = lastTimeStamp;
     }
 
@@ -27,7 +28,6 @@ public class UploadEventsResponse extends ServerResponseBase {
                 Logger.e(TAG, "Upload failed with error: " + errorJson.getString("error"));
             } else {
                 Event.deleteEvent(lastTimeStamp);
-
                 JSONObject body = jobj.getJSONObject("body");
                 int failCount = body.getInt("failcount");
                 if (failCount != 0) {
@@ -35,6 +35,7 @@ public class UploadEventsResponse extends ServerResponseBase {
                 }
             }
         } catch (JSONException e) {
+        	HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
             Logger.e(TAG, "Error returned by server on UploadEventsRequest", e);
         }
     }

@@ -17,6 +17,7 @@ import in.co.hopin.Server.ChatServiceCreateUserResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,7 +25,9 @@ import java.io.UnsupportedEncodingException;
 public class ChatServiceCreateUser extends SBHttpRequest{
 		
 		private final String TAG = "in.co.hopin.HttpClient.ChatServiceCreateUser";
-        public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.CHATSERVICE + "/createUser/";
+		private static String RESTAPI="createUser";
+	    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.CHATSERVICE + "/"+RESTAPI+"/";
+
 		HttpPost httpQueryAddRequest;	
 		JSONObject jsonobjAddRequest = new JSONObject();
 		HttpClient httpclient = new DefaultHttpClient();
@@ -65,29 +68,22 @@ public class ChatServiceCreateUser extends SBHttpRequest{
 		}
 		
 		public ServerResponseBase execute() {
+			HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 				try {
 					response=httpclient.execute(httpQueryAddRequest);
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 				}
 				
 				try {
 					if(response==null)
 						return null;
 					jsonStr = responseHandler.handleResponse(response);
-				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 				}   
 							
-				chatServiceCreateUserResponse = new ChatServiceCreateUserResponse(response,jsonStr);			
+				chatServiceCreateUserResponse = new ChatServiceCreateUserResponse(response,jsonStr,RESTAPI);			
 				return chatServiceCreateUserResponse;
 			
 		}

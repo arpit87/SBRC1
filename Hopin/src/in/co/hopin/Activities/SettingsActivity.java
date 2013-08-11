@@ -1,14 +1,12 @@
 package in.co.hopin.Activities;
 
-import com.google.analytics.tracking.android.EasyTracker;
+import in.co.hopin.R;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.Fragments.FBLoginDialogFragment;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.HelperClasses.ThisAppConfig;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Util.HopinTracker;
-import in.co.hopin.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -54,6 +52,10 @@ public class SettingsActivity extends FragmentActivity{
          	
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if(isChecked)
+					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:togglepopupnotification:check",1L);
+				else
+					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:togglepopupnotification:uncheck",1L);
 				ThisAppConfig.getInstance().putBool(ThisAppConfig.NEWUSERPOPUP, isChecked);				
 			}
 		});
@@ -62,6 +64,10 @@ public class SettingsActivity extends FragmentActivity{
           	
  			@Override
  			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+ 				if(isChecked)
+ 					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:toggleprivacywomenonly:check",1L);
+				else
+					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:toggleprivacywomenonly:uncheck",1L);
  				if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
  				{
  					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"woman filter clicked,checked:"+isChecked);
@@ -87,6 +93,10 @@ public class SettingsActivity extends FragmentActivity{
            	
   			@Override
   			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+  				if(isChecked)
+  					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:toggleprivacyfbfriendsonly:check",1L);
+				else
+					HopinTracker.sendEvent("Settings","ToggleButtonClick","settings:click:toggleprivacyfbfriendsonly:uncheck",1L);
   				if(!ThisUserConfig.getInstance().getBool(ThisUserConfig.FBINFOSENTTOSERVER))
   				{
   					if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"fb chk clicked,checked:"+isChecked);
@@ -103,6 +113,7 @@ public class SettingsActivity extends FragmentActivity{
          blockedUsersView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+            	 HopinTracker.sendEvent("Settings","BlockListClick","settings:click:blocklist",1L);
                  Intent blockedUsersIntent = new Intent(SettingsActivity.this, BlockedUsersActivity.class);
                  blockedUsersIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                  startActivity(blockedUsersIntent);
@@ -112,6 +123,7 @@ public class SettingsActivity extends FragmentActivity{
          feedbackView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+            	HopinTracker.sendEvent("Settings","FeedbackClick","settings:click::feedback",1L);
             	Intent i = new Intent(Platform.getInstance().getContext(),FeedbackActivity.class);
      			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);     		
      			i.putExtra("show_prompt", false);
@@ -123,6 +135,7 @@ public class SettingsActivity extends FragmentActivity{
 			
 			@Override
 			public void onClick(View v) {
+				HopinTracker.sendEvent("Settings","ProfileClick","settings:click:selfprofile",1L);
 				Intent hopinSelfProfile = new Intent(Platform.getInstance().getContext(),SelfProfileActivity.class);
 				hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);			
 		    	startActivity(hopinSelfProfile);				
@@ -163,6 +176,7 @@ public class SettingsActivity extends FragmentActivity{
 	    public void onStart(){
 	        super.onStart();
 	        HopinTracker.sendView("Settings");
+	        HopinTracker.sendEvent("Settings","ScreenOpen","settings:open",1L);
 	        //EasyTracker.getInstance().activityStart(this);
 	    }
 

@@ -17,7 +17,7 @@ public class UploadEventService extends WakefulIntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Logger.d(TAG, "I am here");
+        Logger.d(TAG, "I am in upload service");
         List<Event> events = Event.getEvents();
         if (events.isEmpty()) {
             return;

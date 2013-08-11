@@ -70,6 +70,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         ImageView chatDotOffline = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_offline);
         
         TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
+        TextView mutualFriends = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_mutualfriends);
         TextView userSource = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_source);
         TextView userDestination = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_destination);
         TextView userTime = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_time);        
@@ -84,11 +85,13 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         String destination = thisUserLocInfo.getUserDstAddress();
         String formattedTravelInfo = thisUserLocInfo.getFormattedTimeDetails(ThisUserNew.getInstance().get_Daily_Instant_Type());
         userName.setText(name);
-        userSource.setText(source);
+        String mutual_friends = Integer.toString(thisUserFBInfo.getNumberOfMutualFriends());        
+        mutualFriends.setText(StringUtils.getSpannedText(mutual_friends,"mutual friends"));
+        userSource.setText(StringUtils.getSpannedTextUptoChar(",",source,2));
         //userDestination.setText(StringUtils.getSpannedText("To:", destination));
        // userTime.setText(StringUtils.getSpannedText("At:",formattedTravelInfo));
-        userDestination.setText(destination);
-        userTime.setText(formattedTravelInfo);
+        userDestination.setText(StringUtils.getSpannedTextUptoChar(",",destination,2));
+        userTime.setText(StringUtils.getSpannedTextUptoChar(",",formattedTravelInfo,1));
         if(thisUserOtherInfo.isOnline())        	
         {
         	chatDotOffline.setVisibility(View.INVISIBLE);

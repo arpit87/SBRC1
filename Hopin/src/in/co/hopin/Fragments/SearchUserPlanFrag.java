@@ -3,6 +3,7 @@ package in.co.hopin.Fragments;
 import in.co.hopin.R;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -133,15 +134,18 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 		int checkedButton = radio_group_daily_onetime.getCheckedRadioButtonId();
 		if(checkedButton == R.id.search_user_plan_radiobutton_enterdate)
 		{
-			date = datePickerDate;			
+			date = datePickerDate;		
+			HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:plan:click:dateradio:enterdate",1L);
 		}
 		else if(checkedButton == R.id.search_user_plan_radiobutton_tomo)
 		{
 			date = StringUtils.getFutureDateInformat(1, "yyyy-MM-dd");
+			HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:plan:click:dateradio:tomo",1L);
 			
 		}else if(checkedButton == R.id.search_user_plan_radiobutton_today)
 		{
 			date = StringUtils.gettodayDateInFormat("yyyy-MM-dd");
+			HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:plan:click:dateradio:today",1L);
 			
 		}
 		return date;
@@ -162,8 +166,9 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 	public int getDailyInstaType() {
 		int checkedButton = radio_group_daily_onetime.getCheckedRadioButtonId();
 		if(checkedButton == R.id.search_user_plan_radiobutton_daily)
-		{			
-			return 0;
+		{	
+			HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:plan:click:dateradio:dailypool",1L);
+			return 0;			
 		}
 		else
 		    return 1;		
@@ -212,8 +217,7 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
-		
+		HopinTracker.sendEvent("SearchUsers","slide","searchusers:plan:swipe:timeslider",1L);		
 	}
 
 	@Override
@@ -231,9 +235,7 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 		}	
     }
 	
-	public class SBDatePickerFragment extends DialogFragment
-	implements DatePickerDialog.OnDateSetListener {
-     
+	public class SBDatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {     
 	// Use the current date as the default date in the picker
 	Calendar c = Calendar.getInstance();
 	int myear = c.get(Calendar.YEAR);
@@ -241,8 +243,7 @@ public class SearchUserPlanFrag extends AbstractSearchInputFrag implements SeekB
 	int mday = c.get(Calendar.DAY_OF_MONTH);
 		
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-	
+	public Dialog onCreateDialog(Bundle savedInstanceState) {		
 	// Create a new instance of DatePickerDialog and return it
 	return new DatePickerDialog(getActivity(), this, myear, mmonth, mday+2);
 	}

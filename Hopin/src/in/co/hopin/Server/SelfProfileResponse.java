@@ -9,6 +9,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 
 import org.apache.http.HttpResponse;
@@ -23,8 +24,8 @@ public class SelfProfileResponse extends ServerResponseBase{
 	String status;
 	
 	private static final String TAG = "in.co.hopin.Server.SelfProfileResponse";
-	public SelfProfileResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);
+	public SelfProfileResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);
 	}
 	
 	@Override
@@ -42,7 +43,9 @@ public class SelfProfileResponse extends ServerResponseBase{
 	    	Platform.getInstance().getContext().startActivity(hopinSelfProfile);
 			ProgressHandler.dismissDialoge();
 			//ToastTracker.showToast("fb save:"+status);
-		} catch (JSONException e) {			
+		} catch (JSONException e) {		
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			ProgressHandler.dismissDialoge();
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");
 			e.printStackTrace();
 		}

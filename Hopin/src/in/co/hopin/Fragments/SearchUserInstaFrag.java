@@ -1,13 +1,12 @@
 package in.co.hopin.Fragments;
 
-import in.co.hopin.LocationHelpers.SBGeoPoint;
-import in.co.hopin.Platform.Platform;
-import in.co.hopin.Users.ThisUserNew;
-import in.co.hopin.Util.StringUtils;
 import in.co.hopin.R;
+import in.co.hopin.LocationHelpers.SBGeoPoint;
+import in.co.hopin.Users.ThisUserNew;
+import in.co.hopin.Util.HopinTracker;
+import in.co.hopin.Util.StringUtils;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,12 +86,15 @@ public class SearchUserInstaFrag extends AbstractSearchInputFrag{
 		{
 		case R.id.search_user_insta_radiobutton_5min:
 			mRadio_button_selected = 5;
+			HopinTracker.sendEvent("SearchUsers","RadioButtonClick","searchusers:insta:click:5min",1L);
 			break;
 		case R.id.search_user_insta_radiobutton_15min:
 			mRadio_button_selected = 15;
+			HopinTracker.sendEvent("SearchUsers","RadioButtonClick","searchusers:insta:click:15min",1L);
 			break;
 		case R.id.search_user_insta_radiobutton_30min:
 			mRadio_button_selected = 30;
+			HopinTracker.sendEvent("SearchUsers","RadioButtonClick","searchusers:insta:click:30min",1L);
 			break;
 		}
 		return StringUtils.getFutureTimeInformat(mRadio_button_selected, "HH:mm");

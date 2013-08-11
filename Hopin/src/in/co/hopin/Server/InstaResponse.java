@@ -5,6 +5,7 @@ import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
+import in.co.hopin.Util.HopinTracker;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -19,8 +20,8 @@ public class InstaResponse extends ServerResponseBase{
 	private static final String TAG = "in.co.hopin.Server.GetUsersResponse";
 	
 	
-	public InstaResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);
+	public InstaResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);
 				
 	}
 	
@@ -32,6 +33,7 @@ public class InstaResponse extends ServerResponseBase{
 		try {
 			body = jobj.getJSONObject("body");			
 		} catch (JSONException e) {
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server in fetching nearby user.JSON:"+jobj.toString());

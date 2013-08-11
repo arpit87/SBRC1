@@ -5,6 +5,7 @@ import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.Server.RegisterGCMIdResponse;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -13,7 +14,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class RegisterGCMIdRequest extends SBHttpRequest {
     private static final String TAG = "in.co.hopin.HttpClient.RegisterGCMIdRequest";
 
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERSERVICE + "/addRegID/";
+    private static String RESTAPI="addRegID";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERSERVICE + "/"+RESTAPI+"/";
 
     private final HttpGet httpQuery;
     private final HttpClient httpclient = new DefaultHttpClient();
@@ -34,9 +36,11 @@ public class RegisterGCMIdRequest extends SBHttpRequest {
 
     @Override
     public ServerResponseBase execute() {
+    	HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
         try {
             response = httpclient.execute(httpQuery);
         } catch (Exception e) {
+        	HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
             Logger.e(TAG, e.getMessage());
         }
 
@@ -46,9 +50,10 @@ public class RegisterGCMIdRequest extends SBHttpRequest {
         
         try {
             String jsonStr = responseHandler.handleResponse(response);
-            RegisterGCMIdResponse registerGCMIdResponse = new RegisterGCMIdResponse(response, jsonStr);
+            RegisterGCMIdResponse registerGCMIdResponse = new RegisterGCMIdResponse(response, jsonStr,RESTAPI);
             return registerGCMIdResponse;
         } catch (Exception e) {
+        	HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
             Logger.e(TAG, e.getMessage());
         }
 

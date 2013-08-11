@@ -6,6 +6,7 @@ import in.co.hopin.Server.GetNewUserInfoAndShowPopup;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 
 import java.io.IOException;
@@ -28,8 +29,9 @@ import android.util.Log;
 public class GetNewUserInfoAndShowPopupRequest extends SBHttpRequest{
 	
 	private static final String TAG = "in.co.hopin.HttpClient.GetFBInfoForUserIDAndShowPopup";
+	private static String RESTAPI="getInfo";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/"+RESTAPI+"/";
 
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.USERDETAILSSERVICE + "/getInfo/";
 	HttpPost httpQuery;		
 	HttpClient httpclient = new DefaultHttpClient();	
 	GetNewUserInfoAndShowPopup getNewUserInfoAndShowPopup;
@@ -74,29 +76,22 @@ public class GetNewUserInfoAndShowPopupRequest extends SBHttpRequest{
 	
 	
 	public ServerResponseBase execute() {
+		HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 			try {
 				response=httpclient.execute(httpQuery);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 
 			try {
 				if(response==null)
 					return null;
 				jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			} 	
 			
-		getNewUserInfoAndShowPopup = new GetNewUserInfoAndShowPopup(response,jsonStr,daily_insta_type);
+		getNewUserInfoAndShowPopup = new GetNewUserInfoAndShowPopup(response,jsonStr,daily_insta_type,RESTAPI);
 		return getNewUserInfoAndShowPopup;
 		
 	}

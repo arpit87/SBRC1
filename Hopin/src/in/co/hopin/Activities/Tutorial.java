@@ -54,8 +54,7 @@ public class Tutorial extends FragmentActivity{
         anim.setStartOffset(20);
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(Animation.INFINITE);
-        tapFrameTextView.startAnimation(anim);
-        
+        tapFrameTextView.startAnimation(anim);        
         map1View.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -70,6 +69,7 @@ public class Tutorial extends FragmentActivity{
         userNameView.setOnTouchListener(new OnTouchListener() {			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				HopinTracker.sendEvent("Tutorial","ButtonClick","tutorial:click:enternamebox",1L);
 				// scroll whole view down
 				mScrollView.postDelayed(new Runnable() {
 				        @Override
@@ -93,7 +93,7 @@ public class Tutorial extends FragmentActivity{
                 	Toast.makeText(Tutorial.this,"Please enter name",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                
+                HopinTracker.sendEvent("Tutorial","ButtonClick","tutorial:click:fbloginlater",1L);
               // String mobile = phoneView.getText().toString();
                ThisUserConfig.getInstance().putString(ThisUserConfig.USERNAME, userNameText);
                //ThisUserConfig.getInstance().putString(ThisUserConfig.MOBILE, mobile);
@@ -109,7 +109,7 @@ public class Tutorial extends FragmentActivity{
 			
 			@Override
 			public void onClick(View v) {
-                HopinTracker.sendEvent("ui_action", "button_press", "tutorial:click:fblogin", 1L);
+				HopinTracker.sendEvent("Tutorial","ButtonClick","tutorial:click:fblogin",1L);
 				Toast.makeText(Tutorial.this, "Logging...please wait..", Toast.LENGTH_SHORT).show();
 				fbconnect = FacebookConnector.getInstance(Tutorial.this);
 				fbconnect.loginToFB();
@@ -135,6 +135,7 @@ public class Tutorial extends FragmentActivity{
     public void onStart(){
         super.onStart();
         HopinTracker.sendView("Tutorial");
+        HopinTracker.sendEvent("Tutorial","ScreenOpen","tutorial:open",1L);
     }
 
     @Override

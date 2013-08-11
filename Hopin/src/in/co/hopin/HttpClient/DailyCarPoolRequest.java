@@ -17,14 +17,16 @@ import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class DailyCarPoolRequest  extends SBHttpRequest{
 
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/getCarpoolMatches/";
-	
+    private static String RESTAPI="getCarpoolMatches";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/"+RESTAPI+"/";
+
 	HttpPost httpQueryGetNearbyUsers;	
 	JSONObject jsonobjGetNearbyUsers;
 	HttpClient httpclient = new DefaultHttpClient();
@@ -60,29 +62,22 @@ public class DailyCarPoolRequest  extends SBHttpRequest{
 	}
 	
 	public ServerResponseBase execute() {
+		HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute",1L);
 			try {
 				response=httpclient.execute(httpQueryGetNearbyUsers);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:executeexception",1L);
 			}
 			
 			try {
 				if(response==null)
 					return null;
 					jsonStr = responseHandler.handleResponse(response);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			} 		
 			
-			getNearbyUsersResponse =	new DailyCarPoolResponse(response,jsonStr);
+			getNearbyUsersResponse =	new DailyCarPoolResponse(response,jsonStr,RESTAPI);
 			return getNearbyUsersResponse;
 		
 	}

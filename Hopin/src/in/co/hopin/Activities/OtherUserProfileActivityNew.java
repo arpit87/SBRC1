@@ -135,6 +135,7 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
        
 	@Override
     public void onBackPressed() {
+		HopinTracker.sendEvent("Profile","BackButton","userprofile:other:click:back",1L);
         if (mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
@@ -194,6 +195,7 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
 	    public void onStart(){
 	        super.onStart();
 	        HopinTracker.sendView("OtherUserProfile");
+	        HopinTracker.sendEvent("Profile","ScreenOpen","userprofile:other:open",1L,"fb_id = "+userFBInfo.getFbid());
 	        //EasyTracker.getInstance().activityStart(this);
 	    }
     @Override

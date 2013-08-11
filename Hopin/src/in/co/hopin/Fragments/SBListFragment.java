@@ -9,6 +9,7 @@ import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
+import in.co.hopin.Util.HopinTracker;
 
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class SBListFragment extends ListFragment {
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+		HopinTracker.sendEvent("ListView","ListClick","listmatchingusers:click:listitem",1L);
 		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(position);
 		if(userAtthisPosition != null)
 			CommunicationHelper.getInstance().onChatClickWithUser(getActivity(),userAtthisPosition.getUserFBInfo().getFbid(),userAtthisPosition.getUserFBInfo().getFullName());
@@ -101,6 +103,7 @@ public class SBListFragment extends ListFragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
 	    super.onCreateContextMenu(menu, v, menuInfo);
+	    HopinTracker.sendEvent("ListView","LongClick","listmatchingusers:longclick:listitem",1L);
 	    MenuInflater inflater = getActivity().getMenuInflater();
 	    inflater.inflate(R.menu.listview_longclick_menu, menu);
 	}
@@ -111,13 +114,13 @@ public class SBListFragment extends ListFragment {
 		NearbyUser userAtthisPosition = CurrentNearbyUsers.getInstance().getNearbyUserAtPosition(info.position);
 	    switch (item.getItemId()) {	  
 	    case R.id.listview_fb_profile:
+	    	HopinTracker.sendEvent("ListView","MenuClick","listmatchingusers:longclickmenu:click:fbprofile",1L);
 	    	CommunicationHelper.getInstance().onFBIconClickWithUser(getActivity(), userAtthisPosition.getUserFBInfo().getFbid(), userAtthisPosition.getUserFBInfo().getFBUsername());
 	    	break;
 	    case R.id.listview_hopin_profile:
-	    	Intent hopinNewProfile = new Intent(getActivity().getApplicationContext(),OtherUserProfileActivityNew.class);
-	    	hopinNewProfile.putExtra("fb_info", userAtthisPosition.getUserFBInfo().getJsonObj().toString());
-	    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	    	getActivity().startActivity(hopinNewProfile);
+	    	HopinTracker.sendEvent("ListView","MenuClick","listmatchingusersmenu:longclickmenu:click:hopinprofile",1L);
+	    	CommunicationHelper.getInstance().onHopinProfileClickWithUser(getActivity(), userAtthisPosition.getUserFBInfo());
+	    	break;
 	    }
 	    return false;
 	}

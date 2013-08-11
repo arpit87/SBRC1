@@ -5,6 +5,7 @@ import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 import android.content.Intent;
 import android.util.Log;
 import org.apache.http.HttpResponse;
@@ -15,8 +16,8 @@ public class DeleteReqResponse extends ServerResponseBase{
 	private static final String TAG = "in.co.hopin.Server.DeleteUserResponse";
 	int daily_insta_type;
 
-	public DeleteReqResponse(HttpResponse response,String jobjStr,int daily_insta_type) {
-		super(response,jobjStr);
+	public DeleteReqResponse(HttpResponse response,String jobjStr,int daily_insta_type,String api) {
+		super(response,jobjStr,api);
 		this.daily_insta_type = daily_insta_type;
 	}
 
@@ -41,6 +42,8 @@ public class DeleteReqResponse extends ServerResponseBase{
 			//this broadcast is for my active req page to update itself to no active req
 			Platform.getInstance().getContext().sendBroadcast(notifyUpdateintent);
 		} catch (JSONException e) {
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured in delete request");
 			e.printStackTrace();
 		}

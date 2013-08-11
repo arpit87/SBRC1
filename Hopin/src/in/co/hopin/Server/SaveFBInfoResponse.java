@@ -4,6 +4,7 @@ import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -16,8 +17,8 @@ public class SaveFBInfoResponse extends ServerResponseBase{
 	String status;
 	
 	private static final String TAG = "in.co.hopin.Server.SaveFBInfoResponse";
-	public SaveFBInfoResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);
+	public SaveFBInfoResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);
 	}
 	
 	@Override
@@ -31,9 +32,9 @@ public class SaveFBInfoResponse extends ServerResponseBase{
 			ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
 			ProgressHandler.dismissDialoge();
 			//ToastTracker.showToast("fb save:"+status);
-		} catch (JSONException e) {			
-			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");
-			e.printStackTrace();
+		} catch (JSONException e) {		
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");		
 		}
 		
 	}

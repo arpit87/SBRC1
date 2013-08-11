@@ -4,6 +4,12 @@ import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.Logger;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -15,11 +21,11 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 public class Platform {
 	
-	private final String TAG = "in.co.hopin.Platform.Platform";
+	private final static String TAG = "in.co.hopin.Platform.Platform";
 	private static Platform instance = null;
 	private Context context;	
 	private Handler handler;
-	private boolean ENABLE_LOGGING = true;
+	private boolean ENABLE_LOGGING = false;
 	public boolean SUPPORTS_NEWAPI = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD;
 		
 	private Platform() {
@@ -51,7 +57,7 @@ public class Platform {
 		CurrentNearbyUsers.getInstance().clearAllData();
 		ThisUserNew.getInstance();	
 		EasyTracker.getInstance().setContext(context);
-	    EasyTracker.getTracker().setStartSession(true);
+	    EasyTracker.getTracker().setStartSession(true);	    
 	}
 	
 	public int getThisAppVersion()
@@ -59,6 +65,17 @@ public class Platform {
 	 try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+	}	
+	
+	public String getThisAppVersionName()
+	{
+	 try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             // should never happen
             throw new RuntimeException("Could not get package name: " + e);
@@ -87,5 +104,6 @@ public class Platform {
         Logger.d(TAG, "Starting GCM service");
         context.startService(intent);
      }
-
+    
+   
 }

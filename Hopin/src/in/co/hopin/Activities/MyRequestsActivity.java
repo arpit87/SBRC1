@@ -76,10 +76,11 @@ public class MyRequestsActivity extends Activity {
 			}
 		});
         
-		deleteInstaReq.setOnClickListener(new OnClickListener() {
-					
+		deleteInstaReq.setOnClickListener(new OnClickListener() {					
 					@Override
 					public void onClick(View paramView) {
+						HopinTracker.sendEvent("MyRequest","ButtonClick","myrequests:click:dailycarpool:delete",1L);
+						HopinTracker.sendEvent("MyRequest","ButtonClick","myrequests:click:onetime:delete",1L);
 						registerReceiver(reqHandler, new IntentFilter(BroadCastConstants.INSTAREQ_DELETED));
 						ProgressHandler.showInfiniteProgressDialoge(MyRequestsActivity.this, "Deleting insta request", "Please wait");
 						DeleteRequest deleteRequest = new DeleteRequest(1);
@@ -91,6 +92,7 @@ public class MyRequestsActivity extends Activity {
         showUsersCarpool.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+            	HopinTracker.sendEvent("MyRequest","ButtonClick","myrequests:click:dailycarpool:showusers",1L);
                 try {
                     String carpoolReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_CARPOOL);
                     final JSONObject responseJsonObj = new JSONObject(carpoolReqJson);
@@ -109,6 +111,7 @@ public class MyRequestsActivity extends Activity {
             @Override
             public void onClick(View view) {
                 try {
+                	HopinTracker.sendEvent("MyRequest","ButtonClick","myrequests:click:onetime:showusers",1L);
                     String instaReqJson = ThisUserConfig.getInstance().getString(ThisUserConfig.ACTIVE_REQ_INSTA);
                     final JSONObject responseJsonObj = new JSONObject(instaReqJson);
                     MapListActivityHandler.getInstance().setSourceAndDestination(responseJsonObj);
@@ -187,7 +190,8 @@ public class MyRequestsActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        HopinTracker.sendView("MyActiveRequests");
+        HopinTracker.sendView("MyRequests");
+        HopinTracker.sendEvent("MyRequests","ScreenOpen","myrequests:open",1L);
         //EasyTracker.getInstance().activityStart(this);
     }
 
@@ -195,5 +199,11 @@ public class MyRequestsActivity extends Activity {
     public void onStop(){
         super.onStop();
         //EasyTracker.getInstance().activityStop(this);
+    }
+    
+    @Override
+	public void onBackPressed() {
+    	super.onBackPressed();
+    	HopinTracker.sendEvent("MyRequest","BackButton","myrequests:click:back",1L);
     }
 }

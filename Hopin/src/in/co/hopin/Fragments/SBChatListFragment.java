@@ -5,6 +5,7 @@ import in.co.hopin.Adapter.ChatListAdapter;
 import in.co.hopin.HelperClasses.ActiveChat;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class SBChatListFragment extends ListFragment {
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+		HopinTracker.sendEvent("MyChat","ListClick","mychats:click:listitem",1L,"position = "+Integer.toString(position));
 		ActiveChat clickedUser = chatUserlist.get(position);
 		String fbid = clickedUser.getUserId();
 		String name = clickedUser.getName();

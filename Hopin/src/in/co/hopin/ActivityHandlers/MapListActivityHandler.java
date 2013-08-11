@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -48,7 +49,7 @@ import java.util.*;
 
 public class MapListActivityHandler  extends BroadcastReceiver{
 	
-	SBMapView mapView;	
+	SBMapView mMapView;	
 	private static final String TAG = "in.co.hopin.ActivityHandlers.MapActivityHandler";
 	private static MapListActivityHandler instance=new MapListActivityHandler();
 	private MapListViewTabActivity underlyingActivity;	
@@ -70,6 +71,8 @@ public class MapListActivityHandler  extends BroadcastReceiver{
 	private TextView mtime;
 	ListView mListView = null;
 	ViewGroup mListViewFooter = null;
+	private ViewGroup mMapViewContainer;	
+	private ImageButton selfLocationButton = null;
 	
 	
 			
@@ -109,18 +112,7 @@ public class MapListActivityHandler  extends BroadcastReceiver{
 	{		
 		return instance;
 		
-	}
-
-	public SBMapView getMapView() {
-		return mapView;
-	}
-
-	public void setMapView(SBMapView mapView) {
-		this.mapView = mapView;
-		 mapcontroller = mapView.getController();
-		 mapView.setBuiltInZoomControls(true);
 	}	
-	
 	
 	public boolean isUpdateMap() {
 		return updateMap;
@@ -222,7 +214,7 @@ public void centreMapTo(SBGeoPoint centrePoint)
 
 public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 {
-	GeoPoint lilUpcentrePoint = new GeoPoint(centrePoint.getLatitudeE6()+90000/mapView.getZoomLevel(), centrePoint.getLongitudeE6());
+	GeoPoint lilUpcentrePoint = new GeoPoint(centrePoint.getLatitudeE6()+90000/mMapView.getZoomLevel(), centrePoint.getLongitudeE6());
 	if(lilUpcentrePoint !=null)
 		mapcontroller.animateTo(lilUpcentrePoint);
 }
@@ -234,12 +226,12 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initializing this user location");
 	    mapcontroller.setZoom(14);
 	    if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"setting myoverlay");        
-	    thisUserOverlay = new ThisUserItemizedOverlay(mapView); 
+	    thisUserOverlay = new ThisUserItemizedOverlay(mMapView); 
 	    //SBGeoPoint currGeo = ThisUser.getInstance().getCurrentGeoPoint();
 	    //if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"location is:"+currGeo.getLatitudeE6()+","+currGeo.getLongitudeE6());		
 	    thisUserOverlay.addThisUser();	    
-	    mapView.getOverlays().add(thisUserOverlay);
-	    mapView.postInvalidate();	       
+	    mMapView.getOverlays().add(thisUserOverlay);
+	    mMapView.postInvalidate();	       
 	    mapcontroller.animateTo(ThisUserNew.getInstance().getCurrentGeoPoint());
 	    //onResume of mapactivity doesnt update user till its once initialized
 	    mapInitialized = true;
@@ -261,12 +253,12 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		{
 			if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"removing prev nearby users overlay");			
 			if (nearbyUserItemizedOverlay != null) {
-                mapView.getOverlays().remove(nearbyUserItemizedOverlay);
+                mMapView.getOverlays().remove(nearbyUserItemizedOverlay);
             }
             if (nearbyUserGroupItemizedOverlay != null) {
-                mapView.getOverlays().remove(nearbyUserGroupItemizedOverlay);
+                mMapView.getOverlays().remove(nearbyUserGroupItemizedOverlay);
             }
-			mapView.removeAllNearbyUserView();
+			mMapView.removeAllNearbyUserView();
 		}
       
 		if(nearbyUsers == null || nearbyUsers.size()==0)
@@ -282,7 +274,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
         Map<String,List<NearbyUser>> gridToUsersMap = new HashMap<String, List<NearbyUser>>();
         for (NearbyUser nearbyUser : nearbyUsers) {
             SBGeoPoint geoPoint = nearbyUser.getUserLocInfo().getGeoPoint();
-            Point point = mapView.getProjection().toPixels(geoPoint, null);
+            Point point = mMapView.getProjection().toPixels(geoPoint, null);
             float x = point.x * factor;
             float y = point.y * factor;
 
@@ -310,17 +302,17 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
         if(!individualUsers.isEmpty())
         {
 	        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"adding individualUsers useroverlay,no indi:"+individualUsers.size());	
-	        nearbyUserItemizedOverlay = new NearbyUsersItemizedOverlay(mapView);
+	        nearbyUserItemizedOverlay = new NearbyUsersItemizedOverlay(mMapView);
 	        nearbyUserItemizedOverlay.addList(individualUsers);
-	        mapView.getOverlays().add(nearbyUserItemizedOverlay);
+	        mMapView.getOverlays().add(nearbyUserItemizedOverlay);
         }
         
         if(!groups.isEmpty())
         {
         	if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"adding groups useroverlay,no.groups:"+groups.size());
-			nearbyUserGroupItemizedOverlay = new GourpedNearbyUsersIteamizedOverlay(mapView);
+			nearbyUserGroupItemizedOverlay = new GourpedNearbyUsersIteamizedOverlay(mMapView);
 			nearbyUserGroupItemizedOverlay.addList(groups);
-			 mapView.getOverlays().add(nearbyUserGroupItemizedOverlay);
+			 mMapView.getOverlays().add(nearbyUserGroupItemizedOverlay);
         }
       
 		
@@ -339,7 +331,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 	{
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"updating nearby users on zoom change");
 		updateNearbyUsersonMap();		
-		mapView.postInvalidate();
+		mMapView.postInvalidate();
 	}
 	
 	public void updateNearbyUsersOnUsersChange()
@@ -348,7 +340,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		updateNearbyUsersonMap();
 		updateNearbyUserOnList();
 		centerMap();
-		mapView.postInvalidate();
+		mMapView.postInvalidate();
 	}
 
     private void updateNearbyUserOnList() {
@@ -373,16 +365,16 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"update this user called");	
 		if(thisUserOverlay == null)	
 		{			
-			thisUserOverlay = new ThisUserItemizedOverlay(mapView);
+			thisUserOverlay = new ThisUserItemizedOverlay(mMapView);
 			thisUserOverlay.updateThisUser();	    
-		    mapView.getOverlays().add(thisUserOverlay);		   
+		    mMapView.getOverlays().add(thisUserOverlay);		   
 		}
 		else
 		{
 		    thisUserOverlay.updateThisUser();
 		    if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"this user map overlay updated");
 		}
-	    mapView.postInvalidate();	    
+	    mMapView.postInvalidate();	    
 	    //dont centre here else on every automatic update it centres
 	    //mapcontroller.animateTo(ThisUser.getInstance().getSourceGeoPoint());		
 	}	
@@ -413,7 +405,7 @@ public void centreMapToPlusLilUp(SBGeoPoint centrePoint)
 
         mapcontroller.zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));        
         mapcontroller.animateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
-        mapView.setOldZoomLevel(mapView.getZoomLevel());
+        mMapView.setOldZoomLevel(mMapView.getZoomLevel());
 }
 	
 public void clearAllData()
@@ -423,11 +415,12 @@ public void clearAllData()
     nearbyUserItemizedOverlay = null;
     nearbyUserGroupItemizedOverlay = null;
     mListViewContainer = null;
-	if(mapView!=null)
+    mMapViewContainer = null;
+	if(mMapView!=null)
 	{
-		mapView.setOldZoomLevel(-1);
-		mapView.removeAllViews();
-		mapView.getOverlays().clear();
+		mMapView.setOldZoomLevel(-1);
+		mMapView.removeAllViews();
+		mMapView.getOverlays().clear();
 	}
 	if(listFrag!=null)
 	{		
@@ -463,9 +456,34 @@ public ViewGroup getThisListContainerWithListView() {
         mSource =  (TextView) mListViewContainer.findViewById(R.id.my_source_listview);
         mtime = (TextView) mListViewContainer.findViewById(R.id.my_time_listview); 
         //mMapViewContainer.removeView(mMapView);
-    }    
-
+    }
 	return mListViewContainer;
+}
+
+public ViewGroup getThisMapContainerWithMapView()
+{
+	if(mMapViewContainer == null)
+	{
+		mMapViewContainer = (ViewGroup) underlyingActivity.getLayoutInflater().inflate(R.layout.map,null,false);
+		mMapView = (SBMapView) mMapViewContainer.findViewById(R.id.map_view);
+		selfLocationButton = (ImageButton) mMapViewContainer.findViewById(R.id.my_location_button);    		   		
+		mMapView.getOverlays().clear(); 
+		mapcontroller = mMapView.getController();
+		mMapView.setBuiltInZoomControls(true);
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize handler");
+        if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"initialize mylocation");
+        MapListActivityHandler.getInstance().initMyLocation();
+		//mMapViewContainer.removeView(mMapView);
+	}
+	else
+	{
+		mMapViewContainer.addView(mMapView);
+		mMapViewContainer.addView(selfLocationButton);		
+		//mMapViewContainer.addView(offerRideButton);
+		//if(currentIsOfferMode)
+		//	offerRideButton.setChecked(true);
+	}	
+	return mMapViewContainer;
 }
 
 public void updateUserPicInListView() {

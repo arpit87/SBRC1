@@ -9,6 +9,7 @@ import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.SBHttpRequest;
 import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.UserAttributes;
+import in.co.hopin.Util.HopinTracker;
 import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -20,8 +21,8 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
 
 	String user_id;
 		
-	public AddThisUserSrcDstResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);
+	public AddThisUserSrcDstResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);
 
 				
 	}
@@ -52,6 +53,7 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
             //AlarmManager alarmManager = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
             //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, TIME_INTERVAL, TIME_INTERVAL, pendingIntent);
 		} catch (JSONException e) {
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add scr dst");
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Network error,try again");

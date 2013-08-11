@@ -5,6 +5,7 @@ import in.co.hopin.HelperClasses.ProgressHandler;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 import android.content.Intent;
 import android.util.Log;
 import org.apache.http.HttpResponse;
@@ -14,8 +15,8 @@ public class FeedbackResponse extends ServerResponseBase{
 	
 	private static final String TAG = "in.co.hopin.Server.FeedbackResponse";
 	
-	public FeedbackResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);
+	public FeedbackResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);
 		
 	}
 
@@ -28,6 +29,8 @@ public class FeedbackResponse extends ServerResponseBase{
 			String body = jobj.getString("body");
 			ToastTracker.showToast("Feedback saved successfully");			
 		} catch (JSONException e) {
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured in saving feedback");
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package in.co.hopin.Server;
 
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -7,8 +8,8 @@ import org.json.JSONException;
 public class RegisterGCMIdResponse extends ServerResponseBase {
     public static final String TAG = "in.co.hopin.Server.RegisterGCMIdResponse";
 
-    public RegisterGCMIdResponse(HttpResponse httpResponse, String jObjStr) {
-        super(httpResponse, jObjStr);
+    public RegisterGCMIdResponse(HttpResponse httpResponse, String jObjStr,String api) {
+        super(httpResponse, jObjStr,api);
     }
 
     @Override
@@ -21,6 +22,7 @@ public class RegisterGCMIdResponse extends ServerResponseBase {
                 Logger.e(TAG, "RegisterGCMIdRequest failed.");
             }
         } catch (JSONException e) {
+        	HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
             Logger.e(TAG, "Error returned by server on RegisterGCMIdRequest", e);
         }
     }

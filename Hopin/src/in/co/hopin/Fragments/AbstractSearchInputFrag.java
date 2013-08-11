@@ -92,6 +92,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 		
 	String time = "";
 	String date = "";
+	String planInstaStr = "";
 	Button cancelFindUsers = null;
 	Button takeRideButton = null;
 	Button offerRideButton = null;
@@ -120,11 +121,15 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         super.onCreate(savedInstanceState);
         sourceAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity().getApplicationContext(), R.layout.address_suggestion_layout,source_progressbar);        
         destinationAutoCompleteAdapter = new PlacesAutoCompleteAdapter(getActivity().getApplicationContext(), R.layout.address_suggestion_layout,destination_progressbar);
+        if(getPlanInstaTabType() == 1)
+        	planInstaStr = "insta";
+        else 
+        	planInstaStr = "plan";
         cancelFindUsers.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				HopinTracker.sendEvent("ui_action", "button_press", "cancelFindUsers_button", 1L);
+				HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:"+planInstaStr+":click:cancel",1L);
 				getActivity().finish();				
 			}
 		});
@@ -133,7 +138,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-				HopinTracker.sendEvent("ui_action", "button_press", "takeRide_button", 1L);
+				HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:"+planInstaStr+":click:takeRide",1L);
 				takeRide = true;
 				findUsers();			
 			}
@@ -142,7 +147,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         	
 			@Override
 			public void onClick(View v) {
-                HopinTracker.sendEvent("ui_action", "button_press", "offerRide_button", 1L);
+				HopinTracker.sendEvent("SearchUsers","ButtonClick","searchusers:"+planInstaStr+":click:offerRide",1L);
                 takeRide = false;
                 findUsers();
 			}
@@ -153,7 +158,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 	        source.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            @Override
 	            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-	            	 HopinTracker.sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
+	            	HopinTracker.sendEvent("SearchUsers","AutoCompleteClick","searchusers:"+planInstaStr+":click:source:autocomplete",1L);
 	                 String sourceAddress =(String) adapterView.getItemAtPosition(i);
 	                 if(!StringUtils.isBlank(sourceAddress))
 	                 {
@@ -178,7 +183,7 @@ public abstract class AbstractSearchInputFrag extends Fragment{
         destination.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            	 HopinTracker.sendEvent("ui_action", "autocomplete_text", "setSource", 1L);
+            	HopinTracker.sendEvent("SearchUsers","AutoCompleteClick","searchusers:"+planInstaStr+":click:destination:autocomplete",1L);
                  String destinationAddress =(String) adapterView.getItemAtPosition(i);
                  if(!StringUtils.isBlank(destinationAddress))
                  {
@@ -263,6 +268,9 @@ public abstract class AbstractSearchInputFrag extends Fragment{
 	         
 	        SBHttpClient.getInstance().executeRequest(addThisUserSrcDstRequest);
 	        saveSearch();
+	        
+	        //log
+	        
         
         //moveTaskToBack(true);			
 		}

@@ -216,7 +216,7 @@ public class SelfProfileActivity extends FragmentActivity {
 	    public void onStart(){
 	        super.onStart();
 	        HopinTracker.sendView("SelfProfile");
-	        //EasyTracker.getInstance().activityStart(this);
+	        HopinTracker.sendEvent("Profile","ScreenOpen","userprofile:self:open",1L);
 	    }
 
     @Override

@@ -21,9 +21,10 @@ public abstract class ServerResponseBase {
 	JSONObject jobj;
 	JSONObject body;
 	JSONObject error;
+	String RESTAPI = "";
 	protected ResponseStatus status;			
 	
-	public ServerResponseBase(HttpResponse response,String jobjStr) {
+	public ServerResponseBase(HttpResponse response,String jobjStr,String RESTAPI) {
 		
 		switch(response.getStatusLine().getStatusCode()){
 		case 200:
@@ -64,12 +65,17 @@ public abstract class ServerResponseBase {
 			}
 			e.printStackTrace();
 		}
-		
+		this.RESTAPI = RESTAPI;
 	}
 
 	public ResponseStatus getStatus()
 	{
 		return status;
+	}
+	
+	public String getRESTAPI()
+	{
+		return RESTAPI;
 	}
 	
 	public abstract void process();

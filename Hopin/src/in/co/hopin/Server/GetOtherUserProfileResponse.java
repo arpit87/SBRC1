@@ -7,6 +7,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Users.NearbyUser;
 import in.co.hopin.Users.UserAttributes;
 import in.co.hopin.Users.UserFBInfo;
+import in.co.hopin.Util.HopinTracker;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -25,8 +26,8 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 	
 	
 	private static final String TAG = "in.co.hopin.Server.GetOtherUserProfileResponse";
-	public GetOtherUserProfileResponse(HttpResponse response,String jobjStr) {
-		super(response,jobjStr);		
+	public GetOtherUserProfileResponse(HttpResponse response,String jobjStr,String api) {
+		super(response,jobjStr,api);		
 	}
 	
 	@Override
@@ -44,7 +45,9 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 	    	hopinNewProfile.putExtra("fb_info", nearbyUsersFbInfo.toString());
 	    	Platform.getInstance().getContext().startActivity(hopinNewProfile);
 		
-		} catch (JSONException e) {			
+		} catch (JSONException e) {		
+			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");
 			e.printStackTrace();

@@ -1,30 +1,21 @@
 package in.co.hopin.Activities;
 
 
-import android.app.*;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ProgressBar;
-import com.google.analytics.tracking.android.EasyTracker;
+import in.co.hopin.R;
 import in.co.hopin.Adapter.HistoryAdapter;
 import in.co.hopin.ChatClient.ChatWindow;
 import in.co.hopin.ChatClient.SBChatMessage;
 import in.co.hopin.ChatService.Message;
 import in.co.hopin.FacebookHelpers.FacebookConnector;
-import in.co.hopin.HelperClasses.*;
+import in.co.hopin.HelperClasses.ActiveChat;
+import in.co.hopin.HelperClasses.ChatHistory;
+import in.co.hopin.HelperClasses.SBConnectivity;
+import in.co.hopin.HelperClasses.ThisAppConfig;
+import in.co.hopin.HelperClasses.ThisAppInstallation;
+import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.LocationHelpers.SBGeoPoint;
 import in.co.hopin.LocationHelpers.SBLocationManager;
 import in.co.hopin.Platform.Platform;
-import in.co.hopin.R;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.ThisUserNew;
 import in.co.hopin.Util.HopinTracker;
@@ -37,6 +28,26 @@ import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.util.Log;
+import android.widget.ProgressBar;
 
 public class StartStrangerBuddyActivity extends Activity {
 	public static final int UPLOAD_FREQUENCY = 2 * 60 * 1000;
@@ -80,6 +91,8 @@ public class StartStrangerBuddyActivity extends Activity {
 		ThisAppConfig.getInstance().putString(ThisAppConfig.APPUUID,uuid);
 		ThisAppConfig.getInstance().putBool(ThisAppConfig.NEWUSERPOPUP,true);
 		ThisAppConfig.getInstance().putInt(ThisAppConfig.APPOPENCOUNT,1);
+		String deviceId = Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
+		ThisAppConfig.getInstance().putString(ThisAppConfig.DEVICEID,deviceId);
 		//with uuid means first time start
 		final Intent show_tutorial = new Intent(this,Tutorial.class);
 		show_tutorial.putExtra("uuid", uuid);

@@ -2,6 +2,7 @@ package in.co.hopin.HttpClient;
 
 import in.co.hopin.Server.ServerResponseBase;
 import in.co.hopin.Server.UploadEventsResponse;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -17,11 +18,11 @@ import java.util.List;
 public class UploadEventsRequest extends SBHttpRequest {
     private static final String TAG = "in.co.hopin.HttpClient.UploadEventsRequest";
 
+    private String RESTAPI = "UploadEvents";
     public static final String URL = "http://hopin.co.in/mayank/loggerv2.php";
-
+    
     private final HttpPost httpQuery;
-    private final HttpClient httpclient = new DefaultHttpClient();
-
+    private final HttpClient httpclient = new DefaultHttpClient();    
     private long lastTimeStamp;
 
     public UploadEventsRequest(String logsJson, long lastTimeStamp) {
@@ -48,9 +49,11 @@ public class UploadEventsRequest extends SBHttpRequest {
 
     @Override
     public ServerResponseBase execute() {
+    	HopinTracker.sendEvent("HttpRequest","UploadEvents","httprequest:uploadevents:execute",1L);
         try {
             response = httpclient.execute(httpQuery);
         } catch (Exception e) {
+        	HopinTracker.sendEvent("HttpRequest","UploadEvents","httprequest:uploadevents:execut:executeeexception",1L);
             Logger.e(TAG, e.getMessage());
         }
 
@@ -60,8 +63,9 @@ public class UploadEventsRequest extends SBHttpRequest {
 
         try {
             String jsonStr = responseHandler.handleResponse(response);
-            return new UploadEventsResponse(response, jsonStr, lastTimeStamp);
+            return new UploadEventsResponse(response, jsonStr, lastTimeStamp,RESTAPI);
         } catch (Exception e) {
+        	HopinTracker.sendEvent("HttpRequest","UploadEvents","httprequest:uploadevents:execute:responseexception",1L);
             Logger.e(TAG, e.getMessage());
         }
 

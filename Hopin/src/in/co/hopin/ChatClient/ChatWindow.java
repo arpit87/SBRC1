@@ -18,6 +18,7 @@ import in.co.hopin.Platform.Platform;
 import in.co.hopin.Server.ServerConstants;
 import in.co.hopin.Users.CurrentNearbyUsers;
 import in.co.hopin.Users.NearbyUser;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 import in.co.hopin.Util.StringUtils;
 
@@ -106,6 +107,7 @@ public class ChatWindow extends SherlockFragmentActivity{
 		mSendButton.setOnClickListener(new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
+		    	HopinTracker.sendEvent("ChatWindow","ButtonClick","chatwindow:click:send",1L);
 		    	if(BlockedUser.isUserBlocked(mParticipantFBID))
 		    		buildUnblockAlertMessageToUnblock(mParticipantFBID);
 		    	else
@@ -194,6 +196,14 @@ public void onResume() {
     }
     
     @Override
+    public void onStart(){
+        super.onStart();
+        HopinTracker.sendView("ChatWindow");
+        HopinTracker.sendEvent("ChatWindow","ScreenOpen","chatwindow:open",1L);
+        //EasyTracker.getInstance().activityStart(this);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.mMenu = menu;
         MenuInflater inflater = getSupportMenuInflater();
@@ -211,25 +221,27 @@ public void onResume() {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-    	
+    	HopinTracker.sendEvent("ChatWindow","MenuOpen","chatwindowmenu:open",1L);
         switch (menuItem.getItemId())
         {
-        case R.id.chat_menu_block:
+        case R.id.chat_menu_block:        	
         	if(BlockedUser.isUserBlocked(mParticipantFBID))
 			{
+        		HopinTracker.sendEvent("ChatWindow","MenuClick","chatwindowmenu:click:unblock",1L);
 				BlockedUser.deleteFromList(mParticipantFBID);
 				Toast.makeText(ChatWindow.this,mParticipantName + " unblocked", Toast.LENGTH_SHORT).show();
 				menuItem.setTitle("Block");
 			}
 			else
 			{
+				HopinTracker.sendEvent("ChatWindow","MenuClick","chatwindowmenu:click:block",1L);
 				BlockedUser.addtoList(mParticipantFBID, mParticipantName);
 		        Toast.makeText(ChatWindow.this,mParticipantName + " blocked", Toast.LENGTH_SHORT).show();
 		        menuItem.setTitle("UnBlock");
 			}
         	break;  
         case R.id.chat_menu_hopin_profile:
-        	
+        	HopinTracker.sendEvent("ChatWindow","MenuClick","chatwindowmenu:click:hopinprofile",1L);
         	NearbyUser n = CurrentNearbyUsers.getInstance().getNearbyUserWithFBID(mParticipantFBID);        	
         	if(n!=null)
         	{
@@ -245,7 +257,8 @@ public void onResume() {
 				SBHttpClient.getInstance().executeRequest(req);	
         	}
 			break;
-        case R.id.chat_menu_fb_profile:		
+        case R.id.chat_menu_fb_profile:	
+        	HopinTracker.sendEvent("ChatWindow","MenuClick","chatwindowmenu:click:fbprofile",1L);
         	CommunicationHelper.getInstance().onFBIconClickWithUser(this, mParticipantFBID, mParticipantName);
         	break;
         default:

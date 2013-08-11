@@ -3,6 +3,7 @@ package in.co.hopin.Server;
 import in.co.hopin.HelperClasses.ThisUserConfig;
 import in.co.hopin.HelperClasses.ToastTracker;
 import in.co.hopin.Platform.Platform;
+import in.co.hopin.Util.HopinTracker;
 
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -15,8 +16,8 @@ public class ChatServiceCreateUserResponse extends ServerResponseBase{
 		String user_id;
 			
 		private static final String TAG = "in.co.hopin.Server.ChatServiceCreateUserResponse";
-		public ChatServiceCreateUserResponse(HttpResponse response,String jobjStr) {
-			super(response,jobjStr);			
+		public ChatServiceCreateUserResponse(HttpResponse response,String jobjStr,String api) {
+			super(response,jobjStr,api);			
 					
 		}
 		
@@ -45,6 +46,7 @@ public class ChatServiceCreateUserResponse extends ServerResponseBase{
 				Platform.getInstance().getContext().sendBroadcast(loginToChatServer);				
 				//ToastTracker.showToast("chat login intent sent for chat");
 			} catch (JSONException e) {
+				HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
 				if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on chat user add");
 				ToastTracker.showToast("Unable to add this chat user ");
 				e.printStackTrace();

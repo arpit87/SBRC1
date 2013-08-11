@@ -42,8 +42,8 @@ public class FacebookConnector {
 	private static final String TAG = "in.co.hopin.FacebookHelpers.FacebookConnector";
 	
 	public static String [] FB_PERMISSIONS = {"user_about_me","user_education_history","user_hometown","user_work_history","email"};
-	//public static String FB_APP_ID = "107927182711315";	
-	public static String FB_APP_ID = "486912421326659"; //debug one
+	public static String FB_APP_ID = "107927182711315";	
+	//public static String FB_APP_ID = "486912421326659"; //debug one
 	
 	private static FacebookConnector fbconnect = null;
 	public static Facebook facebook = new Facebook(FB_APP_ID);

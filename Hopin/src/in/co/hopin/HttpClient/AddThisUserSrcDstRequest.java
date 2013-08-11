@@ -24,8 +24,9 @@ import java.io.UnsupportedEncodingException;
 
 public class AddThisUserSrcDstRequest extends SBHttpRequest {
     private final String TAG = "in.co.hopin.HttpClient.AddThisUserSrcDstRequest";
-    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/addRequest/";
-    
+    private static String RESTAPI="addRequest";
+    public static final String URL = ServerConstants.SERVER_ADDRESS + ServerConstants.REQUESTSERVICE + "/"+RESTAPI+"/";
+
     HttpPost httpQueryAddRequest;
     JSONObject jsonobjAddRequest;
     HttpClient httpclient = new DefaultHttpClient();
@@ -82,6 +83,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
     }
 
     public ServerResponseBase execute() {
+    	
         try {
             response = httpclient.execute(httpQueryAddRequest);
         } catch (Exception e) {
@@ -96,7 +98,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
             if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, e.getMessage());
         }
 
-        addThisUserResponse = new AddThisUserSrcDstResponse(response, jsonStr);
+        addThisUserResponse = new AddThisUserSrcDstResponse(response, jsonStr,RESTAPI);
         return addThisUserResponse;
     }
 }

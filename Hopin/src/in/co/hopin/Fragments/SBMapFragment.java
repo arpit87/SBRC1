@@ -19,8 +19,7 @@ import com.google.android.maps.MapView;
 public class SBMapFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {				
 	private static final String TAG = "in.co.hopin.Fragments.SBMapFragment";
 	private ViewGroup mMapViewContainer;	
-	private MapView mMapView;
-	private ImageButton selfLocationButton;
+	private MapView mMapView;	
 	
 	@Override
 	public void onCreate(Bundle savedState) {
@@ -34,7 +33,7 @@ public class SBMapFragment extends Fragment implements View.OnClickListener, Vie
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView( inflater, container, null );
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"oncreateview,mapview");
-		mMapViewContainer = ((MapListViewTabActivity)getActivity()).getThisMapContainerWithMapView();
+		mMapViewContainer = MapListActivityHandler.getInstance().getThisMapContainerWithMapView();
 		if(mMapView == null)
 			mMapView = (MapView) mMapViewContainer.findViewById(R.id.map_view);
 		//mMapViewContainer = inflater.inflate(R.layout.map,null,false);

@@ -1,26 +1,24 @@
 package in.co.hopin.Activities;
 
+import in.co.hopin.R;
 import in.co.hopin.Fragments.SBChatListFragment;
 import in.co.hopin.HelperClasses.CommunicationHelper;
 import in.co.hopin.Util.HopinTracker;
-import in.co.hopin.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 public class MyChatsActivity extends FragmentActivity {
 	
 	FragmentManager fm = this.getSupportFragmentManager();	
-	private boolean fbloginPromptIsShowing = false;
+	
 	  @Override
 	    public void onStart(){
 	        super.onStart();
-	        HopinTracker.sendView("MyChatsList");
-	        
+	        HopinTracker.sendView("MyChats");
+	        HopinTracker.sendEvent("MyChats","ScreenOpen","mychats:open",1L);	        
 	    }
 
 	    @Override

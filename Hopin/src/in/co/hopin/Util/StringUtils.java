@@ -134,11 +134,17 @@ public class StringUtils {
 		return label_span;
 	}
     
-    public static Spannable getSpannedTextUptoChar(String character, String text)
+    public static Spannable getSpannedTextUptoChar(String character, String text,int indexNum)
    	{
    		StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
    		Spannable label_span = new SpannableString(text);
-   		int length = text.indexOf(character, 0);
+   		int start = -1;
+   		int length =0;
+   		for(int i=1 ;i<=indexNum; i++)
+   		{
+   			length = text.indexOf(character, start+1);
+   			start = text.indexOf(character, start);
+   		}
    		if(length<=0)
    			length = text.length();
    		label_span.setSpan(bold, 0,length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
