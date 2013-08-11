@@ -49,7 +49,8 @@ public class HopinTracker {
 	public static void sendEvent(String category, String action, String label, Long value, String Arg1)
 	{
 		EasyTracker.getTracker().sendEvent(category, action, label, value);
-		JSONObject[] objs = new JSONObject[] {createCommonInfoJSON() , createInstantaneousInfoJSON() };
+		String event = label + Arg1;
+		JSONObject[] objs = new JSONObject[] {createCommonInfoJSON() , createInstantaneousInfoJSON(event)};		
 		Event.addEvent(mergeJSONObjects(objs));
 	}
 	
@@ -80,7 +81,7 @@ public class HopinTracker {
 		
 	}
 	
-	private static JSONObject createInstantaneousInfoJSON()
+	private static JSONObject createInstantaneousInfoJSON(String event)
 	{
 		JSONObject json = new JSONObject();
 		long unixTime = System.currentTimeMillis();		
@@ -104,6 +105,7 @@ public class HopinTracker {
 			json.put(TIMESTAMP, unixTime);
 			json.put(IPADDRESS, IPADDRESSESVAL);
 			json.put(ISWIFI, isWifi);
+			json.put("event", event);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
