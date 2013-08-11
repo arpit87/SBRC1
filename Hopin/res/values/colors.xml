@@ -51,6 +51,12 @@
      <color name="very_dark_gray">#ff494949</color>
      <color name="very_light_gray">#fff0f2f0</color>
      <color name="very_light_green">#dd56d856</color>
-     <color name="off_white">#ddf7f8e3</color>	
+     <color name="off_white">#fff7f8e3</color>
+     <color name="cream">#ffe0dc98</color>
+     <color name="mehndi">#ff99a940</color>
+     <color name="light_cream">#ffece9b0</color>
+     <color name="very_light_cream">#fff4f2cd</color>
+     <color name="off_white_translucent">#ddf7f8e3</color>
+     <color name="white_translucent">#eeffffff</color>	
 
 </resources>

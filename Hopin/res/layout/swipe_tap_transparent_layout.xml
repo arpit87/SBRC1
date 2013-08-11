@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?> 
+   
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:onClick="onScreenTap"
+        android:background="@drawable/transparent_black">
+        <ImageView
+        android:id="@+id/swipe_tap_gotohistory" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  
+        android:src="@drawable/finger_tap"       
+        android:layout_alignParentRight="true"
+        android:gravity="right" 
+        android:layout_marginTop="55dip"
+        android:layout_marginRight="45dip"
+       
+        />
+        
+        <TextView
+            android:layout_below="@id/swipe_tap_gotohistory"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Tap"
+            android:textColor="@color/white"
+            android:textSize="15dip"
+            
+            android:layout_alignParentRight="true" 
+            android:layout_marginRight="45dip"
+             ></TextView>
+        <TextView
+            android:id="@+id/swipe_tap_swipetext"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Swipe"
+            android:textColor="@color/white"
+            android:textSize="15dip"           
+            android:layout_marginBottom="105dip" 
+       		android:layout_centerHorizontal="true"
+       		android:layout_alignParentBottom="true"
+             ></TextView>
+    <ImageView
+        android:id="@+id/swipe_tap_swipecentre" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  
+        android:src="@drawable/finger_swipe"
+        android:gravity="right" 
+        android:layout_above="@id/swipe_tap_swipetext"
+        
+        android:layout_centerHorizontal="true"       
+        />
+      
+        <ImageView
+        android:id="@+id/swipe_tap_swipecentre_arrowright" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  
+        android:src="@drawable/arrowswiperight"        
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dip"
+        android:layout_toRightOf="@id/swipe_tap_swipecentre"
+        />
+        
+         <ImageView
+        android:id="@+id/swipe_tap_swipecentre_arrowleft" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"  
+        android:src="@drawable/arrowswipeleft"      
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dip"
+        android:layout_toLeftOf="@id/swipe_tap_swipecentre"   
+        />         
+         
+       <CheckBox
+            android:id="@+id/swipe_tap_dontshowagain_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_selector"            
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="Dont show this again"
+            android:textColor="@color/white"
+            android:layout_marginBottom="40dip"
+            />
+</RelativeLayout>

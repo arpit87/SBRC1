@@ -5,7 +5,7 @@
   
     <in.co.hopin.CustomViewsAndListeners.SBMapView android:id="@+id/map_view" android:focusable="true" 
         android:focusableInTouchMode="true" android:clickable="true" android:layout_width="fill_parent"
-         android:layout_height="fill_parent" android:apiKey="@string/map_api_key_debug"
+         android:layout_height="fill_parent" android:apiKey="@string/map_api_key"
          />    
          
     <ImageButton android:id="@+id/my_location_button" android:background="@drawable/my_location" 

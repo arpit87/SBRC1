@@ -1,8 +1,8 @@
 <resources>
     <!--Replace placeholder ID with your tracking ID-->
     
-    <string name="ga_trackingId">UA-38552153-1</string>
-    <!--<string name="ga_trackingId">UA-39698394-1</string> //-1 is prod, -2 debug.above one test-->
+    <!--<string name="ga_trackingId">UA-38552153-2</string>-->
+    <string name="ga_trackingId">UA-39698394-1</string> <!--//-1 is prod, -2 debug.above one test-->
 
     <!--Enable automatic activity tracking-->
     <bool name="ga_autoActivityTracking">false</bool>
