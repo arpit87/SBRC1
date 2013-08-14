@@ -61,8 +61,9 @@ public class GetNewUserInfoAndShowPopup extends ServerResponseBase{
 			//ThisUserConfig.getInstance().putBool(ThisUserConfig.FBINFOSENTTOSERVER, true);
 			
 			//ToastTracker.showToast("fb save:"+status);
+			logSuccess();
 		} catch (JSONException e) {	
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			Logger.e(TAG, "Error returned by server get fb info for user and show popup");

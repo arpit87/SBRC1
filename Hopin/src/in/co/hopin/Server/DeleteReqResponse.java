@@ -41,8 +41,9 @@ public class DeleteReqResponse extends ServerResponseBase{
             }
 			//this broadcast is for my active req page to update itself to no active req
 			Platform.getInstance().getContext().sendBroadcast(notifyUpdateintent);
+			logSuccess();
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured in delete request");
 			e.printStackTrace();

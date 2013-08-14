@@ -80,6 +80,7 @@ public class InstaRequest extends SBHttpRequest{
 			} 		
 			
 			instaResponse =	new InstaResponse(response,jsonStr,RESTAPI);
+			instaResponse.setReqTimeStamp(this.reqTimeStamp);
 			return instaResponse;
 		
 	}

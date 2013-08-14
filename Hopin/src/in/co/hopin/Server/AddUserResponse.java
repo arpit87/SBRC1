@@ -61,8 +61,9 @@ public class AddUserResponse extends ServerResponseBase{
 			 {
 				 sendAddFBAndChatInfoToServer(fbid);
 			 }
+			 logSuccess();
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Unable to communicate to server,try again later");

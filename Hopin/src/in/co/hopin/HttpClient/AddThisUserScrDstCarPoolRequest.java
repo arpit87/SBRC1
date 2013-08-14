@@ -100,6 +100,7 @@ public class AddThisUserScrDstCarPoolRequest extends SBHttpRequest {
 		}
 
 		addThisUserResponse = new AddThisUserSrcDstCarPoolResponse(response, jsonStr,RESTAPI);
+		addThisUserResponse.setReqTimeStamp(this.reqTimeStamp);
 		return addThisUserResponse;
 	}
 }

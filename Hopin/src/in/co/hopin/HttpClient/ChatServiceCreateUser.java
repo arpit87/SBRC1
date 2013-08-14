@@ -83,7 +83,8 @@ public class ChatServiceCreateUser extends SBHttpRequest{
 					HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 				}   
 							
-				chatServiceCreateUserResponse = new ChatServiceCreateUserResponse(response,jsonStr,RESTAPI);			
+				chatServiceCreateUserResponse = new ChatServiceCreateUserResponse(response,jsonStr,RESTAPI);	
+				chatServiceCreateUserResponse.setReqTimeStamp(this.reqTimeStamp);
 				return chatServiceCreateUserResponse;
 			
 		}

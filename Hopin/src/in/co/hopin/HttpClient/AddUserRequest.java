@@ -83,6 +83,7 @@ public class AddUserRequest extends SBHttpRequest{
 			}   
 					
 			addUserResponse =	new AddUserResponse(response,jsonStr,tutorial_activity,RESTAPI);
+			addUserResponse.setReqTimeStamp(this.reqTimeStamp);
 			return addUserResponse;
 		
 	}

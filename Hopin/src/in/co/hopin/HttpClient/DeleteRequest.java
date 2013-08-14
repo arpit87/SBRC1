@@ -40,7 +40,7 @@ public class DeleteRequest extends SBHttpRequest{
 		queryMethod = QueryMethod.Get;		
         httpQuery =  new HttpPost(URL);
         this.daily_insta_type = daily_insta_type;        
-        jsonobj=new JSONObject();	
+        jsonobj = GetServerAuthenticatedJSON();	
         URLStr = URL;
 		
 		try {
@@ -81,7 +81,9 @@ public class DeleteRequest extends SBHttpRequest{
 				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			}   			
 			
-		return new DeleteReqResponse(response,jsonStr,daily_insta_type,RESTAPI);
+			DeleteReqResponse delUserResponse = new DeleteReqResponse(response,jsonStr,daily_insta_type,RESTAPI);
+			delUserResponse.setReqTimeStamp(this.reqTimeStamp);
+			return delUserResponse;
 	}
 
 }

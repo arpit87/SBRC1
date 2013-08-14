@@ -19,6 +19,7 @@ public class RegisterGCMIdRequest extends SBHttpRequest {
 
     private final HttpGet httpQuery;
     private final HttpClient httpclient = new DefaultHttpClient();
+    String jsonStr;
 
     public RegisterGCMIdRequest() {
         String userId = ThisUserConfig.getInstance().getString(ThisUserConfig.USERID);
@@ -49,14 +50,14 @@ public class RegisterGCMIdRequest extends SBHttpRequest {
         }
         
         try {
-            String jsonStr = responseHandler.handleResponse(response);
-            RegisterGCMIdResponse registerGCMIdResponse = new RegisterGCMIdResponse(response, jsonStr,RESTAPI);
-            return registerGCMIdResponse;
+            jsonStr = responseHandler.handleResponse(response);            
         } catch (Exception e) {
         	HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
             Logger.e(TAG, e.getMessage());
         }
-
-        return null;
+        RegisterGCMIdResponse registerGCMIdResponse = new RegisterGCMIdResponse(response, jsonStr,RESTAPI);
+        registerGCMIdResponse.setReqTimeStamp(this.reqTimeStamp);
+        return registerGCMIdResponse;
+       
     }
 }

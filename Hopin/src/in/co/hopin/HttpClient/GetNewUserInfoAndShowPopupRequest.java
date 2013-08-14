@@ -92,6 +92,7 @@ public class GetNewUserInfoAndShowPopupRequest extends SBHttpRequest{
 			} 	
 			
 		getNewUserInfoAndShowPopup = new GetNewUserInfoAndShowPopup(response,jsonStr,daily_insta_type,RESTAPI);
+		getNewUserInfoAndShowPopup.setReqTimeStamp(this.reqTimeStamp);
 		return getNewUserInfoAndShowPopup;
 		
 	}

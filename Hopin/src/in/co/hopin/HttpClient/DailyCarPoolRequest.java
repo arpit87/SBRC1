@@ -78,6 +78,7 @@ public class DailyCarPoolRequest  extends SBHttpRequest{
 			} 		
 			
 			getNearbyUsersResponse =	new DailyCarPoolResponse(response,jsonStr,RESTAPI);
+			getNearbyUsersResponse.setReqTimeStamp(this.reqTimeStamp);
 			return getNearbyUsersResponse;
 		
 	}

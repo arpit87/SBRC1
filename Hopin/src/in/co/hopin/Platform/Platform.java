@@ -25,7 +25,7 @@ public class Platform {
 	private static Platform instance = null;
 	private Context context;	
 	private Handler handler;
-	private boolean ENABLE_LOGGING = false;
+	private boolean ENABLE_LOGGING = true;
 	public boolean SUPPORTS_NEWAPI = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD;
 		
 	private Platform() {
@@ -93,7 +93,7 @@ public class Platform {
 	
 	 public void stopChatService() {		
 	          Intent i = new Intent("in.co.hopin.ChatService.SBChatService");
-	          context.stopService(i);         
+	          context.stopService(i);       
 	          
 	          if (Platform.getInstance().isLoggingEnabled()) Log.d( TAG, "Service stopped" );	         
 	             

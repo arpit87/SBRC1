@@ -64,7 +64,7 @@ public abstract class AbstractHistoryFragment extends ListFragment {
             CreateRequestFromHistory asyncReq = new CreateRequestFromHistory();
             asyncReq.execute(historyItem);
             getActivity().finish();
-            HopinTracker.sendEvent("History","ListClick","history:"+PlanInstaStr+":click",1L,"position ="+Integer.toString(position));
+            HopinTracker.sendEvent("History","ListClick","history:"+PlanInstaStr+":click",1L);
         }
     }
 

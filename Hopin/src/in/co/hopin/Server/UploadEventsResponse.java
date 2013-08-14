@@ -26,6 +26,7 @@ public class UploadEventsResponse extends ServerResponseBase {
             if (jobj.has("error")) {
                 JSONObject errorJson = jobj.getJSONObject("error");
                 Logger.e(TAG, "Upload failed with error: " + errorJson.getString("error"));
+                logServererror();
             } else {
                 Event.deleteEvent(lastTimeStamp);
                 JSONObject body = jobj.getJSONObject("body");
@@ -33,9 +34,10 @@ public class UploadEventsResponse extends ServerResponseBase {
                 if (failCount != 0) {
                     Logger.e(TAG, "No. of log entries rejected: " + failCount);
                 }
+                logSuccess();
             }
         } catch (JSONException e) {
-        	HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+        	logServererror();
             Logger.e(TAG, "Error returned by server on UploadEventsRequest", e);
         }
     }

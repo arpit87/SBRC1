@@ -68,6 +68,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         ImageView userImageView = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_image);
         
         ImageView chatDotOffline = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_offline);
+        ImageView chatDotOnline = (ImageView)thisUserView.findViewById(R.id.nearbyuser_list_row_chatstatus_online);
         
         TextView userName = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_nearbyusername);
         TextView mutualFriends = (TextView)thisUserView.findViewById(R.id.nearbyuser_list_row_mutualfriends);
@@ -95,6 +96,7 @@ public class NearbyUsersListViewAdapter extends BaseAdapter{
         if(thisUserOtherInfo.isOnline())        	
         {
         	chatDotOffline.setVisibility(View.INVISIBLE);
+        	chatDotOnline.setVisibility(View.VISIBLE);
         }
 		return thisUserView;
 	}	

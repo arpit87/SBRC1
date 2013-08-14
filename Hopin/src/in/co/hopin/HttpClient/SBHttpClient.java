@@ -17,6 +17,7 @@ public class SBHttpClient {
 	private static SBHttpClient uniqueClient;
 	private SBHttpClient(){};
 	private ServerResponseBase response;
+	private long reqTimeStamp =  0L;	
 	
 	public static SBHttpClient getInstance()
 	{		

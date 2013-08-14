@@ -30,9 +30,10 @@ public class DailyCarPoolResponse extends ServerResponseBase{
 		//jobj = JSONHandler.getInstance().GetJSONObjectFromHttp(serverResponse);
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"got json "+jobj.toString());
 		try {
-			body = jobj.getJSONObject("body");			
+			body = jobj.getJSONObject("body");
+			
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server in fetching nearby carpool user.JSON:"+jobj.toString());
@@ -52,7 +53,9 @@ public class DailyCarPoolResponse extends ServerResponseBase{
 			//from user which has not yet been fetched by getmatch request
 			Platform.getInstance().getContext().sendBroadcast(notifyUpdateintent);			
 		}
+		logSuccessWithArg(HopinTracker.NUMMATCHES, Integer.toString(CurrentNearbyUsers.getInstance().getAllNearbyUsers().size()));
 		ProgressHandler.dismissDialoge();
+		
 	}
 	
 	

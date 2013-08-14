@@ -1,6 +1,9 @@
 package in.co.hopin.MapHelpers;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import in.co.hopin.R;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.Adapter.GridViewImageAdapter;
@@ -106,7 +109,10 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 				
 				@Override
 				public boolean onTouch(View arg0, MotionEvent arg1) {
-					HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:group",1L,"group_size="+Integer.toString(mUserGroup.mUsersListInGroup.size()));
+					String grpSize = Integer.toString(mUserGroup.mUsersListInGroup.size());
+					Map trackArgMap = new HashMap<String,Object>();
+				    trackArgMap.put(HopinTracker.GRPSIZE, grpSize);					    
+					HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:group",1L,trackArgMap);
 					removeSmallView();
 					createAndDisplayExpandedView();
 					MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);
@@ -270,9 +276,14 @@ public class GroupedNearbyUsersOverlayItem extends BaseOverlayItem{
 			
 			facebookIcon.setOnClickListener(new OnClickListener() {				
 				@Override
-				public void onClick(View chatIconView) {
-					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:fbprofile",1L);
-					CommunicationHelper.getInstance().onFBIconClickWithUser((FragmentActivity)context,n.getUserFBInfo().getFbid(),n.getUserFBInfo().getFBUsername());						
+				public void onClick(View view) {
+					String fbid = n.getUserFBInfo().getFbid();
+					String fbusername = n.getUserFBInfo().getFBUsername();
+					Map trackArgMap = new HashMap<String,Object>();
+				    trackArgMap.put(HopinTracker.FBID, fbid);	
+				    trackArgMap.put(HopinTracker.FBID, fbusername);
+					HopinTracker.sendEvent("Map","MapMiniProfile","mapminiprofile:fbprofile",1L,trackArgMap);
+					CommunicationHelper.getInstance().onFBIconClickWithUser((FragmentActivity)context,fbid,fbusername);						
 				}
 			});
            

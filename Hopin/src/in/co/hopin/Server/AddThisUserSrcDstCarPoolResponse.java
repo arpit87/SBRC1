@@ -18,9 +18,7 @@ public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
 
     private static final String TAG = "in.co.hopin.Server.AddUserResponse";
     
-
-	String user_id;
-		
+	
 	public AddThisUserSrcDstCarPoolResponse(HttpResponse response,String jobjStr,String api) {
 		super(response,jobjStr,api);
 
@@ -42,10 +40,10 @@ public class AddThisUserSrcDstCarPoolResponse extends ServerResponseBase{
             MapListActivityHandler.getInstance().setSourceAndDestination(body);
 			SBHttpRequest getNearbyUsersRequest = new DailyCarPoolRequest();
 	        SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
-	        HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":success",1L);
+	        logSuccess();
 			
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add scr dst");
 			ToastTracker.showToast("Network error,try again");
 			ProgressHandler.dismissDialoge();

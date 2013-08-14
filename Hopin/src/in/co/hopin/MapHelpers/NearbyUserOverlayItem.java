@@ -1,5 +1,8 @@
 package in.co.hopin.MapHelpers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import in.co.hopin.R;
 import in.co.hopin.ActivityHandlers.MapListActivityHandler;
 import in.co.hopin.CustomViewsAndListeners.SBMapView;
@@ -421,8 +424,11 @@ public class NearbyUserOverlayItem extends BaseOverlayItem{
 	public class NearbyUserOnTouchListener implements OnTouchListener
 	{		
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:other_user", 1L, "user = "+mUserFBID);
+		public boolean onTouch(View v, MotionEvent event) {		
+			Map trackArgMap = new HashMap<String,Object>();
+		    trackArgMap.put(HopinTracker.OTHERUSERFBID, mUserFBID);
+		    trackArgMap.put(HopinTracker.OTHERUSERID, mUserID);
+			HopinTracker.sendEvent("Map","ButtonClick","map:click:thumbnail:other_user", 1L, trackArgMap);
 			removeSmallView();
 			showExpandedView();
 			MapListActivityHandler.getInstance().centreMapTo(mGeoPoint);

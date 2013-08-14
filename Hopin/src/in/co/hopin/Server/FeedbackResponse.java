@@ -27,9 +27,10 @@ public class FeedbackResponse extends ServerResponseBase{
 		if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG,"server response:"+jobj.toString());
 		try {			
 			String body = jobj.getString("body");
-			ToastTracker.showToast("Feedback saved successfully");			
+			ToastTracker.showToast("Feedback saved successfully");		
+			logSuccess();
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured in saving feedback");
 			e.printStackTrace();

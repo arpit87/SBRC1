@@ -82,6 +82,7 @@ public class GetOtherUserProfileAndShowPopup extends SBHttpRequest{
 			} 	
 			
 			getOtherUserProfileAndShowPopup = new GetOtherUserProfileResponse(response,jsonStr,RESTAPI);
+			getOtherUserProfileAndShowPopup.setReqTimeStamp(this.reqTimeStamp);
 			return getOtherUserProfileAndShowPopup;
 		
 	}

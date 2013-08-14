@@ -4,6 +4,7 @@ import android.content.Intent;
 import in.co.hopin.HelperClasses.Event;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.UploadEventsRequest;
+import in.co.hopin.Util.HopinTracker;
 import in.co.hopin.Util.Logger;
 
 import java.util.List;
@@ -24,7 +25,9 @@ public class UploadEventService extends WakefulIntentService {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        sb.append("{\"common\":");
+        sb.append(HopinTracker.createCommonInfoJSON().toString());
+        sb.append(",\"rows\":[");
         for (int i=0; i<events.size(); i++) {
             Logger.d(TAG, events.get(i).getJsonDescription());
             sb.append(events.get(i).getJsonDescription());
@@ -32,7 +35,7 @@ public class UploadEventService extends WakefulIntentService {
                 sb.append(",");
             }
         }
-        sb.append("]");
+        sb.append("]}");
 
         long lastTimeStamp = events.get(events.size() - 1).getTime();
         UploadEventsRequest request = new UploadEventsRequest(sb.toString(), lastTimeStamp);

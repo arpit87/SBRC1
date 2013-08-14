@@ -82,6 +82,7 @@ public class SaveFBInfoRequest extends SBHttpRequest{
 			} 	
 			
 		saveFBInfoResponse = new SaveFBInfoResponse(response,jsonStr,RESTAPI);
+		saveFBInfoResponse.setReqTimeStamp(this.reqTimeStamp);
 		return saveFBInfoResponse;
 		
 	}

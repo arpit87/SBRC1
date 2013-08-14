@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.util.InetAddressUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -20,6 +21,7 @@ import org.apache.http.params.HttpParams;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 public class SBConnectivity {
@@ -67,6 +69,63 @@ public class SBConnectivity {
 
     }
     
+    public static String getNetworkType()
+   	{
+    	ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    	switch (activeNetwork.getType()) {
+    	  case (ConnectivityManager.TYPE_WIFI):
+    		  return "Wifi";
+    	  case (ConnectivityManager.TYPE_MOBILE):
+    		  return "Mobile";
+    	  default:
+    		  return "";
+    	}
+   	}
+    
+    public static String getNetworkSubType()
+	{
+    	TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+		int networkType = tm.getNetworkType();		
+		switch (networkType)
+		{
+		case 7:
+		    return "1xRTT";		          
+		case 4:
+			return"CDMA";		         
+		case 2:
+			return "EDGE";		      
+		case 14:
+			return "eHRPD";		         
+		case 5:
+			return "EVDO rev. 0";		      
+		case 6:
+			return "EVDO rev. A";		   
+		case 12:
+			return "EVDO rev. B";		      
+		case 1:
+			return "GPRS";		          
+		case 8:
+			return "HSDPA";		        
+		case 10:
+			return "HSPA";		            
+		case 15:
+			return "HSPA+";		             
+		case 9:
+			return "HSUPA";		              
+		case 11:
+			return "iDen" ;		    
+		case 13:
+			return "LTE";		    
+		case 3:
+			return "UMTS";		              
+		default:
+			return "";
+		   
+		}
+		
+	}    
+   
     public static String getipAddress() { 
     	Logger.i(TAG,"getting ip address");
     	String ipaddress = "";
@@ -75,12 +134,9 @@ public class SBConnectivity {
                 NetworkInterface intf = (NetworkInterface) en.nextElement();
                 for (Enumeration enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = (InetAddress) enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
-                    	if(ipaddress.equals(""))
-                    		ipaddress=inetAddress.getHostAddress().toString();
-                    	else
-                    		ipaddress=ipaddress+","+inetAddress.getHostAddress().toString();
-                        Logger.i(TAG,"ip address:"+ipaddress);                       
+                    if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ipaddress)) {                    	
+                        Logger.i(TAG,"ip address:"+ipaddress);  
+                        return ipaddress;
                     }
                 }
             }

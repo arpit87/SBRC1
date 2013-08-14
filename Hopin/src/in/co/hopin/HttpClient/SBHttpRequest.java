@@ -23,7 +23,7 @@ public abstract class SBHttpRequest {
 	QueryMethod queryMethod = null;
 	String URLStr = "";
 	HttpResponse response = null;
-	
+	long reqTimeStamp = System.currentTimeMillis();
 	// Create a response handler
     ResponseHandler<String> responseHandler = new BasicResponseHandler();
     	

@@ -41,10 +41,11 @@ public class SelfProfileResponse extends ServerResponseBase{
 			Intent hopinSelfProfile = new Intent(Platform.getInstance().getContext(),SelfProfileActivity.class);
 			hopinSelfProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);			
 	    	Platform.getInstance().getContext().startActivity(hopinSelfProfile);
+	    	logSuccess();
 			ProgressHandler.dismissDialoge();
 			//ToastTracker.showToast("fb save:"+status);
 		} catch (JSONException e) {		
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add");
 			e.printStackTrace();

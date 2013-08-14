@@ -11,7 +11,9 @@ import in.co.hopin.Users.UserFBInfo;
 import in.co.hopin.Util.HopinTracker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -195,7 +197,9 @@ public class OtherUserProfileActivityNew extends FragmentActivity{
 	    public void onStart(){
 	        super.onStart();
 	        HopinTracker.sendView("OtherUserProfile");
-	        HopinTracker.sendEvent("Profile","ScreenOpen","userprofile:other:open",1L,"fb_id = "+userFBInfo.getFbid());
+	        Map trackArgMap = new HashMap<String,Object>();
+	        trackArgMap.put(HopinTracker.FBID, userFBInfo.getFbid());
+	        HopinTracker.sendEvent("Profile","ScreenOpen","userprofile:other:open",1L,trackArgMap);
 	        //EasyTracker.getInstance().activityStart(this);
 	    }
     @Override

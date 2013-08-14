@@ -41,7 +41,7 @@ public class FeedbackRequest extends SBHttpRequest{
 		super();
 		queryMethod = QueryMethod.Get;		
         httpQuery =  new HttpPost(URL);               
-        jsonobj=new JSONObject();		
+        jsonobj=GetServerAuthenticatedJSON();		
         URLStr = URL;
 		try {
 			jsonobj.put(UserAttributes.USERID, ThisUserNew.getInstance().getUserID());
@@ -83,7 +83,9 @@ public class FeedbackRequest extends SBHttpRequest{
 				HopinTracker.sendEvent("HttpRequest",RESTAPI,"httprequest:"+RESTAPI+":execute:responseexception",1L);
 			}   			
 			
-		return new FeedbackResponse(response,jsonStr,RESTAPI);
+			FeedbackResponse feedbackRes = new FeedbackResponse(response,jsonStr,RESTAPI);
+			feedbackRes.setReqTimeStamp(this.reqTimeStamp);
+			return feedbackRes;
 	}
 
 }

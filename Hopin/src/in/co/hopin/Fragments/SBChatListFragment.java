@@ -54,7 +54,7 @@ public class SBChatListFragment extends ListFragment {
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-		HopinTracker.sendEvent("MyChat","ListClick","mychats:click:listitem",1L,"position = "+Integer.toString(position));
+		HopinTracker.sendEvent("MyChat","ListClick","mychats:click:listitem",1L);
 		ActiveChat clickedUser = chatUserlist.get(position);
 		String fbid = clickedUser.getUserId();
 		String name = clickedUser.getName();

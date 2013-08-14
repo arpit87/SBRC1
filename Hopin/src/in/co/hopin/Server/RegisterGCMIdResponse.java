@@ -20,9 +20,11 @@ public class RegisterGCMIdResponse extends ServerResponseBase {
             body = jobj.getJSONObject("body");
             if (body.getInt("success") != 1) {
                 Logger.e(TAG, "RegisterGCMIdRequest failed.");
+                logServererror();
             }
+            logSuccess();
         } catch (JSONException e) {
-        	HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+        	logServererror();
             Logger.e(TAG, "Error returned by server on RegisterGCMIdRequest", e);
         }
     }

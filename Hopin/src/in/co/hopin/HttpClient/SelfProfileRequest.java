@@ -85,6 +85,7 @@ public class SelfProfileRequest extends SBHttpRequest{
 			} 	
 			
 			getSelfProfileAndShowProfileActivity = new SelfProfileResponse(response,jsonStr,RESTAPI);
+			getSelfProfileAndShowProfileActivity.setReqTimeStamp(this.reqTimeStamp);
 			return getSelfProfileAndShowProfileActivity;
 		
 	}

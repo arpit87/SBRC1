@@ -1,5 +1,10 @@
 package in.co.hopin.Server;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import in.co.hopin.Util.HopinTracker;
+
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +27,9 @@ public abstract class ServerResponseBase {
 	JSONObject body;
 	JSONObject error;
 	String RESTAPI = "";
-	protected ResponseStatus status;			
+	protected ResponseStatus status;
+	long reqTimeStamp =0L;
+	long responseTimeStamp =System.currentTimeMillis();
 	
 	public ServerResponseBase(HttpResponse response,String jobjStr,String RESTAPI) {
 		
@@ -78,8 +85,41 @@ public abstract class ServerResponseBase {
 		return RESTAPI;
 	}
 	
+	public long getReqTimeStamp() {
+		return reqTimeStamp;
+	}
+
+	public void setReqTimeStamp(long reqTimeStamp) {
+		this.reqTimeStamp = reqTimeStamp;
+	}
+
 	public abstract void process();
 	
+	private long getResponseTimeMilli()
+	{
+		return responseTimeStamp - reqTimeStamp;
+	}
 	
+	protected void logSuccess()
+	{
+		Map trackArgMap = new HashMap<String,Object>();
+	    trackArgMap.put(HopinTracker.APIRESPONSETIME, getResponseTimeMilli());
+		HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":success",1L,trackArgMap);
+	}
+	
+	protected void logSuccessWithArg(String label,String value)
+	{
+		Map trackArgMap = new HashMap<String,Object>();
+	    trackArgMap.put(HopinTracker.APIRESPONSETIME, getResponseTimeMilli());
+	    trackArgMap.put(label, value);
+		HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":success",1L,trackArgMap);
+	}
+	
+	protected void logServererror()
+	{
+		Map trackArgMap = new HashMap<String,Object>();
+	    trackArgMap.put(HopinTracker.APIRESPONSETIME, getResponseTimeMilli());
+		HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L,trackArgMap);
+	}
 
 }

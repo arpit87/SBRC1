@@ -44,9 +44,9 @@ public class GetOtherUserProfileResponse extends ServerResponseBase{
 	    	hopinNewProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 	    	hopinNewProfile.putExtra("fb_info", nearbyUsersFbInfo.toString());
 	    	Platform.getInstance().getContext().startActivity(hopinNewProfile);
-		
+	    	logSuccess();
 		} catch (JSONException e) {		
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Some error occured");
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server get fb info for user and show popup");

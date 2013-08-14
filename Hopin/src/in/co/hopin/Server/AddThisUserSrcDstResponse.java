@@ -44,16 +44,10 @@ public class AddThisUserSrcDstResponse extends ServerResponseBase{
             //Context context = Platform.getInstance().getContext();
             if (Platform.getInstance().isLoggingEnabled()) Log.i(TAG, "Fetching nearby users..");
             SBHttpRequest getNearbyUsersRequest = new InstaRequest();
-            SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);
-            //Intent getNearByUsersIntent = new Intent(context, GetNearByUsersService.class);
-            //context.startService(getNearByUsersIntent);
-
-            //Intent checkAndDelUserReqServiceStartIntent = new Intent(context, CheckAndDeleteUserRequestService.class);
-            //PendingIntent pendingIntent = PendingIntent.getService(context, 0, checkAndDelUserReqServiceStartIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            //AlarmManager alarmManager = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
-            //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, TIME_INTERVAL, TIME_INTERVAL, pendingIntent);
+            SBHttpClient.getInstance().executeRequest(getNearbyUsersRequest);          
+            logSuccess();
 		} catch (JSONException e) {
-			HopinTracker.sendEvent("ServerResponse",getRESTAPI(),"ServerResponse:"+getRESTAPI()+":servererror",1L);
+			logServererror();
 			if (Platform.getInstance().isLoggingEnabled()) Log.e(TAG, "Error returned by server on user add scr dst");
 			ProgressHandler.dismissDialoge();
 			ToastTracker.showToast("Network error,try again");

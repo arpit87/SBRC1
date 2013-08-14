@@ -99,6 +99,7 @@ public class AddThisUserSrcDstRequest extends SBHttpRequest {
         }
 
         addThisUserResponse = new AddThisUserSrcDstResponse(response, jsonStr,RESTAPI);
+        addThisUserResponse.setReqTimeStamp(this.reqTimeStamp);
         return addThisUserResponse;
     }
 }
