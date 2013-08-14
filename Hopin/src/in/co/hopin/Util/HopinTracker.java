@@ -141,7 +141,7 @@ public class HopinTracker {
 			json.put(IPADDRESS, IPADDRESSESVAL);	
 			json.put(LOGINSTATE, login_state);
 			json.put(FBID, fbid);
-			json.put(NETWORKOPERATOR, networkOperator);
+			json.put(NETWORKOPERATOR, operatorName);
 			json.put(NETWORKTYPE, networkType);
 			json.put(NETWORKSUBTYPE, networkSubType);			
 			Iterator entries = args.entrySet().iterator();
