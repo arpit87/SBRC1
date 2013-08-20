@@ -2,6 +2,7 @@ package in.co.hopin.service;
 
 import android.content.Intent;
 import in.co.hopin.HelperClasses.Event;
+import in.co.hopin.HelperClasses.SBConnectivity;
 import in.co.hopin.HttpClient.SBHttpClient;
 import in.co.hopin.HttpClient.UploadEventsRequest;
 import in.co.hopin.Util.HopinTracker;
@@ -19,6 +20,8 @@ public class UploadEventService extends WakefulIntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Logger.d(TAG, "I am in upload service");
+        if(!SBConnectivity.isConnected())
+        	return;
         List<Event> events = Event.getEvents();
         if (events.isEmpty()) {
             return;
